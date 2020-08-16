@@ -17,7 +17,7 @@
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
-    <ClCompile Include="Utilities\Textures.cpp" />
+    <ClCompile Include="Utilities\Texture.cpp" />
     <ClCompile Include="Utilities\Renderer.cpp" />
     <ClCompile Include="Utilities\Event.cpp" />
     <ClCompile Include="Utilities\EventSystem.cpp" />
@@ -36,7 +36,7 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.h" />
     <ClInclude Include="Shaders\Shader.h" />
-    <ClInclude Include="Utilities\Textures.h" />
+    <ClInclude Include="Utilities\Texture.h" />
     <ClInclude Include="Utilities\Renderer.h" />
     <ClInclude Include="Utilities\Event.h" />
     <ClInclude Include="Utilities\EventSystem.h" />
@@ -50,9 +50,11 @@
     <None Include="Shaders\frag.shader" />
     <None Include="Shaders\frag1.shader" />
     <None Include="Shaders\frag_color.shader" />
+    <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
     <None Include="Shaders\vert_color.shader" />
+    <None Include="Shaders\vert_texture.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

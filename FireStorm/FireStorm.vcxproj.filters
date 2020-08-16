@@ -57,10 +57,10 @@
     <ClCompile Include="Buffers\VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\Textures.cpp">
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+    <ClCompile Include="Utilities\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,7 +110,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\Textures.h">
+    <ClInclude Include="Utilities\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,5 +121,7 @@
     <None Include="Shaders\frag1.shader" />
     <None Include="Shaders\vert_color.shader" />
     <None Include="Shaders\frag_color.shader" />
+    <None Include="Shaders\frag_texture.shader" />
+    <None Include="Shaders\vert_texture.shader" />
   </ItemGroup>
 </Project>

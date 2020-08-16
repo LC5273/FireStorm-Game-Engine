@@ -57,11 +57,16 @@ void getCursorPos(GLFWwindow* window, double x, double y)
     glfwGetCursorPos(window, &x, &y);
 }
 
-void Shader::uniform2f(GLFWwindow* window, const char* field)
+void Shader::uniform2f_mouse_pos(GLFWwindow* window, const char* field)
 {
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     glUniform2f(glGetUniformLocation(id, field), (float)(x / 320.0f - 1.0f), (float)(1.0f - y / 240.0f));
+}
+
+void Shader::uniform1i(GLFWwindow* window, const char* field, int value)
+{
+    glUniform1i(glGetUniformLocation(id, field), value);
 }
 
 void Shader::bind() const {
