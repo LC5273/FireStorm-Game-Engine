@@ -22,6 +22,6 @@ public:
 	inline unsigned int getHeight() const { return height; };
 	inline unsigned int getWidth() const { return width; };
 
-	~Texture();
+	//~Texture();
 };
 

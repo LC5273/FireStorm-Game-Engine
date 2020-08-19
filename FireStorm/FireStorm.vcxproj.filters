@@ -124,4 +124,9 @@
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\vert_texture.shader" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\spaceship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

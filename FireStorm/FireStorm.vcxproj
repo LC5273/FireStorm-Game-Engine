@@ -56,6 +56,9 @@
     <None Include="Shaders\vert_color.shader" />
     <None Include="Shaders\vert_texture.shader" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\spaceship.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{34DEB47E-2E42-418A-A3A1-A4D18C97178A}</ProjectGuid>

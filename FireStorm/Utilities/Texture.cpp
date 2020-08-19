@@ -31,7 +31,8 @@ void Texture::bind(unsigned int slot) const {
 void Texture::unbind() const {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
-
+/*
 Texture::~Texture() {
 	delete[] buffer;
 }
+*/

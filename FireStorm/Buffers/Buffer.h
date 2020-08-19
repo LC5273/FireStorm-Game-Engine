@@ -11,6 +11,8 @@ private:
 public:
 	Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements);
 
+	void update(GLfloat* data, GLsizei count);
+
 	void bind() const;
 	void unbind() const;
 

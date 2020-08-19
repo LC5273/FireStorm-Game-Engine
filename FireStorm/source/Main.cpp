@@ -84,7 +84,7 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
     else
         if (key == GLFW_KEY_A) {
             if (action == GLFW_PRESS)
-                move_coords(texture_pos, 1, 0.01);
+                move_coords(texture_pos, 3, 0.01);
             else if (action == GLFW_RELEASE);
         }
         else
@@ -96,7 +96,7 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
             else
                 if (key == GLFW_KEY_D) {
                     if (action == GLFW_PRESS)
-                        move_coords(texture_pos, 3, 0.01);
+                        move_coords(texture_pos, 1, 0.01);
                     else if (action == GLFW_RELEASE);
                 }
 }
@@ -237,7 +237,7 @@ int main()
     s.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
     s.bind();
 
-    Texture texture1("Textures/spaceship0.png");
+    Texture texture1("Textures/spaceship.png");
     texture1.bind();
 
     s.uniform1i(window, "texture1", 0);
@@ -273,7 +273,7 @@ int main()
 #endif
         //Buffer* vbo = new Buffer(texture_pos, 8 * 2, 2);
         //sprite.addBuffer(vbo, 0);
-
+        vbo1->update(texture_pos, 8 * 2);
 
         sprite.bind();
         ibo.bind();
