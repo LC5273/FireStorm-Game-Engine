@@ -49,14 +49,17 @@
   <ItemGroup>
     <None Include="Shaders\frag.shader" />
     <None Include="Shaders\frag1.shader" />
+    <None Include="Shaders\frag_background.shader" />
     <None Include="Shaders\frag_color.shader" />
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
+    <None Include="Shaders\vert_background.shader" />
     <None Include="Shaders\vert_color.shader" />
     <None Include="Shaders\vert_texture.shader" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Textures\background.png" />
     <Image Include="Textures\spaceship.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -36,3 +36,4 @@ Texture::~Texture() {
 	delete[] buffer;
 }
 */
+

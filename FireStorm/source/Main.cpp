@@ -22,6 +22,8 @@
     #define NDEBUG
 #endif
 
+#define what_is(x) std::cerr << #x << " is " << x << std::endl;
+
 float texture_pos[] = {
     0.00f, 0.00f,
     0.00f, 0.25f,
@@ -42,9 +44,9 @@ void key_callback1(GLFWwindow* window, int key, int scancode, int action, int mo
 
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
-    // 1 - right
+    // 1 - left
     // 2 - down
-    // 3 - left
+    // 3 - right
     
     switch (direction) 
     {
@@ -55,10 +57,10 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[7] += value;
         break;
     case 1:
-        texture_pos[0] += value;
-        texture_pos[2] += value;
-        texture_pos[4] += value;
-        texture_pos[6] += value;
+        texture_pos[0] -= value;
+        texture_pos[2] -= value;
+        texture_pos[4] -= value;
+        texture_pos[6] -= value;
         break;
     case 2:
         texture_pos[1] -= value;
@@ -67,38 +69,55 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[7] -= value;
         break;
     case 3:
-        texture_pos[0] -= value;
-        texture_pos[2] -= value;
-        texture_pos[4] -= value;
-        texture_pos[6] -= value;
+        texture_pos[0] += value;
+        texture_pos[2] += value;
+        texture_pos[4] += value;
+        texture_pos[6] += value;
         break;
     }
 }
 
+bool directions[4] = {0};
+
 void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_W) {
         if (action == GLFW_PRESS)
-            move_coords(texture_pos, 0, 0.01);
-        else if (action == GLFW_RELEASE);
+            directions[0] = 1;
+        else if (action == GLFW_RELEASE)
+            directions[0] = 0;
     }
     else
         if (key == GLFW_KEY_A) {
             if (action == GLFW_PRESS)
-                move_coords(texture_pos, 3, 0.01);
-            else if (action == GLFW_RELEASE);
+                directions[1] = 1;
+            else if (action == GLFW_RELEASE)
+                directions[1] = 0;
         }
         else
             if (key == GLFW_KEY_S) {
                 if (action == GLFW_PRESS)
-                    move_coords(texture_pos, 2, 0.01);
-                else if (action == GLFW_RELEASE);
+                    directions[2] = 1;
+                else if (action == GLFW_RELEASE)
+                    directions[2] = 0;
             }
             else
                 if (key == GLFW_KEY_D) {
                     if (action == GLFW_PRESS)
-                        move_coords(texture_pos, 1, 0.01);
-                    else if (action == GLFW_RELEASE);
+                        directions[3] = 1;
+                    else if (action == GLFW_RELEASE)
+                        directions[3] = 0;
                 }
+
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+        std::cout << char(7);
+}
+
+void pos_update() 
+{
+    if(directions[0]) move_coords(texture_pos, 0, 0.0001);
+    if(directions[1]) move_coords(texture_pos, 1, 0.0001);
+    if(directions[2]) move_coords(texture_pos, 2, 0.0001);
+    if(directions[3]) move_coords(texture_pos, 3, 0.0001);
 }
 
 
@@ -204,22 +223,45 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    /*
-    VertexArray sprite1, sprite2;
-    Buffer* vbo11 = new Buffer(texture_position1, 6 * 2, 2);
-    Buffer* vbo12 = new Buffer(texture_position2, 6 * 2, 2);
-    Buffer* vbo21 = new Buffer(texture_position3, 6 * 2, 2);
-    Buffer* vbo22 = new Buffer(texture_position4, 6 * 2, 2);
-    IndexBuffer ibo(texture_indices, 6);
+    //Background
+    Renderer r(window);
+    //r.backgound();
+    float background_pos[] = {
+    -1.00f, -1.00f,
+    -1.00f,  1.00f,
+     1.00f,  1.00f,
+     1.00f, -1.00f
+    };
+    float background_coord[] = {
+        0.00f, 0.00f,
+        0.00f, 1.00f,
+        1.00f, 1.00f,
+        1.00f, 0.00f
+    };
+
+    GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
+
+    VertexArray sprite1;
+    Buffer* vbo11 = new Buffer(background_pos, 8 * 2, 2);
+    Buffer* vbo21 = new Buffer(background_coord, 8 * 2, 2);
+    IndexBuffer ibo1(background_indices, 6);
 
     sprite1.addBuffer(vbo11, 0);
     sprite1.addBuffer(vbo21, 2);
-    sprite2.addBuffer(vbo12, 0);
-    sprite2.addBuffer(vbo22, 2);
 
     sprite1.bind();
-    ibo.bind();
-    */
+    ibo1.bind();
+
+
+    Shader s1;
+    s1.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
+    s1.bind();
+
+    Texture texture11("Textures/background.png");
+    texture11.bind();
+
+    s1.uniform1i(window, "texture1", 0);
+    //
 
     VertexArray sprite;
     Buffer* vbo1 = new Buffer(texture_pos, 8 * 2, 2);
@@ -271,10 +313,18 @@ int main()
         ibo.unbind();
         sprite2.unbind();
 #endif
-        //Buffer* vbo = new Buffer(texture_pos, 8 * 2, 2);
-        //sprite.addBuffer(vbo, 0);
         vbo1->update(texture_pos, 8 * 2);
 
+        texture11.bind();
+        s1.bind();
+        sprite1.bind();
+        ibo1.bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        ibo1.unbind();
+        sprite1.unbind();
+
+        texture1.bind();
+        s.bind();
         sprite.bind();
         ibo.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -282,11 +332,11 @@ int main()
         sprite.unbind();
 
         glfwSetKeyCallback(window, key_callback_WASD);
+        pos_update();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        //delete [] vbo;
         /*
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
@@ -298,3 +348,13 @@ int main()
     glfwTerminate();
     return 0;
 }
+
+
+
+/*
+TODO:
+
+smooth key_events - 8 directions + smooth coord change + new class - bool direction[8];
+background renderer
+
+*/

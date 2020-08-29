@@ -12,7 +12,7 @@ private:
 	unsigned int id;
 	int width, height, bits_per_pixel;
 	const std::string filepath;
-	unsigned char* buffer;
+	unsigned char *buffer;
 public:
 	Texture(const std::string& _filepath);
 

@@ -123,9 +123,14 @@
     <None Include="Shaders\frag_color.shader" />
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\vert_texture.shader" />
+    <None Include="Shaders\vert_background.shader" />
+    <None Include="Shaders\frag_background.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\background.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

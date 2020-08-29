@@ -31,4 +31,3 @@ public:
 	void bind() const;
 	void unbind() const;
 };
-
