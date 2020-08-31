@@ -16,4 +16,3 @@ public:
 	Renderer(GLFWwindow* _window);
 	void backgound();
 };
-

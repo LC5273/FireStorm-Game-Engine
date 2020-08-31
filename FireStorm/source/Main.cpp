@@ -16,6 +16,8 @@
 #include "../Shaders/Shader.h"
 #include "../Math/maths.h"
 
+#include "../Utilities/Renderer_functions.hpp"
+
 
 #ifdef DEBUG_API
 #else
@@ -37,7 +39,7 @@ float texture_poz[] = {
     1.00f, 0.00f
 };
 
-void key_callback1(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void key_callback_test(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_E && action == GLFW_PRESS)
         std::cout << "E\n";
 }
@@ -224,13 +226,11 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //Background
-    Renderer r(window);
-    //r.backgound();
     float background_pos[] = {
-    -1.00f, -1.00f,
-    -1.00f,  1.00f,
-     1.00f,  1.00f,
-     1.00f, -1.00f
+        -1.00f, -1.00f,
+        -1.00f,  1.00f,
+         1.00f,  1.00f,
+         1.00f, -1.00f
     };
     float background_coord[] = {
         0.00f, 0.00f,
@@ -283,16 +283,9 @@ int main()
     texture1.bind();
 
     s.uniform1i(window, "texture1", 0);
-
-    //mat4 pos = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
-    ////std::cout << pos;
-    //float z[16];
-    //pos.elements(z);
-
-    ////glUniformMatrix4fv(glGetUniformLocation(shader, "pr_matrix"), 1, GL_FALSE, z);
     
-    double x, y;
-    int width, height;
+    //double x, y;
+    //int width, height;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -317,19 +310,11 @@ int main()
 
         texture11.bind();
         s1.bind();
-        sprite1.bind();
-        ibo1.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        ibo1.unbind();
-        sprite1.unbind();
+        drawCall_quad(sprite1, ibo1);
 
         texture1.bind();
         s.bind();
-        sprite.bind();
-        ibo.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        ibo.unbind();
-        sprite.unbind();
+        drawCall_quad(sprite, ibo);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -348,13 +333,3 @@ int main()
     glfwTerminate();
     return 0;
 }
-
-
-
-/*
-TODO:
-
-smooth key_events - 8 directions + smooth coord change + new class - bool direction[8];
-background renderer
-
-*/
