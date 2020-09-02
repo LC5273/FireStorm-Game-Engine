@@ -18,9 +18,6 @@
     <ClCompile Include="source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\EventSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Utilities\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,18 +60,15 @@
     <ClCompile Include="Utilities\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utilities\EventSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\mat4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\vec4.h">
@@ -114,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\Renderer_functions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\maths.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

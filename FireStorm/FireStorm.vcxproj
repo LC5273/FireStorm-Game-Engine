@@ -20,13 +20,13 @@
     <ClCompile Include="Utilities\Texture.cpp" />
     <ClCompile Include="Utilities\Renderer.cpp" />
     <ClCompile Include="Utilities\Event.cpp" />
-    <ClCompile Include="Utilities\EventSystem.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="Math\vec4.cpp" />
     <ClCompile Include="Math\vec3.cpp" />
     <ClCompile Include="Math\vec2.cpp" />
     <ClCompile Include="Buffers\VertexArray.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
+    <ClCompile Include="Utilities\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.h" />
@@ -34,18 +34,18 @@
     <ClInclude Include="Math\mat2.h" />
     <ClInclude Include="Math\mat3.h" />
     <ClInclude Include="Math\mat4.h" />
-    <ClInclude Include="Math\maths.h" />
+    <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Utilities\Texture.h" />
     <ClInclude Include="Utilities\Renderer.h" />
     <ClInclude Include="Utilities\Event.h" />
-    <ClInclude Include="Utilities\EventSystem.h" />
     <ClInclude Include="Math\vec4.h" />
     <ClInclude Include="Math\vec3.h" />
     <ClInclude Include="Math\vec2.h" />
     <ClInclude Include="Buffers\VertexArray.h" />
     <ClInclude Include="vendor\stb_image\stb_image.h" />
+    <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\frag.shader" />

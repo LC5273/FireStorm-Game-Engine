@@ -11,10 +11,9 @@
 #include "../Buffers/IndexBuffer.h"
 #include "../Buffers/VertexArray.h"
 #include "../Utilities/Renderer.h"
-#include "../Utilities/EventSystem.h"
 #include "../Utilities/Texture.h"
 #include "../Shaders/Shader.h"
-#include "../Math/maths.h"
+#include "../Math/maths.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"
 
@@ -241,26 +240,26 @@ int main()
 
     GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
 
-    VertexArray sprite1;
+    VertexArray background_sprite;
     Buffer* vbo11 = new Buffer(background_pos, 8 * 2, 2);
     Buffer* vbo21 = new Buffer(background_coord, 8 * 2, 2);
     IndexBuffer ibo1(background_indices, 6);
 
-    sprite1.addBuffer(vbo11, 0);
-    sprite1.addBuffer(vbo21, 2);
+    background_sprite.addBuffer(vbo11, 0);
+    background_sprite.addBuffer(vbo21, 2);
 
-    sprite1.bind();
+    background_sprite.bind();
     ibo1.bind();
 
 
-    Shader s1;
-    s1.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
-    s1.bind();
+    Shader background_shader;
+    background_shader.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
+    background_shader.bind();
 
-    Texture texture11("Textures/background.png");
-    texture11.bind();
+    Texture background_texture("Textures/background.png");
+    background_texture.bind();
 
-    s1.uniform1i(window, "texture1", 0);
+    background_shader.uniform1i(window, "texture1", 0);
     //
 
     VertexArray sprite;
@@ -308,9 +307,9 @@ int main()
 #endif
         vbo1->update(texture_pos, 8 * 2);
 
-        texture11.bind();
-        s1.bind();
-        drawCall_quad(sprite1, ibo1);
+        background_texture.bind();
+        background_shader.bind();
+        drawCall_quad(background_sprite, ibo1);
 
         texture1.bind();
         s.bind();
