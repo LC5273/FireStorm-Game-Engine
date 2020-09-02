@@ -1,6 +1,10 @@
 #include "Window.hpp"
 
-Window::Window() {}
+Window::Window() {
+	window = NULL;
+	width = 0;
+	height = 0;
+}
 Window::Window(int width, int height, const char* title) {
 	window = glfwCreateWindow(width, height, title, NULL, NULL);
 	

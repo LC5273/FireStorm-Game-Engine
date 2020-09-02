@@ -188,13 +188,13 @@ int main()
     GLuint indices1[] = { 0, 1, 2 };
     GLuint indices2[] = { 3, 4, 5 };
 
-    float colorA[]{
+    float colorA[] {
         0.8f, 0.5f, 1.0f, 1.0f,
         0.8f, 0.5f, 1.0f, 1.0f,
         0.8f, 0.5f, 1.0f, 1.0f
     };
 
-    float colorB[]{
+    float colorB[] {
         1.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 1.0f, 0.0f, 1.0f
