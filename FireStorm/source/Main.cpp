@@ -11,8 +11,8 @@
 #include "../Buffers/IndexBuffer.h"
 #include "../Buffers/VertexArray.h"
 #include "../Utilities/Renderer.h"
-#include "../Utilities/Texture.h"
-#include "../Shaders/Shader.h"
+#include "../Utilities/Texture.hpp"
+#include "../Shaders/Shader.hpp"
 #include "../Math/maths.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"

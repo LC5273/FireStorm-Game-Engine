@@ -19,7 +19,6 @@
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Utilities\Texture.cpp" />
     <ClCompile Include="Utilities\Renderer.cpp" />
-    <ClCompile Include="Utilities\Event.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="Math\vec4.cpp" />
     <ClCompile Include="Math\vec3.cpp" />
@@ -35,11 +34,10 @@
     <ClInclude Include="Math\mat3.h" />
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
-    <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Shaders\Shader.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
-    <ClInclude Include="Utilities\Texture.h" />
+    <ClInclude Include="Utilities\Texture.hpp" />
     <ClInclude Include="Utilities\Renderer.h" />
-    <ClInclude Include="Utilities\Event.h" />
     <ClInclude Include="Math\vec4.h" />
     <ClInclude Include="Math\vec3.h" />
     <ClInclude Include="Math\vec2.h" />

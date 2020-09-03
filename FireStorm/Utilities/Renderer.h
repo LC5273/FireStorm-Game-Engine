@@ -3,8 +3,8 @@
 #include "../Buffers/Buffer.h"
 #include "../Buffers/IndexBuffer.h"
 #include "../Buffers/VertexArray.h"
-#include "../Utilities/Texture.h"
-#include "../Shaders/Shader.h"
+#include "../Utilities/Texture.hpp"
+#include "../Shaders/Shader.hpp"
 
 //GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
 
