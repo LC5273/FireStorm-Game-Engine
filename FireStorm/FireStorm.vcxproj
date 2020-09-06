@@ -28,8 +28,8 @@
     <ClCompile Include="Utilities\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffers\Buffer.h" />
-    <ClInclude Include="Buffers\IndexBuffer.h" />
+    <ClInclude Include="Buffers\Buffer.hpp" />
+    <ClInclude Include="Buffers\IndexBuffer.hpp" />
     <ClInclude Include="Math\mat2.h" />
     <ClInclude Include="Math\mat3.h" />
     <ClInclude Include="Math\mat4.h" />
@@ -41,7 +41,7 @@
     <ClInclude Include="Math\vec4.h" />
     <ClInclude Include="Math\vec3.h" />
     <ClInclude Include="Math\vec2.h" />
-    <ClInclude Include="Buffers\VertexArray.h" />
+    <ClInclude Include="Buffers\VertexArray.hpp" />
     <ClInclude Include="vendor\stb_image\stb_image.h" />
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>

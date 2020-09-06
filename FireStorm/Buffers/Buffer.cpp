@@ -1,4 +1,4 @@
-#include "Buffer.h"
+#include "Buffer.hpp"
 
 Buffer::Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements): nr_of_elements(nr_of_elements) {
 	glGenBuffers(1, &id);

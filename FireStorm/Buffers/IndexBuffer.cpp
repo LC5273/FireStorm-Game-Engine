@@ -1,4 +1,4 @@
-#include "IndexBuffer.h"
+#include "IndexBuffer.hpp"
 
 IndexBuffer::IndexBuffer(GLuint* data, GLsizei nr_of_elements): nr_of_elements(nr_of_elements) {
 	glGenBuffers(1, &id);

@@ -7,9 +7,9 @@
 #include <cassert>
 #include <string>
 
-#include "../Buffers/Buffer.h"
-#include "../Buffers/IndexBuffer.h"
-#include "../Buffers/VertexArray.h"
+#include "../Buffers/Buffer.hpp"
+#include "../Buffers/IndexBuffer.hpp"
+#include "../Buffers/VertexArray.hpp"
 #include "../Utilities/Renderer.h"
 #include "../Utilities/Texture.hpp"
 #include "../Shaders/Shader.hpp"
@@ -243,13 +243,13 @@ int main()
     VertexArray background_sprite;
     Buffer* vbo11 = new Buffer(background_pos, 8 * 2, 2);
     Buffer* vbo21 = new Buffer(background_coord, 8 * 2, 2);
-    IndexBuffer ibo1(background_indices, 6);
+    IndexBuffer background_ibo(background_indices, 6);
 
     background_sprite.addBuffer(vbo11, 0);
     background_sprite.addBuffer(vbo21, 2);
 
     background_sprite.bind();
-    ibo1.bind();
+    background_ibo.bind();
 
 
     Shader background_shader;
@@ -262,26 +262,26 @@ int main()
     background_shader.uniform1i(window, "texture1", 0);
     //
 
-    VertexArray sprite;
-    Buffer* vbo1 = new Buffer(texture_pos, 8 * 2, 2);
-    Buffer* vbo2 = new Buffer(texture_poz, 8 * 2, 2);
-    IndexBuffer ibo(texture_indices, 6);
+    VertexArray spaceship_sprite;
+    Buffer* spaceship_coord_vbo1 = new Buffer(texture_pos, 8 * 2, 2);
+    Buffer* spaceship_coord_vbo2 = new Buffer(texture_poz, 8 * 2, 2);
+    IndexBuffer spaceship_ibo(texture_indices, 6);
 
-    sprite.addBuffer(vbo1, 0);
-    sprite.addBuffer(vbo2, 2);
+    spaceship_sprite.addBuffer(spaceship_coord_vbo1, 0);
+    spaceship_sprite.addBuffer(spaceship_coord_vbo2, 2);
 
-    sprite.bind();
-    ibo.bind();
+    spaceship_sprite.bind();
+    spaceship_ibo.bind();
 
 
-    Shader s;
-    s.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
-    s.bind();
+    Shader spaceship_shader;
+    spaceship_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
+    spaceship_shader.bind();
 
-    Texture texture1("Textures/spaceship.png");
-    texture1.bind();
+    Texture spaceship_texture("Textures/spaceship.png");
+    spaceship_texture.bind();
 
-    s.uniform1i(window, "texture1", 0);
+    spaceship_shader.uniform1i(window, "texture1", 0);
     
     //double x, y;
     //int width, height;
@@ -305,15 +305,15 @@ int main()
         ibo.unbind();
         sprite2.unbind();
 #endif
-        vbo1->update(texture_pos, 8 * 2);
+        spaceship_coord_vbo1->update(texture_pos, 8 * 2);
 
         background_texture.bind();
         background_shader.bind();
-        drawCall_quad(background_sprite, ibo1);
+        drawCall_quad(background_sprite, background_ibo);
 
-        texture1.bind();
-        s.bind();
-        drawCall_quad(sprite, ibo);
+        spaceship_texture.bind();
+        spaceship_shader.bind();
+        drawCall_quad(spaceship_sprite, spaceship_ibo);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -327,7 +327,8 @@ int main()
         */
     }
 
-    s.unbind();
+    background_shader.unbind();
+    spaceship_shader.unbind();
 
     glfwTerminate();
     return 0;
