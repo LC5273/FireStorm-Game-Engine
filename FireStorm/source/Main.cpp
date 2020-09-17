@@ -10,7 +10,6 @@
 #include "../Buffers/Buffer.hpp"
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
-#include "../Utilities/Renderer.h"
 #include "../Utilities/Texture.hpp"
 #include "../Shaders/Shader.hpp"
 #include "../Math/maths.hpp"
