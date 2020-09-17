@@ -30,12 +30,14 @@ float texture_pos[] = {
     0.25f, 0.25f,
     0.25f, 0.00f
 };
+
 float texture_poz[] = {
     0.00f, 0.00f,
     0.00f, 1.00f,
     1.00f, 1.00f,
     1.00f, 0.00f
 };
+bool movement = false;
 
 void key_callback_test(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_E && action == GLFW_PRESS)
@@ -81,10 +83,32 @@ bool directions[4] = {0};
 
 void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_W) {
-        if (action == GLFW_PRESS)
+        if (action == GLFW_PRESS) {
             directions[0] = 1;
-        else if (action == GLFW_RELEASE)
+
+            texture_pos[0] -= 0.03f;
+            texture_pos[2] -= 0.03f;
+            texture_pos[4] += 0.03f;
+            texture_pos[6] += 0.03f;
+
+            texture_pos[1] -= 0.10f;
+            texture_pos[7] -= 0.10f;
+
+            movement = true;
+        }
+        else if (action == GLFW_RELEASE) {
             directions[0] = 0;
+
+            texture_pos[0] += 0.03f;
+            texture_pos[2] += 0.03f;
+            texture_pos[4] -= 0.03f;
+            texture_pos[6] -= 0.03f;
+
+            texture_pos[1] += 0.10f;
+            texture_pos[7] += 0.10f;
+
+            movement = false;
+        }
     }
     else
         if (key == GLFW_KEY_A) {
@@ -277,8 +301,10 @@ int main()
     spaceship_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
     spaceship_shader.bind();
 
-    Texture spaceship_texture("Textures/spaceship.png");
-    spaceship_texture.bind();
+    Texture spaceship_static_texture("Textures/spaceship.png");
+    Texture spaceship_dynamic_texture("Textures/spaceship_dynamic.png");
+    //spaceship_static_texture.bind();
+    //spaceship_dynamic_texture.bind();
 
     spaceship_shader.uniform1i(window, "texture1", 0);
     
@@ -310,7 +336,11 @@ int main()
         background_shader.bind();
         drawCall_quad(background_sprite, background_ibo);
 
-        spaceship_texture.bind();
+        if (!movement)
+            spaceship_static_texture.bind();
+        else
+            spaceship_dynamic_texture.bind();
+
         spaceship_shader.bind();
         drawCall_quad(spaceship_sprite, spaceship_ibo);
 

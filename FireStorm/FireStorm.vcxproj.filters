@@ -124,5 +124,8 @@
     <Image Include="Textures\background.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Textures\spaceship_dynamic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

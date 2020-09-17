@@ -58,6 +58,7 @@
   <ItemGroup>
     <Image Include="Textures\background.png" />
     <Image Include="Textures\spaceship.png" />
+    <Image Include="Textures\spaceship_dynamic.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
