@@ -39,11 +39,6 @@ float texture_poz[] = {
 };
 bool movement = false;
 
-void key_callback_test(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_E && action == GLFW_PRESS)
-        std::cout << "E\n";
-}
-
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
     // 1 - left
@@ -85,12 +80,12 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
     if (key == GLFW_KEY_W) {
         if (action == GLFW_PRESS) {
             directions[0] = 1;
-
+            
             texture_pos[0] -= 0.03f;
             texture_pos[2] -= 0.03f;
             texture_pos[4] += 0.03f;
             texture_pos[6] += 0.03f;
-
+            
             texture_pos[1] -= 0.10f;
             texture_pos[7] -= 0.10f;
 
@@ -98,12 +93,12 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
         }
         else if (action == GLFW_RELEASE) {
             directions[0] = 0;
-
+            
             texture_pos[0] += 0.03f;
             texture_pos[2] += 0.03f;
             texture_pos[4] -= 0.03f;
             texture_pos[6] -= 0.03f;
-
+            
             texture_pos[1] += 0.10f;
             texture_pos[7] += 0.10f;
 
@@ -222,6 +217,12 @@ int main()
         1.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 1.0f, 0.0f, 1.0f
     };
+
+    float color_white[] {
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f
+    };
 #if 0
     VertexArray sprite1, sprite2;
     Buffer* vbo11 = new Buffer(positions1, 2 * 6, 2);
@@ -264,12 +265,12 @@ int main()
     GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
 
     VertexArray background_sprite;
-    Buffer* vbo11 = new Buffer(background_pos, 8 * 2, 2);
-    Buffer* vbo21 = new Buffer(background_coord, 8 * 2, 2);
+    Buffer* background_vbo1 = new Buffer(background_pos, 8 * 2, 2);
+    Buffer* background_vbo2 = new Buffer(background_coord, 8 * 2, 2);
     IndexBuffer background_ibo(background_indices, 6);
 
-    background_sprite.addBuffer(vbo11, 0);
-    background_sprite.addBuffer(vbo21, 2);
+    background_sprite.addBuffer(background_vbo1, 0);
+    background_sprite.addBuffer(background_vbo2, 2);
 
     background_sprite.bind();
     background_ibo.bind();
@@ -283,8 +284,8 @@ int main()
     background_texture.bind();
 
     background_shader.uniform1i(window, "texture1", 0);
-    //
-
+    
+    //Spaceship
     VertexArray spaceship_sprite;
     Buffer* spaceship_coord_vbo1 = new Buffer(texture_pos, 8 * 2, 2);
     Buffer* spaceship_coord_vbo2 = new Buffer(texture_poz, 8 * 2, 2);
@@ -303,10 +304,41 @@ int main()
 
     Texture spaceship_static_texture("Textures/spaceship.png");
     Texture spaceship_dynamic_texture("Textures/spaceship_dynamic.png");
-    //spaceship_static_texture.bind();
-    //spaceship_dynamic_texture.bind();
 
     spaceship_shader.uniform1i(window, "texture1", 0);
+
+    //Custom mouse-following star
+
+    float star_pos[] = {
+        -1.00f, -1.00f,
+        -1.00f,  1.00f,
+         1.00f,  1.00f,
+    };
+    float star_pos2[] = {
+        -1.00f, -1.00f,
+         1.00f,  1.00f,
+         1.00f, -1.00f
+    };
+    GLuint star_indices[] = { 0, 1, 2 };
+
+    VertexArray star_sprite1, star_sprite2;
+    Buffer* star_vbo0 = new Buffer(star_pos, 4 * 2, 2);
+    Buffer* star_vbo1 = new Buffer(color_white, 4 * 4, 4);
+    Buffer* star_vbo2 = new Buffer(star_pos2, 4 * 2, 2);
+    Buffer* star_vbo3 = new Buffer(color_white, 4 * 4, 4);
+    IndexBuffer star_ibo(star_indices, 3);
+
+    star_sprite1.addBuffer(star_vbo0, 0);
+    star_sprite1.addBuffer(star_vbo1, 1);
+    star_sprite2.addBuffer(star_vbo2, 0);
+    star_sprite2.addBuffer(star_vbo3, 1);
+
+    star_sprite1.bind();
+    star_ibo.bind();
+
+    Shader star_shader;
+    star_shader.createShader("Shaders/vert_color.shader", "Shaders/frag_color.shader");
+    star_shader.bind();
     
     //double x, y;
     //int width, height;
@@ -331,6 +363,7 @@ int main()
         sprite2.unbind();
 #endif
         spaceship_coord_vbo1->update(texture_pos, 8 * 2);
+        star_shader.uniform2f_mouse_pos(window, "light_pos");
 
         background_texture.bind();
         background_shader.bind();
@@ -343,6 +376,11 @@ int main()
 
         spaceship_shader.bind();
         drawCall_quad(spaceship_sprite, spaceship_ibo);
+        
+        star_shader.bind();
+        //drawCall_quad(star_sprite, star_ibo);
+        drawCall_triangle(star_sprite1, star_ibo);
+        drawCall_triangle(star_sprite2, star_ibo);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -358,6 +396,7 @@ int main()
 
     background_shader.unbind();
     spaceship_shader.unbind();
+    star_shader.unbind();
 
     glfwTerminate();
     return 0;

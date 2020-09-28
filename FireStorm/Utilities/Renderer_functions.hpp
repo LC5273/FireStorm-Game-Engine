@@ -6,6 +6,12 @@
 #include "../Utilities/Texture.hpp"
 #include "../Shaders/Shader.hpp"
 
+void key_callback_test(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)
+		std::cout << "E\n";
+}
+
+
 void drawCall_triangle(const VertexArray& sprite, const IndexBuffer& ibo) {
 	sprite.bind();
 	ibo.bind();

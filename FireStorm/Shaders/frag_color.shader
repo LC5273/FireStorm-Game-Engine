@@ -2,7 +2,6 @@
 
 layout(location = 0) out vec4 color;
 
-uniform vec4 colour1 = vec4(0.0f, 0.0f, 1.0f, 1.0f);
 uniform vec2 light_pos = vec2(1.0f);
 uniform vec2 mouse_pos = vec2(1.0f);
 
