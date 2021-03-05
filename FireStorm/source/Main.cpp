@@ -337,7 +337,7 @@ int main()
     star_ibo.bind();
 
     Shader star_shader;
-    star_shader.createShader("Shaders/vert_color.shader", "Shaders/frag_color.shader");
+    star_shader.createShader("Shaders/star_vert_color.shader", "Shaders/star_frag_color.shader");
     star_shader.bind();
     
     //double x, y;
@@ -347,21 +347,7 @@ int main()
     {
         glClear(GL_COLOR_BUFFER_BIT); 
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-#if 0
-        s.uniform2f_mouse_pos(window, "light_pos");
 
-        sprite1.bind();
-        ibo.bind();
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
-        ibo.unbind();
-        sprite1.unbind();
-        
-        sprite2.bind();
-        ibo.bind();
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
-        ibo.unbind();
-        sprite2.unbind();
-#endif
         spaceship_coord_vbo1->update(texture_pos, 8 * 2);
         star_shader.uniform2f_mouse_pos(window, "light_pos");
 

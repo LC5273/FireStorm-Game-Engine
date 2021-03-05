@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Math\mat2_new.cpp" />
     <ClCompile Include="Math\mat2.cpp" />
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Math\mat2_new.hpp" />
     <ClInclude Include="Math\mat2.h" />
     <ClInclude Include="Math\mat3.h" />
     <ClInclude Include="Math\mat4.h" />
