@@ -21,7 +21,6 @@ vec4::vec4(const vec4& v) {
 		this->vec[i] = v.vec[i];
 }
 
-
 vec4& vec4::operator=(const vec4& v) {
 	for (int i = 0; i < 4; ++i)
 		this->vec[i] = v.vec[i];
