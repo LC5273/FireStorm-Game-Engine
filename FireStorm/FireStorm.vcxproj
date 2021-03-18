@@ -18,6 +18,7 @@
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Utilities\Timer.cpp" />
     <ClCompile Include="Utilities\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="Math\vec4.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
+    <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Utilities\Texture.hpp" />
     <ClInclude Include="Math\vec4.h" />

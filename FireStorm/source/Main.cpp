@@ -7,10 +7,13 @@
 #include <cassert>
 #include <string>
 
+#include <time.h>
+
 #include "../Buffers/Buffer.hpp"
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
 #include "../Utilities/Texture.hpp"
+#include "../Utilities/Timer.hpp"
 #include "../Shaders/Shader.hpp"
 #include "../Math/maths.hpp"
 
@@ -343,6 +346,12 @@ int main()
     //double x, y;
     //int width, height;
 
+    Timer timer;
+    float current_time(0.0f);
+    unsigned int frames(0);
+
+    timer.reset();
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT); 
@@ -378,6 +387,15 @@ int main()
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
         */
+
+        ++frames;
+        if (timer.elapsed() - current_time >= 1.0f) {
+            current_time  += 1.0f;
+            std::cout << frames << "FPS" << std::endl;
+            frames = 0;
+        }
+
+        //std::cout << timer.elapsed() << " s" << std::endl;
     }
 
     background_shader.unbind();
