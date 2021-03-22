@@ -402,6 +402,8 @@ int main()
     spaceship_shader.unbind();
     star_shader.unbind();
 
+    int delete_me = 0;
+
     glfwTerminate();
     return 0;
 }
