@@ -12,7 +12,8 @@
 #include "../Buffers/Buffer.hpp"
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
-#include "../Utilities/Texture.hpp"
+#include "../Textures/Texture.hpp"
+#include "../Textures/Laser.hpp"
 #include "../Utilities/Timer.hpp"
 #include "../Shaders/Shader.hpp"
 #include "../Math/maths.hpp"
@@ -342,9 +343,23 @@ int main()
     Shader star_shader;
     star_shader.createShader("Shaders/star_vert_color.shader", "Shaders/star_frag_color.shader");
     star_shader.bind();
-    
+
     //double x, y;
     //int width, height;
+
+    /*
+    Laser laser(texture_pos, 0.2, 0.5, true);
+
+    //laser.bind();
+    laser.getSprite1().bind();
+    laser.get_ibo().bind();
+
+    Shader laser_shader;
+    laser_shader.createShader("Shaders/vert.shader", "Shaders/frag.shader");
+    laser_shader.bind();
+
+    */
+    //
 
     Timer timer;
     float current_time(0.0f);
@@ -376,6 +391,12 @@ int main()
         //drawCall_quad(star_sprite, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
+
+        /*
+        laser_shader.bind();
+        drawCall_triangle(laser.getSprite1(), laser.get_ibo());
+        drawCall_triangle(laser.getSprite2(), laser.get_ibo());
+        */
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();

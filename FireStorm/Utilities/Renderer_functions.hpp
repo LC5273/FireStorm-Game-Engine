@@ -3,7 +3,7 @@
 #include "../Buffers/Buffer.hpp"
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
-#include "../Utilities/Texture.hpp"
+#include "../Textures/Texture.hpp"
 #include "../Shaders/Shader.hpp"
 
 void key_callback_test(GLFWwindow* window, int key, int scancode, int action, int mods) {

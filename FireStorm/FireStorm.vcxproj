@@ -13,13 +13,14 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Textures\Laser.cpp" />
     <ClCompile Include="Math\mat2_new.cpp" />
     <ClCompile Include="Math\mat2.cpp" />
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Utilities\Timer.cpp" />
-    <ClCompile Include="Utilities\Texture.cpp" />
+    <ClCompile Include="Textures\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="Math\vec4.cpp" />
     <ClCompile Include="Math\vec3.cpp" />
@@ -31,19 +32,20 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Textures\Laser.hpp" />
     <ClInclude Include="Math\mat2_new.hpp" />
     <ClInclude Include="Math\mat2.h" />
     <ClInclude Include="Math\mat3.h" />
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
-    <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
-    <ClInclude Include="Utilities\Texture.hpp" />
+    <ClInclude Include="Textures\Texture.hpp" />
     <ClInclude Include="Math\vec4.h" />
     <ClInclude Include="Math\vec3.h" />
     <ClInclude Include="Math\vec2.h" />
     <ClInclude Include="Buffers\VertexArray.hpp" />
+    <ClInclude Include="Utilities\Timer.hpp" />
     <ClInclude Include="vendor\stb_image\stb_image.h" />
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
@@ -53,6 +55,8 @@
     <None Include="Shaders\frag_background.shader" />
     <None Include="Shaders\frag_color.shader" />
     <None Include="Shaders\frag_texture.shader" />
+    <None Include="Shaders\star_frag_color.shader" />
+    <None Include="Shaders\star_vert_color.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
     <None Include="Shaders\vert_background.shader" />
