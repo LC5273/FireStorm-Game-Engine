@@ -19,6 +19,7 @@
 #include "../Math/maths.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"
+#include "../Utilities/GPU_enablement.hpp"
 
 
 #ifdef DEBUG_API

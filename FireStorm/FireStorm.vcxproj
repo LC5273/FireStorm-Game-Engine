@@ -39,6 +39,7 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
+    <ClInclude Include="Utilities\GPU_enablement.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Textures\Texture.hpp" />
     <ClInclude Include="Math\vec4.h" />
