@@ -5,6 +5,7 @@ GLuint texture_indices_temp[] = { 0, 1, 2,  0, 2, 3 }; //extern
 float color_blue[] {
 	0.0f, 0.0f, 1.0f, 1.0f,
 	0.0f, 0.0f, 1.0f, 1.0f,
+	0.0f, 0.0f, 1.0f, 1.0f,
 	0.0f, 0.0f, 1.0f, 1.0f
 };
 
@@ -26,9 +27,15 @@ medie_y = (3.y + 4.y) / 2;
 	float laser_pos[] = {
 		medie_x - width, medie_y,
 		medie_x + width, medie_y,
-		medie_x - width, medie_y + height,
-		medie_x + width, medie_y + height
+		medie_x + width, medie_y + height,
+		medie_x - width, medie_y + height
 	};
+
+	Buffer* laser_coord_vbo1 = new Buffer(laser_pos, 2 * 4, 2);
+	Buffer* laser_coord_vbo2 = new Buffer(color_blue, 4 * 4, 4);
+
+	laser_sprite.addBuffer(laser_coord_vbo1, 0);
+	laser_sprite.addBuffer(laser_coord_vbo2, 1);
 
 	laser_ibo = new IndexBuffer(texture_indices_temp, 6);
 
@@ -73,14 +80,9 @@ Laser::Laser(float* starship_position, float width, float height, bool triangle)
 	laser_sprite2.addBuffer(laser_coord_vbo4, 1);
 }
 
-VertexArray Laser::getSprite1()
+VertexArray Laser::getSprite()
 {
-	return this->laser_sprite1;
-}
-
-VertexArray Laser::getSprite2()
-{
-	return this->laser_sprite2;
+	return this->laser_sprite;
 }
 
 IndexBuffer Laser::get_ibo() {
@@ -88,14 +90,12 @@ IndexBuffer Laser::get_ibo() {
 }
 
 void Laser::bind() const noexcept {
-	laser_sprite1.bind();
-	//laser_sprite2.bind();
+	laser_sprite.bind();
 	laser_ibo->bind();
 }
 
 void Laser::unbind() const noexcept {
-	laser_sprite1.unbind();
-	//laser_sprite2.unbind();
+	laser_sprite.unbind();
 	laser_ibo->unbind();
 }
 

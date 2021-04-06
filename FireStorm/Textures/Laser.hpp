@@ -20,8 +20,7 @@ public:
 	Laser(float* starship_position, float width, float height);
 	Laser(float* starship_position, float width, float height, bool triangle);
 
-	VertexArray getSprite1();
-	VertexArray getSprite2();
+	VertexArray getSprite();
 	IndexBuffer get_ibo();
 
 	void bind() const noexcept;
