@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cassert>
 #include <string>
+#include <vector>
 
 #include <time.h>
 
@@ -43,6 +44,8 @@ float texture_poz[] = {
     1.00f, 0.00f
 };
 bool movement = false;
+
+std::vector<Laser> projectiles;
 
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
@@ -132,8 +135,18 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
                         directions[3] = 0;
                 }
 
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-        std::cout << char(7);
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+        Laser laser(texture_pos, 0.02f, 0.15f);
+        projectiles.push_back(laser);
+    }
+        //std::cout << char(7);
+}
+
+void render_projectiles() {
+    for (int i = 0; i < projectiles.size(); ++i) {
+        projectiles[i].bind();
+        drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
+    }
 }
 
 void pos_update() 
@@ -347,7 +360,7 @@ int main()
 
     //double x, y;
     //int width, height;
-
+    /*
     Laser laser(texture_pos, 0.02f, 0.15f);
 
     laser.bind();
@@ -355,12 +368,15 @@ int main()
     Shader laser_shader;
     laser_shader.createShader("Shaders/laser_vert.shader", "Shaders/laser_frag.shader");
     laser_shader.bind();
+    */
 
     Timer timer;
     float current_time(0.0f);
     unsigned int frames(0);
 
     timer.reset();
+
+    //Laser laser(texture_pos, 0.02f, 0.15f);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -387,11 +403,16 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
 
-        //
+        /*
         laser_shader.bind();
         //drawCall_quad(laser_sprite, laser_ibo);
         drawCall_quad(laser.getSprite(), laser.get_ibo());
-        //
+        */
+
+        //laser.bind();
+        //drawCall_quad(laser.getSprite(), laser.get_ibo());
+
+        render_projectiles();
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -417,7 +438,7 @@ int main()
     background_shader.unbind();
     spaceship_shader.unbind();
     star_shader.unbind();
-    laser_shader.unbind();
+    //laser_shader.unbind();
 
     glfwTerminate();
     return 0;

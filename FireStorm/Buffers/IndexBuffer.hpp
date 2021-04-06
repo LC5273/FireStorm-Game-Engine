@@ -9,11 +9,14 @@ private:
 	GLuint id;
 	GLuint nr_of_elements;
 public:
+	IndexBuffer();
 	IndexBuffer(GLuint* data, GLsizei nr_of_elements);
 
-	void bind() const;
-	void unbind() const;
+	void create_IndexBuffer(GLuint* data, GLsizei nr_of_elements);
 
-	GLuint get_id() const;
-	GLuint get_nr_of_elements() const;
+	void bind() const noexcept;
+	void unbind() const noexcept;
+
+	GLuint get_id() const noexcept;
+	GLuint get_nr_of_elements() const noexcept;
 };

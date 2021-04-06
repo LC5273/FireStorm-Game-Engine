@@ -3,6 +3,8 @@
 #include "../Buffers/Buffer.hpp"
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
+#include "../Shaders/Shader.hpp"
+//#include "../Utilities/Renderer_functions.hpp"
 
 class Laser
 {
@@ -12,13 +14,11 @@ public:
 	VertexArray laser_sprite2;
 	Buffer* laser_coord_vbo1;
 	Buffer* laser_coord_vbo2;
-	Buffer* laser_coord_vbo3;
-	Buffer* laser_coord_vbo4;
-	IndexBuffer* laser_ibo;
+	IndexBuffer laser_ibo;
+	Shader laser_shader;
 
 public:
 	Laser(float* starship_position, float width, float height);
-	Laser(float* starship_position, float width, float height, bool triangle);
 
 	VertexArray getSprite();
 	IndexBuffer get_ibo();

@@ -10,19 +10,10 @@ float color_blue[] {
 };
 
 Laser::Laser(float* starship_position, float width, float height) {
-/*
-medie_x = (3.x + 4.x) / 2;
-medie_y = (3.y + 4.y) / 2;
-
-1': medie_x - latime, medie_y
-2': medie_x + latime, medie_y
-3': medie_x - latime, medie_y + lungime
-4': medie_x + latime, medie_y + lungime
-*/
 	float medie_x, medie_y;
 
-	medie_x = (starship_position[4] + starship_position[6]) / 2;
-	medie_y = (starship_position[7] + starship_position[7]) / 2;
+	medie_x = (starship_position[2] + starship_position[4]) / 2;
+	medie_y = (starship_position[3] + starship_position[5]) / 2;
 
 	float laser_pos[] = {
 		medie_x - width, medie_y,
@@ -37,72 +28,36 @@ medie_y = (3.y + 4.y) / 2;
 	laser_sprite.addBuffer(laser_coord_vbo1, 0);
 	laser_sprite.addBuffer(laser_coord_vbo2, 1);
 
-	laser_ibo = new IndexBuffer(texture_indices_temp, 6);
+	laser_ibo.create_IndexBuffer(texture_indices_temp, 6);
 
+	laser_sprite.bind();
+	laser_ibo.bind();
+
+	laser_shader.createShader("Shaders/laser_vert.shader", "Shaders/laser_frag.shader");
+	laser_shader.bind();
 }
 
-Laser::Laser(float* starship_position, float width, float height, bool triangle) {
-	/*
-	medie_x = (3.x + 4.x) / 2;
-	medie_y = (3.y + 4.y) / 2;
-
-	1': medie_x - latime, medie_y
-	2': medie_x + latime, medie_y
-	3': medie_x - latime, medie_y + lungime
-	4': medie_x + latime, medie_y + lungime
-	*/
-	float medie_x, medie_y;
-
-	medie_x = (starship_position[4] + starship_position[6]) / 2;
-	medie_y = (starship_position[5] + starship_position[7]) / 2;
-
-	float laser_pos1[] = {
-		medie_x - width, medie_y,
-		medie_x - width, medie_y,
-		medie_x - width, medie_y + height
-	};
-	float laser_pos2[] = {
-		medie_x - width, medie_y,
-		medie_x - width, medie_y + height,
-		medie_x - width, medie_y + height
-	};
-
-	laser_coord_vbo1 = new Buffer(laser_pos1, 4 * 2, 2);
-	laser_coord_vbo2 = new Buffer(color_blue, 4 * 2, 2);
-	laser_coord_vbo3 = new Buffer(laser_pos2, 4 * 2, 2);
-	laser_coord_vbo4 = new Buffer(color_blue, 4 * 2, 2);
-
-	laser_ibo = new IndexBuffer(texture_indices_temp, 6);
-
-	laser_sprite1.addBuffer(laser_coord_vbo1, 0);
-	laser_sprite1.addBuffer(laser_coord_vbo2, 1);
-	laser_sprite2.addBuffer(laser_coord_vbo3, 0);
-	laser_sprite2.addBuffer(laser_coord_vbo4, 1);
-}
-
-VertexArray Laser::getSprite()
-{
+VertexArray Laser::getSprite() {
 	return this->laser_sprite;
 }
 
 IndexBuffer Laser::get_ibo() {
-	return *(this->laser_ibo);
+	return this->laser_ibo;
 }
 
 void Laser::bind() const noexcept {
 	laser_sprite.bind();
-	laser_ibo->bind();
+	laser_ibo.bind();
+	laser_shader.bind();
+	//drawCall_quad(laser_sprite, laser_ibo);
 }
 
 void Laser::unbind() const noexcept {
 	laser_sprite.unbind();
-	laser_ibo->unbind();
+	laser_ibo.unbind();
 }
 
 Laser::~Laser() {
 	delete[] laser_coord_vbo1;
 	delete[] laser_coord_vbo2;
-	delete[] laser_coord_vbo3;
-	delete[] laser_coord_vbo4;
-	delete[] laser_ibo;
 }
