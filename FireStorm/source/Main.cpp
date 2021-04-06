@@ -348,7 +348,6 @@ int main()
     //double x, y;
     //int width, height;
 
-    
     Laser laser(texture_pos, 0.02f, 0.15f);
 
     laser.bind();
@@ -367,7 +366,7 @@ int main()
     {
         glClear(GL_COLOR_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-        /* begin of original file
+
         spaceship_coord_vbo1->update(texture_pos, 8 * 2);
         star_shader.uniform2f_mouse_pos(window, "light_pos");
 
@@ -387,8 +386,6 @@ int main()
         //drawCall_quad(star_sprite, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
-
-        end of comm*/
 
         //
         laser_shader.bind();
