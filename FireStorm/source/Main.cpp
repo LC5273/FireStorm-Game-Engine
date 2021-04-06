@@ -362,16 +362,17 @@ int main()
     */
 
     GLuint texture_indices_temp[] = { 0, 1, 2,  0, 2, 3 }; //extern
-    GLuint texture_indices_temp1[] = { 0, 1, 2,  3, 4, 5 }; //extern
+    //GLuint texture_indices_temp1[] = { 0, 1, 2,  3, 4, 5 }; //extern
 
     float color_blue[] {
+        0.0f, 0.0f, 1.0f, 1.0f,
         0.0f, 0.0f, 1.0f, 1.0f,
         0.0f, 0.0f, 1.0f, 1.0f,
         0.0f, 0.0f, 1.0f, 1.0f
     };
 
-    float width = 0.2f;
-    float height = 0.5f;
+    float width = 0.02f;
+    float height = 0.07f;
 
     float medie_x, medie_y;
 
@@ -381,36 +382,42 @@ int main()
     float laser_pos[] = {
         medie_x - width, medie_y,
         medie_x + width, medie_y,
-        medie_x - width, medie_y + height,
-        medie_x + width, medie_y + height
+        medie_x + width, medie_y + height,
+        medie_x - width, medie_y + height
     };
     float laser_pos1[] = {
         medie_x - width, medie_y,
         medie_x + width, medie_y,
-        medie_x - width, medie_y + height
+        medie_x + width, medie_y + height
     };
     float laser_pos2[] = {
         medie_x - width, medie_y,
-        medie_x - width, medie_y + height,
-        medie_x + width, medie_y + height
+        medie_x + width, medie_y + height,
+        medie_x - width, medie_y + height
     };
 
-    Buffer* laser_coord_vbo1 = new Buffer(laser_pos1, 6 * 2, 2);
-    Buffer* laser_coord_vbo2 = new Buffer(color_blue, 3 * 4, 4);
-    Buffer* laser_coord_vbo3 = new Buffer(laser_pos2, 6 * 2, 2);
-    Buffer* laser_coord_vbo4 = new Buffer(color_blue, 3 * 4, 4);
+    //Buffer* laser_coord_vbo1 = new Buffer(laser_pos1, 6 * 2, 2);
+    //Buffer* laser_coord_vbo2 = new Buffer(color_blue, 3 * 4, 4);
+    //Buffer* laser_coord_vbo3 = new Buffer(laser_pos2, 6 * 2, 2);
+    //Buffer* laser_coord_vbo4 = new Buffer(color_blue, 3 * 4, 4);
 
-    VertexArray laser_sprite1, laser_sprite2;
+    Buffer* laser_coord_vbo5 = new Buffer(laser_pos, 2 * 4, 2);
+    Buffer* laser_coord_vbo6 = new Buffer(color_blue, 4 * 4, 4);
 
-    //IndexBuffer laser_ibo(texture_indices_temp1, 6);
-    IndexBuffer laser_ibo(texture_indices_temp, 3);
+    VertexArray laser_sprite1, laser_sprite2, laser_sprite;
 
-    laser_sprite1.addBuffer(laser_coord_vbo1, 0);
-    laser_sprite1.addBuffer(laser_coord_vbo2, 1);
-    laser_sprite2.addBuffer(laser_coord_vbo3, 0);
-    laser_sprite2.addBuffer(laser_coord_vbo4, 1);
+    //IndexBuffer laser_ibo(texture_indices_temp, 3);
+    IndexBuffer laser_ibo(texture_indices_temp, 6);
 
-    laser_sprite1.bind();
+    //laser_sprite1.addBuffer(laser_coord_vbo1, 0);
+    //laser_sprite1.addBuffer(laser_coord_vbo2, 1);
+    //laser_sprite2.addBuffer(laser_coord_vbo3, 0);
+    //laser_sprite2.addBuffer(laser_coord_vbo4, 1);
+    laser_sprite.addBuffer(laser_coord_vbo5, 0);
+    laser_sprite.addBuffer(laser_coord_vbo6, 1);
+
+    //laser_sprite1.bind();
+    laser_sprite.bind();
     laser_ibo.bind();
 
     Shader laser_shader;
@@ -459,8 +466,11 @@ int main()
         */
         //
         laser_shader.bind();
-        drawCall_triangle(laser_sprite1, laser_ibo);
-        drawCall_triangle(laser_sprite2, laser_ibo);
+        //drawCall_triangle(laser_sprite1, laser_ibo);
+        //drawCall_triangle(laser_sprite2, laser_ibo);
+
+        drawCall_quad(laser_sprite, laser_ibo);
+        //drawCall_triangle(laser_sprite, laser_ibo);
 
         //
 
