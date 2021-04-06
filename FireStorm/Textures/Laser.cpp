@@ -2,7 +2,7 @@
 
 GLuint texture_indices_temp[] = { 0, 1, 2,  0, 2, 3 }; //extern
 
-float color_blue[]{
+float color_blue[] {
 	0.0f, 0.0f, 1.0f, 1.0f,
 	0.0f, 0.0f, 1.0f, 1.0f,
 	0.0f, 0.0f, 1.0f, 1.0f
@@ -25,9 +25,9 @@ medie_y = (3.y + 4.y) / 2;
 
 	float laser_pos[] = {
 		medie_x - width, medie_y,
-		medie_x - width, medie_y,
+		medie_x + width, medie_y,
 		medie_x - width, medie_y + height,
-		medie_x - width, medie_y + height
+		medie_x + width, medie_y + height
 	};
 
 	laser_ibo = new IndexBuffer(texture_indices_temp, 6);

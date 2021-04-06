@@ -139,6 +139,8 @@
     <None Include="Shaders\frag_background.shader" />
     <None Include="Shaders\star_frag_color.shader" />
     <None Include="Shaders\star_vert_color.shader" />
+    <None Include="Shaders\laser_vert.shader" />
+    <None Include="Shaders\laser_frag.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">
