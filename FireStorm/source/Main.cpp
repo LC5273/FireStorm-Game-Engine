@@ -384,7 +384,6 @@ int main()
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
         spaceship_coord_vbo1->update(texture_pos, 8 * 2);
-        star_shader.uniform2f_mouse_pos(window, "light_pos");
 
         background_texture.bind();
         background_shader.bind();
@@ -398,19 +397,13 @@ int main()
         spaceship_shader.bind();
         drawCall_quad(spaceship_sprite, spaceship_ibo);
         
+        
         star_shader.bind();
+        star_shader.uniform2f_mouse_pos(window, "light_pos");
         //drawCall_quad(star_sprite, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
-
-        /*
-        laser_shader.bind();
-        //drawCall_quad(laser_sprite, laser_ibo);
-        drawCall_quad(laser.getSprite(), laser.get_ibo());
-        */
-
-        //laser.bind();
-        //drawCall_quad(laser.getSprite(), laser.get_ibo());
+        
 
         render_projectiles();
 
