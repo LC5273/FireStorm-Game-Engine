@@ -3,11 +3,18 @@
 VertexArray::VertexArray() {
 	glGenVertexArrays(1, &id);
 }
-
-VertexArray::~VertexArray() {
-	for (int i = 0; i < buffer.size(); ++i)
-		delete buffer[i];
+/*
+VertexArray::VertexArray(const VertexArray& vao) {
+	this->id = vao.getID();
 }
+
+VertexArray& VertexArray::operator=(const VertexArray& vao) {
+	this->id = vao.getID();
+
+	//vector
+	return *this;
+}
+*/
 
 void VertexArray::addBuffer(Buffer* _buffer, GLuint index) {
 	this->bind();
@@ -20,6 +27,10 @@ void VertexArray::addBuffer(Buffer* _buffer, GLuint index) {
 	this->unbind();
 }
 
+GLuint VertexArray::getID() const noexcept {
+	return id;
+}
+
 void VertexArray::bind() const {
 	glBindVertexArray(id);
 }
@@ -27,3 +38,9 @@ void VertexArray::bind() const {
 void VertexArray::unbind() const {
 	glBindVertexArray(0);
 }
+/*
+VertexArray::~VertexArray() {
+	for (int i = 0; i < buffer.size(); ++i)
+		delete buffer[i];
+}
+*/

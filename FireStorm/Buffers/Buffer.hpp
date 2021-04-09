@@ -10,6 +10,7 @@ private:
 	GLuint nr_of_elements;
 public:
 	Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements);
+	Buffer(GLuint id, GLuint nr_of_elements);
 
 	void update(GLfloat* data, GLsizei count);
 

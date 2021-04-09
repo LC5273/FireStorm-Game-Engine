@@ -7,6 +7,11 @@ Buffer::Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements): nr_of_eleme
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+Buffer::Buffer(GLuint id, GLuint nr_of_elements) : nr_of_elements(nr_of_elements) {
+	this->id = id;
+}
+
+
 void Buffer::update(GLfloat* data, GLsizei count) {
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 	glBufferData(GL_ARRAY_BUFFER, count * sizeof(GLfloat), data, GL_STATIC_DRAW);

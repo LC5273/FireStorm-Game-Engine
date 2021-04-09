@@ -22,6 +22,9 @@ Laser::Laser(float* starship_position, float width, float height) {
 		medie_x - width, medie_y + height
 	};
 
+	for (int i(0); i < 8; ++i)
+		laser_position[i] = laser_pos[i];
+
 	Buffer* laser_coord_vbo1 = new Buffer(laser_pos, 2 * 4, 2);
 	Buffer* laser_coord_vbo2 = new Buffer(color_blue, 4 * 4, 4);
 
@@ -36,6 +39,38 @@ Laser::Laser(float* starship_position, float width, float height) {
 	laser_shader.createShader("Shaders/laser_vert.shader", "Shaders/laser_frag.shader");
 	laser_shader.bind();
 }
+/*
+Laser::Laser(const Laser& laser) {
+	this->laser_sprite = laser.laser_sprite;
+	this->laser_ibo = laser.laser_ibo;
+	this->laser_shader = laser.laser_shader;
+
+	//this->laser_coord_vbo1 = new Buffer(laser.laser_coord_vbo1->get_id(), laser.laser_coord_vbo1->get_nr_of_elements());
+	this->laser_coord_vbo1 = new Buffer(laser.laser_coord_vbo1->get_id(), 8);
+	//this->laser_coord_vbo2 = new Buffer(laser.laser_coord_vbo2->get_id(), laser.laser_coord_vbo2->get_nr_of_elements());
+
+	for (int i(0); i < 8; ++i)
+		this->laser_position[i] = laser.laser_position[i];
+}
+/*
+Laser::Laser(const Laser& laser) {
+	this->laser_sprite = laser.laser_sprite;
+	this->laser_ibo = laser.laser_ibo;
+	this->laser_shader = laser.laser_shader;
+
+	float* laser_pos = new float[8];
+	for (int i(0); i < 8; ++i)
+		laser_pos[i] = laser.laser_position[i];
+
+	this->laser_coord_vbo2 = new Buffer(laser_pos, 2 * 4, 2);
+	this->laser_coord_vbo2 = new Buffer(color_blue, 4 * 4, 2);
+	
+	for (int i(0); i < 8; ++i)
+		this->laser_position[i] = laser.laser_position[i];
+
+	delete[] laser_pos;
+}
+*/
 
 VertexArray Laser::getSprite() {
 	return this->laser_sprite;
@@ -57,7 +92,30 @@ void Laser::unbind() const noexcept {
 	laser_ibo.unbind();
 }
 
+void Laser::travel() {
+	laser_position[1] += 0.001f;
+	laser_position[3] += 0.001f;
+	laser_position[5] += 0.001f;
+	laser_position[7] += 0.001f;
+
+	//laser_coord_vbo1->bind();
+	//this->laser_coord_vbo1->update(laser_position, 8 * 2);
+	//laser_coord_vbo1->unbind();
+
+	Buffer* temp_vbo = new Buffer(laser_position, 2 * 4, 2);
+	//laser_sprite.bind();
+	laser_sprite.addBuffer(temp_vbo, 0);
+	delete temp_vbo;
+}
+
+bool Laser::valid() {
+	if (laser_position[1] >= 1.0f)
+		return false;
+	return true;
+}
+
 Laser::~Laser() {
 	delete[] laser_coord_vbo1;
 	delete[] laser_coord_vbo2;
+	//delete[] laser_position;
 }

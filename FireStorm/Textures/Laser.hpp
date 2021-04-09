@@ -4,21 +4,21 @@
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
 #include "../Shaders/Shader.hpp"
-//#include "../Utilities/Renderer_functions.hpp"
 
 class Laser
 {
 public:
 	VertexArray laser_sprite;
-	VertexArray laser_sprite1;
-	VertexArray laser_sprite2;
 	Buffer* laser_coord_vbo1;
 	Buffer* laser_coord_vbo2;
 	IndexBuffer laser_ibo;
 	Shader laser_shader;
+	float laser_position[8];
 
 public:
 	Laser(float* starship_position, float width, float height);
+	//Laser(const Laser& laser);
+	//Laser(Laser&& laser);
 
 	VertexArray getSprite();
 	IndexBuffer get_ibo();
@@ -27,6 +27,7 @@ public:
 	void unbind() const noexcept;
 
 	void travel();
+	bool valid();
 
 	~Laser();
 };

@@ -144,8 +144,13 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
 
 void render_projectiles() {
     for (int i = 0; i < projectiles.size(); ++i) {
+        projectiles[i].travel();
         projectiles[i].bind();
         drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
+        if (!projectiles[i].valid()) {
+            projectiles.erase(projectiles.begin() + i);
+            //std::cout << "A iesit unu!!!";
+        }
     }
 }
 
@@ -360,23 +365,12 @@ int main()
 
     //double x, y;
     //int width, height;
-    /*
-    Laser laser(texture_pos, 0.02f, 0.15f);
-
-    laser.bind();
-    
-    Shader laser_shader;
-    laser_shader.createShader("Shaders/laser_vert.shader", "Shaders/laser_frag.shader");
-    laser_shader.bind();
-    */
 
     Timer timer;
     float current_time(0.0f);
     unsigned int frames(0);
 
     timer.reset();
-
-    //Laser laser(texture_pos, 0.02f, 0.15f);
 
     while (!glfwWindowShouldClose(window))
     {
