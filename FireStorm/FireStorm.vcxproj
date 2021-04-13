@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Textures\Enemy.cpp" />
     <ClCompile Include="Textures\Spaceship.cpp" />
     <ClCompile Include="Textures\Laser.cpp" />
     <ClCompile Include="Math\mat2_new.cpp" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Textures\Enemy.hpp" />
     <ClInclude Include="Textures\Spaceship.hpp" />
     <ClInclude Include="Textures\Laser.hpp" />
     <ClInclude Include="Math\mat2_new.hpp" />

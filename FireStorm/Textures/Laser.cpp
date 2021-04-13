@@ -106,6 +106,8 @@ void Laser::travel() {
 	//laser_sprite.bind();
 	laser_sprite.addBuffer(temp_vbo, 0);
 	delete temp_vbo;
+	//solve this BUG
+	//implement enemy_spaceship
 }
 
 bool Laser::valid() {
