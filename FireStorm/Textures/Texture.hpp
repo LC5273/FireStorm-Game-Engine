@@ -5,7 +5,6 @@
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
 
-
 class Texture
 {
 private:
@@ -14,6 +13,7 @@ private:
 	const std::string filepath;
 	unsigned char *buffer;
 public:
+	Texture();
 	Texture(const std::string& _filepath);
 
 	Texture getTexture(std::string&& _filepath);

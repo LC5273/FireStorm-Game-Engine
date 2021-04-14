@@ -55,6 +55,8 @@
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\enemy_texture_frag.shader" />
+    <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\frag.shader" />
     <None Include="Shaders\frag1.shader" />
     <None Include="Shaders\frag_background.shader" />

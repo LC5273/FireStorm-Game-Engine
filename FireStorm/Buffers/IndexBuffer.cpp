@@ -9,7 +9,7 @@ IndexBuffer::IndexBuffer(GLuint* data, GLsizei nr_of_elements): nr_of_elements(n
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void IndexBuffer::create_IndexBuffer(GLuint* data, GLsizei nr_of_elements) {
+void IndexBuffer::createIndexBuffer(GLuint* data, GLsizei nr_of_elements) {
 	GLuint id;
 	glGenBuffers(1, &id);
 	this->id = id;

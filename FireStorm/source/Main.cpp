@@ -377,7 +377,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
-        spaceship_coord_vbo1->update(texture_pos, 8 * 2);
+        spaceship_coord_vbo1->update(texture_pos, 8 * 2, 2);
 
         background_texture.bind();
         background_shader.bind();

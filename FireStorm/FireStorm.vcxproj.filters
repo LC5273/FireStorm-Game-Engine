@@ -153,6 +153,8 @@
     <None Include="Shaders\star_vert_color.shader" />
     <None Include="Shaders\laser_vert.shader" />
     <None Include="Shaders\laser_frag.shader" />
+    <None Include="Shaders\enemy_texture_vert.shader" />
+    <None Include="Shaders\enemy_texture_frag.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">

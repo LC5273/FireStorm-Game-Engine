@@ -1,6 +1,5 @@
-#include "Texture.hpp"
-
 #include "../vendor/stb_image/stb_image.h"
+#include "Texture.hpp"
 
 Texture::Texture(const std::string& _filepath) {
 

@@ -12,7 +12,7 @@ public:
 	IndexBuffer();
 	IndexBuffer(GLuint* data, GLsizei nr_of_elements);
 
-	void create_IndexBuffer(GLuint* data, GLsizei nr_of_elements);
+	void createIndexBuffer(GLuint* data, GLsizei nr_of_elements);
 
 	void bind() const noexcept;
 	void unbind() const noexcept;

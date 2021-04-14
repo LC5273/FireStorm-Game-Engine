@@ -31,7 +31,7 @@ Laser::Laser(float* starship_position, float width, float height) {
 	laser_sprite.addBuffer(laser_coord_vbo1, 0);
 	laser_sprite.addBuffer(laser_coord_vbo2, 1);
 
-	laser_ibo.create_IndexBuffer(texture_indices_temp, 6);
+	laser_ibo.createIndexBuffer(texture_indices_temp, 6);
 
 	laser_sprite.bind();
 	laser_ibo.bind();
@@ -119,5 +119,4 @@ bool Laser::valid() {
 Laser::~Laser() {
 	delete[] laser_coord_vbo1;
 	delete[] laser_coord_vbo2;
-	//delete[] laser_position;
 }
