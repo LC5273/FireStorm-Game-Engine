@@ -53,8 +53,20 @@ Enemy::Enemy() {
 	enemy_sprite.bind();
 	enemy_ibo.bind();
 
-	enemy_shader.createShader("Shaders/enemy_texture_vert.shader", "Shaders/enemy_texture_frag.shader");
-	enemy_shader.bind();
+	enemy_shader.createShader("../Shaders/enemy_texture_vert.shader", "../Shaders/enemy_texture_frag.shader");
+    enemy_shader.bind();
+
+    enemy_texture.getTexture("../Textures/enemy_lurker.png");
+    enemy_texture.bind();
+
+    enemy_shader.uniform1i("texture1", 0);
+}
+
+void Enemy::bind() const noexcept {
+    enemy_sprite.bind();
+    enemy_ibo.bind();
+    enemy_texture.bind();
+    enemy_shader.bind();
 }
 
 Enemy::~Enemy() {

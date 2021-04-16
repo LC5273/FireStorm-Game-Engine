@@ -26,7 +26,7 @@ public:
 
 
 	void uniform2f_mouse_pos(GLFWwindow* window, const char* field);
-	void uniform1i(GLFWwindow* window, const char* field, int value);
+	void uniform1i(const char* field, int value);
 
 	void bind() const;
 	void unbind() const;

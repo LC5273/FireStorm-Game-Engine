@@ -306,7 +306,7 @@ int main()
     Texture background_texture("Textures/background.png");
     background_texture.bind();
 
-    background_shader.uniform1i(window, "texture1", 0);
+    background_shader.uniform1i("texture1", 0);
     
     //Spaceship
     VertexArray spaceship_sprite;
@@ -328,7 +328,7 @@ int main()
     Texture spaceship_static_texture("Textures/spaceship.png");
     Texture spaceship_dynamic_texture("Textures/spaceship_dynamic.png");
 
-    spaceship_shader.uniform1i(window, "texture1", 0);
+    spaceship_shader.uniform1i("texture1", 0);
 
     //Custom mouse-following star
 

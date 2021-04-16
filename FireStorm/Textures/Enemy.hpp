@@ -14,11 +14,14 @@ private:
 	Buffer enemy_coord_vbo2;
 	IndexBuffer enemy_ibo;
 	Shader enemy_shader;
+	Texture enemy_texture;
 	float position[8];
 
 public:
 	Enemy();
 	//Enemy();
+
+	void bind() const noexcept;
 
 	~Enemy();
 };
