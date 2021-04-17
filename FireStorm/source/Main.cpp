@@ -15,6 +15,7 @@
 #include "../Buffers/VertexArray.hpp"
 #include "../Textures/Texture.hpp"
 #include "../Textures/Laser.hpp"
+#include "../Textures/Enemy.hpp"
 #include "../Utilities/Timer.hpp"
 #include "../Shaders/Shader.hpp"
 #include "../Math/maths.hpp"
@@ -366,6 +367,13 @@ int main()
     //double x, y;
     //int width, height;
 
+    Enemy enemy;
+    enemy.bind();
+    //Texture t("Textures/enemy_lurker.png");
+    Texture t("Textures/enemy_attacker.png");
+    t.bind();
+    enemy.enemy_shader.uniform1i("enemy_texture", 0);
+
     Timer timer;
     float current_time(0.0f);
     unsigned int frames(0);
@@ -398,6 +406,12 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
         
+        //Texture t("enemy_lurker1.png");
+        //enemy.enemy_shader.uniform1i("enemy_texture", 0);
+
+        enemy.bind();
+        t.bind();
+        drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
 
         render_projectiles();
 

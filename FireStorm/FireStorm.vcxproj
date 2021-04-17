@@ -74,6 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\background.png" />
+    <Image Include="Textures\enemy-spaceship-sprite-hd-full.png" />
+    <Image Include="Textures\enemy_attacker.png" />
+    <Image Include="Textures\enemy_lurker.png" />
     <Image Include="Textures\spaceship.png" />
     <Image Include="Textures\spaceship_dynamic.png" />
   </ItemGroup>

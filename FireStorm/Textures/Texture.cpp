@@ -27,7 +27,7 @@ Texture::Texture(const std::string& _filepath) {
 		stbi_image_free(buffer);
 }
 
-void Texture::getTexture(std::string&& _filepath) {
+void Texture::getTexture(const std::string& _filepath) {
 	stbi_set_flip_vertically_on_load(1);
 
 	buffer = stbi_load(_filepath.c_str(), &width, &height, &bits_per_pixel, 4);

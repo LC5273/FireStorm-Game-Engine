@@ -166,5 +166,14 @@
     <Image Include="Textures\spaceship_dynamic.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Textures\enemy_lurker.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\enemy_attacker.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\enemy-spaceship-sprite-hd-full.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

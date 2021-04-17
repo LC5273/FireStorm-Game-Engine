@@ -8,7 +8,7 @@
 
 class Enemy
 {
-private:
+public:
 	VertexArray enemy_sprite;
 	Buffer enemy_coord_vbo1;
 	Buffer enemy_coord_vbo2;
@@ -19,7 +19,9 @@ private:
 
 public:
 	Enemy();
-	//Enemy();
+	
+	//inline IndexBuffer getIbo() const noexcept { return enemy_ibo; }
+	//inline VertexArray getVao() const noexcept { return enemy_sprite; }
 
 	void bind() const noexcept;
 
