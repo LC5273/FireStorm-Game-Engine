@@ -150,7 +150,6 @@ void render_projectiles() {
         drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
         if (!projectiles[i].valid()) {
             projectiles.erase(projectiles.begin() + i);
-            //std::cout << "A iesit unu!!!";
         }
     }
 }
@@ -369,7 +368,6 @@ int main()
 
     Enemy enemy;
     enemy.bind();
-    //Texture t("Textures/enemy_lurker.png");
     Texture t("Textures/enemy_attacker.png");
     t.bind();
     enemy.enemy_shader.uniform1i("enemy_texture", 0);
