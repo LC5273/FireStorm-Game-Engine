@@ -368,9 +368,6 @@ int main()
 
     Enemy enemy;
     enemy.bind();
-    Texture t("Textures/enemy_attacker.png");
-    t.bind();
-    enemy.enemy_shader.uniform1i("enemy_texture", 0);
 
     Timer timer;
     float current_time(0.0f);
@@ -403,12 +400,8 @@ int main()
         //drawCall_quad(star_sprite, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
-        
-        //Texture t("enemy_lurker1.png");
-        //enemy.enemy_shader.uniform1i("enemy_texture", 0);
 
         enemy.bind();
-        t.bind();
         drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
 
         render_projectiles();
