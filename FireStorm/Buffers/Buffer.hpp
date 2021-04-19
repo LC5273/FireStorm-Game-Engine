@@ -22,4 +22,5 @@ public:
 
 	GLuint get_id() const noexcept;
 	GLuint get_nr_of_elements() const noexcept;
+
 };

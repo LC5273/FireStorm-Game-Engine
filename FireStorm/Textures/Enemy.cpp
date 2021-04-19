@@ -71,9 +71,9 @@ Enemy::Enemy() {
 void Enemy::bind() const noexcept {
     enemy_sprite.bind();
     enemy_ibo.bind();
-    //enemy_texture.bind();
-    enemy_shader.bind();
     enemy_texture.bind();
+    enemy_shader.bind();
+    //enemy_texture.bind();
 }
 
 Enemy::~Enemy() {

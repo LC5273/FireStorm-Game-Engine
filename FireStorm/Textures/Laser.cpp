@@ -25,7 +25,7 @@ Laser::Laser(float* starship_position, float width, float height) {
 	for (int i(0); i < 8; ++i)
 		laser_position[i] = laser_pos[i];
 
-	Buffer* laser_coord_vbo1 = new Buffer(laser_pos, 2 * 4, 2);
+	laser_coord_vbo1 = new Buffer(laser_pos, 2 * 4, 2);
 	Buffer* laser_coord_vbo2 = new Buffer(color_blue, 4 * 4, 4);
 
 	laser_sprite.addBuffer(laser_coord_vbo1, 0);
@@ -98,16 +98,7 @@ void Laser::travel() {
 	laser_position[5] += 0.001f;
 	laser_position[7] += 0.001f;
 
-	//laser_coord_vbo1->bind();
-	//this->laser_coord_vbo1->update(laser_position, 8 * 2);
-	//laser_coord_vbo1->unbind();
-
-	Buffer* temp_vbo = new Buffer(laser_position, 2 * 4, 2);
-	//laser_sprite.bind();
-	laser_sprite.addBuffer(temp_vbo, 0);
-	delete temp_vbo;
-	//solve this BUG
-	//implement enemy_spaceship
+	laser_coord_vbo1->update(laser_position, 2 * 4, 2);
 }
 
 bool Laser::valid() {
@@ -116,7 +107,14 @@ bool Laser::valid() {
 	return true;
 }
 
+bool Laser::collision(float object_coord[8]) {
+	//
+	return false;
+}
+
+/*
 Laser::~Laser() {
 	delete[] laser_coord_vbo1;
 	delete[] laser_coord_vbo2;
 }
+*/

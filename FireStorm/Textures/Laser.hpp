@@ -11,6 +11,7 @@ public:
 	VertexArray laser_sprite;
 	Buffer* laser_coord_vbo1;
 	Buffer* laser_coord_vbo2;
+	//Buffer laser_temp;
 	IndexBuffer laser_ibo;
 	Shader laser_shader;
 	float laser_position[8];
@@ -28,7 +29,8 @@ public:
 
 	void travel();
 	bool valid();
+	bool collision(float object_coord[8]); // frontal collision-detection only
 
-	~Laser();
+	//~Laser();
 };
 
