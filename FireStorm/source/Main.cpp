@@ -418,7 +418,6 @@ int main()
         enemy.bind();
         drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
 
-        //render_projectiles();
         render_projectiles(enemy.position);
 
         glfwSetKeyCallback(window, key_callback_WASD);
