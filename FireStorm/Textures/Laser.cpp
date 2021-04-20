@@ -109,7 +109,7 @@ bool Laser::valid() {
 
 bool Laser::collision(float object_coord[8]) {
 
-	std::cout << laser_position[6] << ' ' << object_coord[3] << std::endl << std::endl;
+	//std::cout << laser_position[6] << ' ' << object_coord[3] << std::endl << std::endl;
 
 	if ((laser_position[4] >= object_coord[0] &&
 		laser_position[4] <= object_coord[4] &&
