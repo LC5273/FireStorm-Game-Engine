@@ -143,6 +143,20 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
         //std::cout << char(7);
 }
 
+void render_projectiles(float p[8]) {
+    for (int i = 0; i < projectiles.size(); ++i) {
+        projectiles[i].travel();
+        projectiles[i].bind();
+        drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
+        if (projectiles[i].collision(p)) {
+            std::cout << "got it\n";
+            projectiles.erase(projectiles.begin() + i);
+        }
+        else if (!projectiles[i].valid()) {
+            projectiles.erase(projectiles.begin() + i);
+        }
+    }
+}
 void render_projectiles() {
     for (int i = 0; i < projectiles.size(); ++i) {
         projectiles[i].travel();
@@ -404,7 +418,8 @@ int main()
         enemy.bind();
         drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
 
-        render_projectiles();
+        //render_projectiles();
+        render_projectiles(enemy.position);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();

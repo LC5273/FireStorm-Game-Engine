@@ -29,7 +29,7 @@ public:
 
 	void travel();
 	bool valid();
-	bool collision(float object_coord[8]); // frontal collision-detection only
+	bool collision(float object_coord[8]);
 
 	//~Laser();
 };

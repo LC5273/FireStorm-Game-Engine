@@ -23,6 +23,8 @@ public:
 	//inline IndexBuffer getIbo() const noexcept { return enemy_ibo; }
 	//inline VertexArray getVao() const noexcept { return enemy_sprite; }
 
+	float* getPosition() const noexcept;
+
 	void bind() const noexcept;
 
 	~Enemy();
