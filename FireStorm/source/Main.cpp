@@ -47,6 +47,7 @@ float texture_poz[] = {
 bool movement = false;
 
 std::vector<Laser> projectiles;
+std::vector<Enemy> enemy;
 
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
@@ -143,20 +144,25 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
         //std::cout << char(7);
 }
 
-void render_projectiles(float p[8]) {
+void render_projectiles(std::vector<Laser>& projectiles, std::vector<Enemy>& enemy) {
     for (int i = 0; i < projectiles.size(); ++i) {
         projectiles[i].travel();
         projectiles[i].bind();
         drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
-        if (projectiles[i].collision(p)) {
-            //std::cout << "got it\n";
-            projectiles.erase(projectiles.begin() + i);
-        }
-        else if (!projectiles[i].valid()) {
-            projectiles.erase(projectiles.begin() + i);
+
+        for(int j = 0; j < enemy.size(); ++j) {
+            if (projectiles[i].collision(enemy[j].position)) {
+                //std::cout << "got it\n";
+                projectiles.erase(projectiles.begin() + i);
+                enemy.erase(enemy.begin() + j);
+            }
+            else if (!projectiles[i].valid()) {
+                projectiles.erase(projectiles.begin() + i);
+            }
         }
     }
 }
+/* old function
 void render_projectiles() {
     for (int i = 0; i < projectiles.size(); ++i) {
         projectiles[i].travel();
@@ -165,6 +171,13 @@ void render_projectiles() {
         if (!projectiles[i].valid()) {
             projectiles.erase(projectiles.begin() + i);
         }
+    }
+}
+*/
+void render_enemies(const std::vector<Enemy>& enemy) {
+    for (int i(0); i < enemy.size(); ++i) {
+        enemy[i].bind();
+        drawCall_quad(enemy[i].enemy_sprite, enemy[i].enemy_ibo);
     }
 }
 
@@ -380,8 +393,10 @@ int main()
     //double x, y;
     //int width, height;
 
-    Enemy enemy;
-    enemy.bind();
+    Enemy e;
+    e.bind();
+
+    enemy.push_back(e);
 
     Timer timer;
     float current_time(0.0f);
@@ -415,10 +430,11 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
 
-        enemy.bind();
-        drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
 
-        render_projectiles(enemy.position);
+        //enemy.bind();
+        //drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
+        render_enemies(enemy);
+        render_projectiles(projectiles, enemy);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
