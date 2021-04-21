@@ -149,7 +149,7 @@ void render_projectiles(float p[8]) {
         projectiles[i].bind();
         drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
         if (projectiles[i].collision(p)) {
-            std::cout << "got it\n";
+            //std::cout << "got it\n";
             projectiles.erase(projectiles.begin() + i);
         }
         else if (!projectiles[i].valid()) {
