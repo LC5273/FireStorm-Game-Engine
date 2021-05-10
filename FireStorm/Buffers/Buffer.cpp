@@ -14,7 +14,13 @@ Buffer::Buffer(GLuint id, GLuint nr_of_elements) : nr_of_elements(nr_of_elements
 	this->id = id;
 }
 
-//void Buffer::createBuffer()
+Buffer::Buffer(const Buffer& buffer): id(buffer.id), nr_of_elements(buffer.nr_of_elements) {}
+
+//Buffer::Buffer(Buffer&& buffer): id(std::move(buffer.id)), nr_of_elements(std::move(buffer.nr_of_elements)) {}
+
+Buffer&& forward(Buffer& buffer) noexcept {
+	return static_cast<Buffer&&>(buffer);
+}
 
 void Buffer::update(GLfloat* data, GLsizei count, GLuint nr_of_elements) {
 	this->nr_of_elements = nr_of_elements;

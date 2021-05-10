@@ -2,6 +2,7 @@
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
+#include <utility>
 
 class Buffer
 {
@@ -12,8 +13,10 @@ public:
 	Buffer();
 	Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements);
 	Buffer(GLuint id, GLuint nr_of_elements);
-	//Buffer(const Buffer& buffer);
+	Buffer(const Buffer& buffer);
 	//Buffer(Buffer&& buffer);
+
+	Buffer&& forward(Buffer& buffer) noexcept;
 
 	void update(GLfloat* data, GLsizei count, GLuint nr_of_elements);
 
@@ -22,5 +25,4 @@ public:
 
 	GLuint get_id() const noexcept;
 	GLuint get_nr_of_elements() const noexcept;
-
 };
