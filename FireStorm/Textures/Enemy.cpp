@@ -68,6 +68,49 @@ Enemy::Enemy() {
     enemy_shader.uniform1i("enemy_texture", 0);
 }
 
+Enemy::Enemy(float position[8]) {
+
+    this->position[0] = position[0];
+    this->position[1] = position[1];
+    this->position[2] = position[2];
+    this->position[3] = position[3];
+    this->position[4] = position[4];
+    this->position[5] = position[5];
+    this->position[6] = position[6];
+    this->position[7] = position[7];
+
+    float texture_poz[] = {
+    0.00f, 0.00f,
+    0.00f, 1.00f,
+    1.00f, 1.00f,
+    1.00f, 0.00f
+    };
+
+    GLuint texture_indices_temp[] = { 0, 1, 2,  0, 2, 3 };
+
+    enemy_coord_vbo1.update(this->position, 8 * 2, 2);
+    enemy_coord_vbo2.update(texture_poz, 8 * 2, 2);
+
+    Buffer* e_vbo1 = new Buffer(this->position, 8 * 2, 2);
+    Buffer* e_vbo2 = new Buffer(texture_poz, 8 * 2, 2);
+
+    enemy_sprite.addBuffer(e_vbo1, 0);
+    enemy_sprite.addBuffer(e_vbo2, 2);
+
+    enemy_ibo.createIndexBuffer(texture_indices_temp, 6);
+
+    enemy_sprite.bind();
+    enemy_ibo.bind();
+
+    enemy_shader.createShader("Shaders/enemy_texture_vert.shader", "Shaders/enemy_texture_frag.shader");
+    enemy_shader.bind();
+
+    enemy_texture.getTexture("Textures/enemy_attacker.png");
+    enemy_texture.bind();
+
+    enemy_shader.uniform1i("enemy_texture", 0);
+}
+
 void Enemy::bind() const noexcept {
     enemy_sprite.bind();
     enemy_ibo.bind();

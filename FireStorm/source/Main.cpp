@@ -152,13 +152,19 @@ void render_projectiles(std::vector<Laser>& projectiles, std::vector<Enemy>& ene
 
         for(int j = 0; j < enemy.size(); ++j) {
             if (projectiles[i].collision(enemy[j].position)) {
-                //std::cout << "got it\n";
                 projectiles.erase(projectiles.begin() + i);
                 enemy.erase(enemy.begin() + j);
             }
+            /*
             else if (!projectiles[i].valid()) {
                 projectiles.erase(projectiles.begin() + i);
+                std::cout << "laser deleted";
             }
+            */
+        }
+        if (i < projectiles.size() && !projectiles[i].valid()) {
+            projectiles.erase(projectiles.begin() + i);
+            //std::cout << "laser deleted";
         }
     }
 }
@@ -393,10 +399,25 @@ int main()
     //double x, y;
     //int width, height;
 
-    Enemy e;
-    e.bind();
+    float p[8] = {
+        0.50f, 0.50f,
+        0.50f, 0.85f,
+        0.75f, 0.85f,
+        0.75f, 0.50f
+    };
 
+    float p2[8] = {
+        0.20f, 0.50f,
+        0.20f, 0.85f,
+        0.45f, 0.85f,
+        0.45f, 0.50f
+    };
+
+    Enemy e(p), e2(p2);
+    e.bind();
     enemy.push_back(e);
+    e2.bind();
+    enemy.push_back(e2);
 
     Timer timer;
     float current_time(0.0f);
