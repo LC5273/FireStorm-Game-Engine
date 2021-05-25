@@ -1,4 +1,6 @@
 # FireStorm  🔥 
+![licence](https://img.shields.io/github/license/LC5273/FireStorm-Game-Engine)
+
   FireStorm is a basic 2D game engine, build using OpenGL and designed especially for windows. 
 ## Built using
   - [Visual Studio IDE](https://visualstudio.microsoft.com/)
