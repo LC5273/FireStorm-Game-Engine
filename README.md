@@ -10,5 +10,5 @@
 ## Built using :hammer_and_wrench:
   - [Visual Studio IDE](https://visualstudio.microsoft.com/)
 ## Installation :floppy_disk:
-  - In order to run this code, you will need the [Visual Studio IDE](https://visualstudio.microsoft.com/) installed on a windows platform.
+  - In order to run this code, you will need [Visual Studio IDE](https://visualstudio.microsoft.com/) installed on a windows platform.
   - Once you have Visual Studio installed and the code downloaded, double click on **FireStorm.sln**
