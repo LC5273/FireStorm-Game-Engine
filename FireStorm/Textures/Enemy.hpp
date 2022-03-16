@@ -20,6 +20,8 @@ public:
 public:
 	Enemy();
 	Enemy(float position[8]);
+
+	Enemy& operator=(const Enemy&);
 	
 	//inline IndexBuffer getIbo() const noexcept { return enemy_ibo; }
 	//inline VertexArray getVao() const noexcept { return enemy_sprite; }

@@ -2,6 +2,7 @@
 #include "Texture.hpp"
 
 Texture::Texture():width(0), height(0), bits_per_pixel(0) {
+	buffer = nullptr;
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
 }
@@ -25,6 +26,23 @@ Texture::Texture(const std::string& _filepath) {
 
 	if (buffer)
 		stbi_image_free(buffer);
+}
+
+Texture& Texture::operator=(const Texture& t) {
+	this->id = t.id;
+	this->width = t.width;
+	this->height = t.height;
+	this->bits_per_pixel = t.bits_per_pixel;
+	this->filepath = t.filepath;
+	if(t.buffer == nullptr)
+		this->buffer = nullptr;
+	else {
+		this->buffer = new unsigned char[sizeof(t.buffer)];
+		//strcpy((char*)this->buffer, (const char*)t.buffer);
+		this->buffer = t.buffer;
+	}
+	
+	return *this;
 }
 
 void Texture::getTexture(const std::string& _filepath) {

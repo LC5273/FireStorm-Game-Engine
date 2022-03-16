@@ -80,10 +80,10 @@ Enemy::Enemy(float position[8]) {
     this->position[7] = position[7];
 
     float texture_poz[] = {
-    0.00f, 0.00f,
-    0.00f, 1.00f,
-    1.00f, 1.00f,
-    1.00f, 0.00f
+        0.00f, 0.00f,
+        0.00f, 1.00f,
+        1.00f, 1.00f,
+        1.00f, 0.00f
     };
 
     GLuint texture_indices_temp[] = { 0, 1, 2,  0, 2, 3 };
@@ -109,6 +109,19 @@ Enemy::Enemy(float position[8]) {
     enemy_texture.bind();
 
     enemy_shader.uniform1i("enemy_texture", 0);
+}
+
+Enemy& Enemy::operator=(const Enemy& e) {
+    this->enemy_sprite = e.enemy_sprite;
+    this->enemy_coord_vbo1 = e.enemy_coord_vbo1;
+    this->enemy_coord_vbo2 = e.enemy_coord_vbo2;
+    this->enemy_ibo = e.enemy_ibo;
+    this->enemy_shader = e.enemy_shader;
+    this->enemy_texture = e.enemy_texture;
+    for(int i(0); i < 8; ++i)
+        this->position[i] = e.position[i];
+
+    return *this;
 }
 
 void Enemy::bind() const noexcept {

@@ -16,6 +16,8 @@ public:
 	Texture();
 	Texture(const std::string& _filepath);
 
+	Texture& operator=(const Texture&);
+
 	void getTexture(const std::string& _filepath);
 
 	void bind(unsigned int slot = 0) const;

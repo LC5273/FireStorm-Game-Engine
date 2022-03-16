@@ -164,22 +164,10 @@ void render_projectiles(std::vector<Laser>& projectiles, std::vector<Enemy>& ene
         }
         if (i < projectiles.size() && !projectiles[i].valid()) {
             projectiles.erase(projectiles.begin() + i);
-            //std::cout << "laser deleted";
         }
     }
 }
-/* old function
-void render_projectiles() {
-    for (int i = 0; i < projectiles.size(); ++i) {
-        projectiles[i].travel();
-        projectiles[i].bind();
-        drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
-        if (!projectiles[i].valid()) {
-            projectiles.erase(projectiles.begin() + i);
-        }
-    }
-}
-*/
+
 void render_enemies(const std::vector<Enemy>& enemy) {
     for (int i(0); i < enemy.size(); ++i) {
         enemy[i].bind();
@@ -291,9 +279,6 @@ int main()
     sprite1.addBuffer(vbo12, 1);
     sprite2.addBuffer(vbo21, 0);
     sprite2.addBuffer(vbo22, 1);
-
-    //sprite1.bind();
-    //ibo.bind();
 
     //Shader s("Shaders/vert_color.shader", "Shaders/frag_color.shader");
     Shader s;
@@ -425,6 +410,8 @@ int main()
 
     timer.reset();
 
+    //Main screen
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -451,9 +438,6 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
 
-
-        //enemy.bind();
-        //drawCall_quad(enemy.enemy_sprite, enemy.enemy_ibo);
         render_enemies(enemy);
         render_projectiles(projectiles, enemy);
 
@@ -464,6 +448,7 @@ int main()
         glfwPollEvents();
 
         /*
+        // Resize event handler
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
         */
@@ -474,14 +459,11 @@ int main()
             std::cout << frames << "FPS" << std::endl;
             frames = 0;
         }
-
-        //std::cout << timer.elapsed() << " s" << std::endl;
     }
 
     background_shader.unbind();
     spaceship_shader.unbind();
     star_shader.unbind();
-    //laser_shader.unbind();
 
     glfwTerminate();
     return 0;
