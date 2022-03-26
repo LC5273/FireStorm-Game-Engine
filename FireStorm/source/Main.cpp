@@ -23,6 +23,8 @@
 #include "../Utilities/Renderer_functions.hpp"
 #include "../Utilities/GPU_enablement.hpp"
 
+#include "../Scenes/main_screen.hpp"
+
 
 #ifdef DEBUG_API
 #else
@@ -411,6 +413,7 @@ int main()
     timer.reset();
 
     //Main screen
+    main_screen(window);
 
     while (!glfwWindowShouldClose(window))
     {

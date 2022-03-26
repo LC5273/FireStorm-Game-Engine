@@ -34,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Scenes\main_screen.hpp" />
     <ClInclude Include="Textures\Enemy.hpp" />
     <ClInclude Include="Textures\Spaceship.hpp" />
     <ClInclude Include="Textures\Laser.hpp" />
