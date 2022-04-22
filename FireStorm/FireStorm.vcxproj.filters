@@ -178,5 +178,53 @@
     <Image Include="Textures\enemy-spaceship-sprite-hd-full.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Textures\main_menu\restart_raw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\restart_glow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\play_raw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\play_glow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\picture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\options_raw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\options_glow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\exit_raw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\exit_glow_cut.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\exit_glow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\buy_raw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\buy_glow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\main_menu\1000x1000_gui.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\enemy_lurker1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\spaceship0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\spaceship1_cut.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -78,7 +78,23 @@
     <Image Include="Textures\enemy-spaceship-sprite-hd-full.png" />
     <Image Include="Textures\enemy_attacker.png" />
     <Image Include="Textures\enemy_lurker.png" />
+    <Image Include="Textures\enemy_lurker1.png" />
+    <Image Include="Textures\main_menu\1000x1000_gui.jpg" />
+    <Image Include="Textures\main_menu\buy_glow.png" />
+    <Image Include="Textures\main_menu\buy_raw.png" />
+    <Image Include="Textures\main_menu\exit_glow.png" />
+    <Image Include="Textures\main_menu\exit_glow_cut.png" />
+    <Image Include="Textures\main_menu\exit_raw.png" />
+    <Image Include="Textures\main_menu\options_glow.png" />
+    <Image Include="Textures\main_menu\options_raw.png" />
+    <Image Include="Textures\main_menu\picture.jpg" />
+    <Image Include="Textures\main_menu\play_glow.png" />
+    <Image Include="Textures\main_menu\play_raw.png" />
+    <Image Include="Textures\main_menu\restart_glow.png" />
+    <Image Include="Textures\main_menu\restart_raw.png" />
     <Image Include="Textures\spaceship.png" />
+    <Image Include="Textures\spaceship0.png" />
+    <Image Include="Textures\spaceship1_cut.png" />
     <Image Include="Textures\spaceship_dynamic.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

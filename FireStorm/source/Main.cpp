@@ -51,6 +51,8 @@ bool movement = false;
 std::vector<Laser> projectiles;
 std::vector<Enemy> enemy;
 
+int width, height;
+
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
     // 1 - left
@@ -269,24 +271,6 @@ int main()
         1.0f, 1.0f, 1.0f, 1.0f,
         1.0f, 1.0f, 1.0f, 1.0f
     };
-#if 0
-    VertexArray sprite1, sprite2;
-    Buffer* vbo11 = new Buffer(positions1, 2 * 6, 2);
-    Buffer* vbo12 = new Buffer(colorA, 3 * 4, 4);
-    Buffer* vbo21 = new Buffer(positions2, 2 * 6, 2);
-    Buffer* vbo22 = new Buffer(colorB, 3 * 4, 4);
-    IndexBuffer ibo(indices, 6);
-
-    sprite1.addBuffer(vbo11, 0);
-    sprite1.addBuffer(vbo12, 1);
-    sprite2.addBuffer(vbo21, 0);
-    sprite2.addBuffer(vbo22, 1);
-
-    //Shader s("Shaders/vert_color.shader", "Shaders/frag_color.shader");
-    Shader s;
-    s.createShader("Shaders/vert_color.shader", "Shaders/frag_color.shader");
-    s.bind();
-#endif
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -450,11 +434,11 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        /*
+        
         // Resize event handler
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
-        */
+        
 
         ++frames;
         if (timer.elapsed() - current_time >= 1.0f) {
