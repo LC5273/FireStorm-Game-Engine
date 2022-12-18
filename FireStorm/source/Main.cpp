@@ -421,7 +421,7 @@ int main()
         
         star_shader.bind();
         star_shader.uniform2f_mouse_pos(window, "light_pos");
-        //drawCall_quad(star_sprite, star_ibo);
+        //drawCall_quad(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
 
@@ -434,12 +434,11 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        
         // Resize event handler
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
         
-
+        // FPS counter system
         ++frames;
         if (timer.elapsed() - current_time >= 1.0f) {
             current_time  += 1.0f;

@@ -18,15 +18,9 @@ double xMousePos, yMousePos;
 void mouse_callback_main_menu(GLFWwindow* window, int key, int scancode, int action) {
     if (key == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE)
         if ((640 / 2 - 320 / 5 < xMousePos && 640 / 2 + 320 / 5 > xMousePos) && (480 / 2 - 240 * 2 / 5 > yMousePos && 480 / 2 - 240 * 3 / 5 < yMousePos))
-        exit_main_s = true;
+            exit_main_s = true;
 }
 
-void mouse_pos_callback_main_menu(GLFWwindow* window, double xPos, double yPos) {
-    xMousePos = xPos;
-    yMousePos = yPos;
-
-    //std::cout << xMousePos << " : " << yMousePos << std::endl;
-}
 
 void main_screen(GLFWwindow* window) {
     if (!window)
@@ -35,10 +29,7 @@ void main_screen(GLFWwindow* window) {
         glfwTerminate();
     }
 
-    // Initialization
-
     // Background texture
-
     float background_pos[] = {
         -1.00f, -1.00f,
         -1.00f,  1.00f,
@@ -127,9 +118,7 @@ void main_screen(GLFWwindow* window) {
         drawCall_quad(play_button_sprite, play_button_ibo);
 
         glfwSetMouseButtonCallback(window, mouse_callback_main_menu);
-        //glfwSetCursorPosCallback(window, mouse_pos_callback_main_menu);
         glfwGetCursorPos(window, &xMousePos, &yMousePos);
-        //std::cout << xMousePos << " : " << yMousePos << std::endl;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
