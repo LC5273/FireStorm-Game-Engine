@@ -33,6 +33,22 @@
 
 #define what_is(x) std::cerr << #x << " is " << x << std::endl;
 
+float wing1[]{
+    0.10f, 0.05f,
+    0.10f, 0.15f,
+    0.30f, 0.10f
+};
+float wing2[]{
+    0.10f, 0.05f,
+    0.10f, 0.15f,
+    0.30f, 0.10f
+};
+float body[]{
+    0.05f, 0.05f,
+    0.05f, 0.15f,
+    0.10f, 0.20f
+};
+
 float texture_pos[] = {
     0.00f, 0.00f,
     0.00f, 0.25f,
@@ -47,9 +63,6 @@ float texture_poz[] = {
     1.00f, 0.00f
 };
 bool movement = false;
-
-std::vector<Laser> projectiles;
-std::vector<Enemy> enemy;
 
 int width, height;
 
@@ -140,43 +153,7 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
                     else if (action == GLFW_RELEASE)
                         directions[3] = 0;
                 }
-
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-        Laser laser(texture_pos, 0.02f, 0.15f);
-        projectiles.push_back(laser);
-    }
         //std::cout << char(7);
-}
-
-void render_projectiles(std::vector<Laser>& projectiles, std::vector<Enemy>& enemy) {
-    for (int i = 0; i < projectiles.size(); ++i) {
-        projectiles[i].travel();
-        projectiles[i].bind();
-        drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
-
-        for(int j = 0; j < enemy.size(); ++j) {
-            if (projectiles[i].collision(enemy[j].position)) {
-                projectiles.erase(projectiles.begin() + i);
-                enemy.erase(enemy.begin() + j);
-            }
-            /*
-            else if (!projectiles[i].valid()) {
-                projectiles.erase(projectiles.begin() + i);
-                std::cout << "laser deleted";
-            }
-            */
-        }
-        if (i < projectiles.size() && !projectiles[i].valid()) {
-            projectiles.erase(projectiles.begin() + i);
-        }
-    }
-}
-
-void render_enemies(const std::vector<Enemy>& enemy) {
-    for (int i(0); i < enemy.size(); ++i) {
-        enemy[i].bind();
-        drawCall_quad(enemy[i].enemy_sprite, enemy[i].enemy_ibo);
-    }
 }
 
 void pos_update() 
@@ -272,6 +249,18 @@ int main()
         1.0f, 1.0f, 1.0f, 1.0f
     };
 
+    float color_red[]{
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f
+    };
+
+    float color_brown[] { //3rd should be 0
+        0.6f, 0.3f, 0.1f, 1.0f,
+        0.6f, 0.3f, 0.1f, 1.0f,
+        0.6f, 0.3f, 0.1f, 1.0f
+    };
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -307,32 +296,71 @@ int main()
     background_shader.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
     background_shader.bind();
 
-    Texture background_texture("Textures/background.png");
+    Texture background_texture("Textures/background_duck.png");
     background_texture.bind();
 
     background_shader.uniform1i("texture1", 0);
     
-    //Spaceship
-    VertexArray spaceship_sprite;
-    Buffer* spaceship_coord_vbo1 = new Buffer(texture_pos, 8 * 2, 2);
-    Buffer* spaceship_coord_vbo2 = new Buffer(texture_poz, 8 * 2, 2);
-    IndexBuffer spaceship_ibo(texture_indices, 6);
+    // Duck body
+    VertexArray duck_wing1_sprite, duck_wing2_sprite, duck_body_sprite;
+    Buffer* duck_wing1_vbo1 = new Buffer(wing1, 6 * 2, 2);
+    Buffer* duck_wing1_vbo2 = new Buffer(color_brown, 4 * 3, 4);
+    Buffer* duck_wing2_vbo1 = new Buffer(wing2, 8 * 2, 2);
+    Buffer* duck_wing2_vbo2 = new Buffer(color_brown, 4 * 3, 4);
+    Buffer* duck_body_vbo1 = new Buffer(body, 3 * 2, 2);
+    Buffer* duck_body_vbo2 = new Buffer(color_red, 4 * 3, 4);
+    IndexBuffer duck_wing1_ibo(indices1, 3);
+    IndexBuffer duck_wing2_ibo(indices1, 3);
+    IndexBuffer duck_body_ibo(indices1, 3);
 
-    spaceship_sprite.addBuffer(spaceship_coord_vbo1, 0);
-    spaceship_sprite.addBuffer(spaceship_coord_vbo2, 2);
+    // wing 1
+    duck_wing1_sprite.addBuffer(duck_wing1_vbo1, 0);
+    duck_wing1_sprite.addBuffer(duck_wing1_vbo2, 1);
 
-    spaceship_sprite.bind();
-    spaceship_ibo.bind();
+    duck_wing1_sprite.bind();
+    duck_wing1_ibo.bind();
+
+    Shader duck_wing1;
+    //duck_wing1.createShader("Shaders/duck_wing1_vert.shader", "Shaders/duck_wing1_frag.shader");
+
+    // wing 2
+    duck_wing2_sprite.addBuffer(duck_wing2_vbo1, 0);
+    duck_wing2_sprite.addBuffer(duck_wing2_vbo2, 1);
+
+    Shader duck_wing2;
+    //duck_wing2.createShader("Shaders/duck_wing2_vert.shader", "Shaders/duck_wing2_frag.shader");
+
+    // body
+    duck_body_sprite.addBuffer(duck_body_vbo1, 0);
+    duck_body_sprite.addBuffer(duck_body_vbo2, 1);
+
+    duck_body_sprite.bind();
+    duck_body_ibo.bind();
+
+    Shader duck_body;
+    duck_body.createShader("Shaders/duck_body_vert.shader", "Shaders/duck_body_frag.shader");
+    duck_body.bind();
+
+    // Duck head
+    VertexArray duck_sprite;
+    Buffer* duck_coord_vbo1 = new Buffer(texture_pos, 6 * 2, 2);
+    Buffer* duck_coord_vbo2 = new Buffer(texture_poz, 4 * 3, 2);
+    IndexBuffer duck_ibo(texture_indices, 6);
+
+    duck_sprite.addBuffer(duck_coord_vbo1, 0);
+    duck_sprite.addBuffer(duck_coord_vbo2, 2);
+
+    duck_sprite.bind();
+    duck_ibo.bind();
 
 
-    Shader spaceship_shader;
-    spaceship_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
-    spaceship_shader.bind();
+    Shader duck_shader;
+    duck_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
+    duck_shader.bind();
 
-    Texture spaceship_static_texture("Textures/spaceship.png");
-    Texture spaceship_dynamic_texture("Textures/spaceship_dynamic.png");
+    Texture duck_texture("Textures/duck_head_trans.png");
 
-    spaceship_shader.uniform1i("texture1", 0);
+    duck_shader.uniform1i("texture1", 0);
 
     //Custom mouse-following star
 
@@ -370,26 +398,6 @@ int main()
     //double x, y;
     //int width, height;
 
-    float p[8] = {
-        0.50f, 0.50f,
-        0.50f, 0.85f,
-        0.75f, 0.85f,
-        0.75f, 0.50f
-    };
-
-    float p2[8] = {
-        0.20f, 0.50f,
-        0.20f, 0.85f,
-        0.45f, 0.85f,
-        0.45f, 0.50f
-    };
-
-    Enemy e(p), e2(p2);
-    e.bind();
-    enemy.push_back(e);
-    e2.bind();
-    enemy.push_back(e2);
-
     Timer timer;
     float current_time(0.0f);
     unsigned int frames(0);
@@ -404,29 +412,33 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
-        spaceship_coord_vbo1->update(texture_pos, 8 * 2, 2);
-
+        // Background render
         background_texture.bind();
         background_shader.bind();
         drawCall_quad(background_sprite, background_ibo);
+        background_texture.unbind();
 
-        if (!movement)
-            spaceship_static_texture.bind();
-        else
-            spaceship_dynamic_texture.bind();
-
-        spaceship_shader.bind();
-        drawCall_quad(spaceship_sprite, spaceship_ibo);
+        // Duck wings
         
+        duck_wing1.bind();
+        drawCall_triangle(duck_wing1_sprite, duck_wing1_ibo);
+
+        duck_wing2.bind();
+        drawCall_triangle(duck_wing2_sprite, duck_wing2_ibo);
+        
+        duck_body.bind();
+        drawCall_triangle(duck_body_sprite, duck_body_ibo);
+        
+        // Duck head render
+        duck_texture.bind();
+        duck_shader.bind();
+        drawCall_quad(duck_sprite, duck_ibo);
         
         star_shader.bind();
         star_shader.uniform2f_mouse_pos(window, "light_pos");
         //drawCall_quad(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
-
-        render_enemies(enemy);
-        render_projectiles(projectiles, enemy);
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -448,7 +460,7 @@ int main()
     }
 
     background_shader.unbind();
-    spaceship_shader.unbind();
+    duck_shader.unbind();
     star_shader.unbind();
 
     glfwTerminate();

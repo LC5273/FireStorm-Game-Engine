@@ -56,6 +56,12 @@
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\duck_body_frag.shader" />
+    <None Include="Shaders\duck_body_vert.shader" />
+    <None Include="Shaders\duck_wing1_frag.shader" />
+    <None Include="Shaders\duck_wing1_vert.shader" />
+    <None Include="Shaders\duck_wing2_frag.shader" />
+    <None Include="Shaders\duck_wing2_vert.shader" />
     <None Include="Shaders\enemy_texture_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\frag.shader" />

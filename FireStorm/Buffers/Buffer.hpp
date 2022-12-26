@@ -8,7 +8,7 @@ class Buffer
 {
 private:
 	GLuint id;
-	GLuint nr_of_elements;
+	GLuint nr_of_elements_per_obj;
 public:
 	Buffer();
 	Buffer(GLfloat* data, GLsizei count, GLuint nr_of_elements);

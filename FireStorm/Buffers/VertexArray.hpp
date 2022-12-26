@@ -14,7 +14,7 @@ public:
 
 	//VertexArray& operator=(const VertexArray& vao);
 
-	void addBuffer(Buffer* _buffer, GLuint index); //index coresponds to the location value of the shaders
+	void addBuffer(Buffer* buffer, GLuint index); //index coresponds to the location value of the shaders
 
 	GLuint getID() const noexcept;
 

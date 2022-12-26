@@ -158,6 +158,12 @@
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\enemy_texture_frag.shader" />
+    <None Include="Shaders\duck_wing1_frag.shader" />
+    <None Include="Shaders\duck_wing1_vert.shader" />
+    <None Include="Shaders\duck_body_frag.shader" />
+    <None Include="Shaders\duck_body_vert.shader" />
+    <None Include="Shaders\duck_wing2_frag.shader" />
+    <None Include="Shaders\duck_wing2_vert.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">
