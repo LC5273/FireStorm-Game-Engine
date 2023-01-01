@@ -1,9 +1,7 @@
 # Directories
-
 .vs/
 bin/
 bin_int/
 
 # Files
-
 *.user
