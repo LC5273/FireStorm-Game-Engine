@@ -10,4 +10,4 @@ void main() {
 	gl_Position = position;
 	pos = position;
 	colour = color;
-}
+};

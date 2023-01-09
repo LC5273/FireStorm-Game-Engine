@@ -34,19 +34,19 @@
 #define what_is(x) std::cerr << #x << " is " << x << std::endl;
 
 float wing1[]{
-    0.10f, 0.05f,
-    0.10f, 0.15f,
-    0.30f, 0.10f
+    -0.05f, 0.14f,
+    0.05f, 0.14f,
+    0.00f, 0.30f
 };
 float wing2[]{
-    0.10f, 0.05f,
-    0.10f, 0.15f,
-    0.30f, 0.10f
+    -0.05f, 0.14f,
+    0.05f, 0.14f,
+    0.00f, -0.02f
 };
 float body[]{
-    0.05f, 0.05f,
-    0.05f, 0.15f,
-    0.10f, 0.20f
+    -0.10f, 0.07f,
+    -0.10f, 0.21f,
+    0.15f, 0.14f
 };
 
 float texture_pos[] = {
@@ -301,16 +301,12 @@ int main()
 
     background_shader.uniform1i("texture1", 0);
     
-    // Duck body
-    VertexArray duck_wing1_sprite, duck_wing2_sprite;
-    Buffer* duck_wing1_vbo1 = new Buffer(wing1, 6 * 2, 2);
-    Buffer* duck_wing1_vbo2 = new Buffer(color_brown, 4 * 3, 4);
-    Buffer* duck_wing2_vbo1 = new Buffer(wing2, 8 * 2, 2);
-    Buffer* duck_wing2_vbo2 = new Buffer(color_brown, 4 * 3, 4);
-    IndexBuffer duck_wing1_ibo(indices1, 3);
-    IndexBuffer duck_wing2_ibo(indices1, 3);
-
     // wing 1
+    VertexArray duck_wing1_sprite;
+    Buffer* duck_wing1_vbo1 = new Buffer(wing1, 3 * 2, 2);
+    Buffer* duck_wing1_vbo2 = new Buffer(color_brown, 4 * 3, 4);
+    IndexBuffer duck_wing1_ibo(indices1, 3);
+
     duck_wing1_sprite.addBuffer(duck_wing1_vbo1, 0);
     duck_wing1_sprite.addBuffer(duck_wing1_vbo2, 1);
 
@@ -318,19 +314,24 @@ int main()
     duck_wing1_ibo.bind();
 
     Shader duck_wing1;
-    //duck_wing1.createShader("Shaders/duck_wing1_vert.shader", "Shaders/duck_wing1_frag.shader");
+    duck_wing1.createShader("Shaders/duck_wing1_vert.shader", "Shaders/duck_wing1_frag.shader");
 
     // wing 2
+    VertexArray duck_wing2_sprite;
+    Buffer* duck_wing2_vbo1 = new Buffer(wing2, 3 * 2, 2);
+    Buffer* duck_wing2_vbo2 = new Buffer(color_brown, 4 * 3, 4);
+    IndexBuffer duck_wing2_ibo(indices1, 3);
+
     duck_wing2_sprite.addBuffer(duck_wing2_vbo1, 0);
     duck_wing2_sprite.addBuffer(duck_wing2_vbo2, 1);
 
     Shader duck_wing2;
-    //duck_wing2.createShader("Shaders/duck_wing2_vert.shader", "Shaders/duck_wing2_frag.shader");
+    duck_wing2.createShader("Shaders/duck_wing2_vert.shader", "Shaders/duck_wing2_frag.shader");
 
     // body
     VertexArray duck_body_sprite;
     Buffer* duck_body_vbo1 = new Buffer(body, 3 * 2, 2);
-    Buffer* duck_body_vbo2 = new Buffer(color_red, 4 * 3, 4);
+    Buffer* duck_body_vbo2 = new Buffer(color_brown, 4 * 3, 4);
     IndexBuffer duck_body_ibo(indices1, 3);
 
     duck_body_sprite.addBuffer(duck_body_vbo1, 0);
@@ -340,7 +341,7 @@ int main()
     duck_body_ibo.bind();
 
     Shader duck_body;
-    duck_body.createShader("Shaders/duck_body_vert.shader", "Shaders/duck_body_frag.shader");
+    duck_body.createShader("Shaders/duck_body_vert1.shader", "Shaders/duck_body_frag1.shader");
     duck_body.bind();
 
     // Duck head
