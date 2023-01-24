@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Textures\Enemy.cpp" />
     <ClCompile Include="Textures\Spaceship.cpp" />
     <ClCompile Include="Textures\Laser.cpp" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Scenes\main_screen.hpp" />
     <ClInclude Include="Textures\Enemy.hpp" />
     <ClInclude Include="Textures\Spaceship.hpp" />
@@ -56,12 +58,8 @@
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\duck_body_frag.shader" />
-    <None Include="Shaders\duck_body_vert.shader" />
-    <None Include="Shaders\duck_wing1_frag.shader" />
-    <None Include="Shaders\duck_wing1_vert.shader" />
-    <None Include="Shaders\duck_wing2_frag.shader" />
-    <None Include="Shaders\duck_wing2_vert.shader" />
+    <None Include="Shaders\default.frag" />
+    <None Include="Shaders\default.vert" />
     <None Include="Shaders\enemy_texture_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\frag.shader" />
@@ -73,6 +71,8 @@
     <None Include="Shaders\laser_vert.shader" />
     <None Include="Shaders\star_frag_color.shader" />
     <None Include="Shaders\star_vert_color.shader" />
+    <None Include="Shaders\terrain_frag.shader" />
+    <None Include="Shaders\terrain_vert.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
     <None Include="Shaders\vert_background.shader" />
@@ -169,7 +169,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\glad</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

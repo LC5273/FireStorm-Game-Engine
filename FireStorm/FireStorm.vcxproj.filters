@@ -72,6 +72,9 @@
     <ClCompile Include="Textures\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\mat4.h">
@@ -140,6 +143,9 @@
     <ClInclude Include="Scenes\main_screen.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\vert.shader" />
@@ -158,12 +164,10 @@
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\enemy_texture_frag.shader" />
-    <None Include="Shaders\duck_wing1_frag.shader" />
-    <None Include="Shaders\duck_wing1_vert.shader" />
-    <None Include="Shaders\duck_body_frag.shader" />
-    <None Include="Shaders\duck_body_vert.shader" />
-    <None Include="Shaders\duck_wing2_frag.shader" />
-    <None Include="Shaders\duck_wing2_vert.shader" />
+    <None Include="Shaders\default.vert" />
+    <None Include="Shaders\default.frag" />
+    <None Include="Shaders\terrain_frag.shader" />
+    <None Include="Shaders\terrain_vert.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">

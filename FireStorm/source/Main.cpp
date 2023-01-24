@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+//#include <../../../Dependencies/glad/glad.h>
+//#include <../../../Dependencies/glm/glm.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -18,6 +20,7 @@
 #include "../Textures/Enemy.hpp"
 #include "../Utilities/Timer.hpp"
 #include "../Shaders/Shader.hpp"
+#include "../Camera/Camera.h"
 #include "../Math/maths.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"
@@ -33,20 +36,52 @@
 
 #define what_is(x) std::cerr << #x << " is " << x << std::endl;
 
-float wing1[]{
-    -0.05f, 0.14f,
-    0.05f, 0.14f,
-    0.00f, 0.30f
+GLfloat terrain_vertices[] = {
+    // Terrain
+    -50.0f, 0.0f, -50.0f, -50.0f, 1.0f, -50.0f,
+    -50.0f, 0.0f,  50.0f, -50.0f, 1.0f, 50.0f,
+     50.0f, 0.0f,  50.0f, 50.0f, 1.0f, 50.0f,
+     50.0f, 0.0f, -50.0f, 50.0f, 1.0f, -50.0f
 };
-float wing2[]{
-    -0.05f, 0.14f,
-    0.05f, 0.14f,
-    0.00f, -0.02f
+
+GLfloat terrain_vertices_lower[] = {
+    // Terrain
+    -0.50f, 0.0f, -0.50f, -0.50f, 0.10f, -0.50f,
+    -0.50f, 0.0f,  0.50f, -0.50f, 0.10f, 0.50f,
+     0.50f, 0.0f,  0.50f, 0.50f, 0.10f, 0.50f,
+     0.50f, 0.0f, -0.50f, 0.50f, 0.10f, -0.50f
 };
-float body[]{
-    -0.10f, 0.07f,
-    -0.10f, 0.21f,
-    0.15f, 0.14f
+
+GLuint terrain_indices[] =
+{
+    0, 1, 2,
+    0, 2, 3,
+    0, 4, 7,
+    0, 7, 3,
+    3, 7, 6,
+    3, 6, 2,
+    2, 6, 5,
+    2, 5, 1,
+    1, 5, 4,
+    1, 4, 0,
+    4, 5, 6,
+    4, 6, 7
+};
+
+GLuint terrain_indices_right[] =
+{
+    0, 1, 2,
+    1, 2, 3,
+    2, 3, 4,
+    3, 4, 5,
+    4, 5, 6,
+    5, 6, 7,
+    6, 7, 0,
+    7, 0, 1,
+    1, 3, 7,
+    3, 7, 5,
+    0, 2, 6,
+    2, 6, 4
 };
 
 float texture_pos[] = {
@@ -255,6 +290,12 @@ int main()
         1.0f, 0.0f, 0.0f, 1.0f
     };
 
+    float color_green[]{
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f
+    };
+
     float color_brown[] { //3rd should be 0
         0.6f, 0.3f, 0.1f, 1.0f,
         0.6f, 0.3f, 0.1f, 1.0f,
@@ -278,6 +319,8 @@ int main()
         1.00f, 0.00f
     };
 
+    // Background
+
     GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
 
     VertexArray background_sprite;
@@ -300,72 +343,37 @@ int main()
     background_texture.bind();
 
     background_shader.uniform1i("texture1", 0);
-    
-    // wing 1
-    VertexArray duck_wing1_sprite;
-    Buffer* duck_wing1_vbo1 = new Buffer(wing1, 3 * 2, 2);
-    Buffer* duck_wing1_vbo2 = new Buffer(color_brown, 4 * 3, 4);
-    IndexBuffer duck_wing1_ibo(indices1, 3);
 
-    duck_wing1_sprite.addBuffer(duck_wing1_vbo1, 0);
-    duck_wing1_sprite.addBuffer(duck_wing1_vbo2, 1);
+    // Terrain
+    float terrain_coord[] = { // although we might not need it
+        0.00f, 0.00f,
+        0.00f, 1.00f,
+        1.00f, 1.00f,
+        1.00f, 0.00f
+    };
 
-    duck_wing1_sprite.bind();
-    duck_wing1_ibo.bind();
+    //GLuint terrain_indices[] = { 0, 1, 2,  1, 2, 3 };
+    GLuint terrain_indices[] = { 0, 2, 4,  2, 4, 6};
 
-    Shader duck_wing1;
-    duck_wing1.createShader("Shaders/duck_wing1_vert.shader", "Shaders/duck_wing1_frag.shader");
+    VertexArray terrain_sprite;
+    Buffer* terrain_vbo1 = new Buffer(terrain_vertices, 8 * 3, 3);
+    Buffer* terrain_vbo2 = new Buffer(color_green, 3 * 4, 4);
+    IndexBuffer terrain_ibo(terrain_indices_right, 36);
 
-    // wing 2
-    VertexArray duck_wing2_sprite;
-    Buffer* duck_wing2_vbo1 = new Buffer(wing2, 3 * 2, 2);
-    Buffer* duck_wing2_vbo2 = new Buffer(color_brown, 4 * 3, 4);
-    IndexBuffer duck_wing2_ibo(indices1, 3);
+    terrain_sprite.addBuffer(terrain_vbo1, 0);
+    terrain_sprite.addBuffer(terrain_vbo2, 1);
 
-    duck_wing2_sprite.addBuffer(duck_wing2_vbo1, 0);
-    duck_wing2_sprite.addBuffer(duck_wing2_vbo2, 1);
+    terrain_sprite.bind();
+    terrain_ibo.bind();
 
-    Shader duck_wing2;
-    duck_wing2.createShader("Shaders/duck_wing2_vert.shader", "Shaders/duck_wing2_frag.shader");
+    Shader terrain_shader;
+    terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
+    terrain_shader.bind();
 
-    // body
-    VertexArray duck_body_sprite;
-    Buffer* duck_body_vbo1 = new Buffer(body, 3 * 2, 2);
-    Buffer* duck_body_vbo2 = new Buffer(color_brown, 4 * 3, 4);
-    IndexBuffer duck_body_ibo(indices1, 3);
+    //Texture terrain_texture("Textures/background_duck.png");
+    //terrain_texture.bind();
 
-    duck_body_sprite.addBuffer(duck_body_vbo1, 0);
-    duck_body_sprite.addBuffer(duck_body_vbo2, 1);
-
-    duck_body_sprite.bind();
-    duck_body_ibo.bind();
-
-    Shader duck_body;
-    duck_body.createShader("Shaders/duck_body_vert1.shader", "Shaders/duck_body_frag1.shader");
-    duck_body.bind();
-
-    // Duck head
-    VertexArray duck_sprite;
-    Buffer* duck_coord_vbo1 = new Buffer(texture_pos, 6 * 2, 2);
-    Buffer* duck_coord_vbo2 = new Buffer(texture_poz, 4 * 3, 2);
-    IndexBuffer duck_ibo(texture_indices, 6);
-
-    duck_sprite.addBuffer(duck_coord_vbo1, 0);
-    duck_sprite.addBuffer(duck_coord_vbo2, 2);
-
-    duck_sprite.bind();
-    duck_ibo.bind();
-
-
-    Shader duck_shader;
-    duck_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
-    duck_shader.bind();
-
-    Texture duck_texture("Textures/duck_head_trans.png");
-
-    duck_shader.uniform1i("texture1", 0);
-
-    //Custom mouse-following star
+    // Custom mouse-following star
 
     float star_pos[] = {
         -1.00f, -1.00f,
@@ -398,8 +406,8 @@ int main()
     star_shader.createShader("Shaders/star_vert_color.shader", "Shaders/star_frag_color.shader");
     star_shader.bind();
 
-    //double x, y;
-    //int width, height;
+    // Camera
+    Camera camera(640, 480, glm::vec3(0.0f, 0.0f, 2.0f));
 
     Timer timer;
     float current_time(0.0f);
@@ -410,37 +418,44 @@ int main()
     //Main screen
     main_screen(window);
 
+    GLfloat camera_mat4[16];
+
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
+        // Handles camera inputs
+        camera.Inputs(window);
+        // Updates and exports the camera matrix to the Vertex Shader
+        camera.updateMatrix(45.0f, 0.1f, 100.0f);
+
         // Background render
+        /*
         background_texture.bind();
         background_shader.bind();
         drawCall_quad(background_sprite, background_ibo);
         background_texture.unbind();
+        */
 
-        // Duck wings
-        duck_wing1.bind();
-        drawCall_triangle(duck_wing1_sprite, duck_wing1_ibo);
+        // Terrain Render
+        terrain_shader.bind();
+        camera.Matrix(terrain_shader, "camMatrix");
+        drawCall_cube(terrain_sprite, terrain_ibo);
 
-        duck_wing2.bind();
-        drawCall_triangle(duck_wing2_sprite, duck_wing2_ibo);
+        //std::cout << camera.Position.x << ' ' << camera.Position.y << ' ' << camera.Position.z << std::endl;
         
-        duck_body.bind();
-        drawCall_triangle(duck_body_sprite, duck_body_ibo);
-        
-        // Duck head render
-        duck_texture.bind();
-        duck_shader.bind();
-        drawCall_quad(duck_sprite, duck_ibo);
-        
+
+        // Star
+        /*
         star_shader.bind();
         star_shader.uniform2f_mouse_pos(window, "light_pos");
         //drawCall_quad(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
+        */
 
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update();
@@ -462,7 +477,6 @@ int main()
     }
 
     background_shader.unbind();
-    duck_shader.unbind();
     star_shader.unbind();
 
     glfwTerminate();
