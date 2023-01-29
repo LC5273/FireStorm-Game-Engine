@@ -14,6 +14,8 @@
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Textures\Car.cpp" />
+    <ClCompile Include="Textures\roadSegment.cpp" />
     <ClCompile Include="Textures\Enemy.cpp" />
     <ClCompile Include="Textures\Spaceship.cpp" />
     <ClCompile Include="Textures\Laser.cpp" />
@@ -36,6 +38,10 @@
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Textures\Car.hpp" />
+    <ClInclude Include="Data\colours.hpp" />
+    <ClInclude Include="Data\coords.hpp" />
+    <ClInclude Include="Textures\roadSegment.hpp" />
     <ClInclude Include="Scenes\main_screen.hpp" />
     <ClInclude Include="Textures\Enemy.hpp" />
     <ClInclude Include="Textures\Spaceship.hpp" />
@@ -69,6 +75,8 @@
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\laser_vert.shader" />
+    <None Include="Shaders\road_frag.shader" />
+    <None Include="Shaders\road_vert.shader" />
     <None Include="Shaders\star_frag_color.shader" />
     <None Include="Shaders\star_vert_color.shader" />
     <None Include="Shaders\terrain_frag.shader" />
@@ -81,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\background.png" />
+    <Image Include="Textures\background_duck.png" />
+    <Image Include="Textures\duck_head_trans.png" />
     <Image Include="Textures\enemy-spaceship-sprite-hd-full.png" />
     <Image Include="Textures\enemy_attacker.png" />
     <Image Include="Textures\enemy_lurker.png" />

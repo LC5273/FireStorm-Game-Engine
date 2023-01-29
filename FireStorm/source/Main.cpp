@@ -23,6 +23,10 @@
 #include "../Camera/Camera.h"
 #include "../Math/maths.hpp"
 
+#include "../Textures/roadSegment.hpp"
+#include "../Data/coords.hpp"
+#include "../Data/colours.hpp"
+
 #include "../Utilities/Renderer_functions.hpp"
 #include "../Utilities/GPU_enablement.hpp"
 
@@ -42,6 +46,14 @@ GLfloat terrain_vertices[] = {
     -50.0f, 0.0f,  50.0f, -50.0f, 1.0f, 50.0f,
      50.0f, 0.0f,  50.0f, 50.0f, 1.0f, 50.0f,
      50.0f, 0.0f, -50.0f, 50.0f, 1.0f, -50.0f
+};
+
+GLfloat road_vertices[] = {
+    // Terrain
+    -30.0f, 1.0f, -20.0f, -30.0f, 1.1f, -20.0f,
+    -30.0f, 1.0f,  20.0f, -30.0f, 1.1f,  20.0f,
+     30.0f, 1.0f,  20.0f,  30.0f, 1.1f,  20.0f,
+     30.0f, 1.0f, -20.0f,  30.0f, 1.1f, -20.0f
 };
 
 GLfloat terrain_vertices_lower[] = {
@@ -136,69 +148,6 @@ void move_coords(float* texture_pos, int direction, float value) {
     }
 }
 
-bool directions[4] = {0};
-
-void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_W) {
-        if (action == GLFW_PRESS) {
-            directions[0] = 1;
-            
-            texture_pos[0] -= 0.03f;
-            texture_pos[2] -= 0.03f;
-            texture_pos[4] += 0.03f;
-            texture_pos[6] += 0.03f;
-            
-            texture_pos[1] -= 0.10f;
-            texture_pos[7] -= 0.10f;
-
-            movement = true;
-        }
-        else if (action == GLFW_RELEASE) {
-            directions[0] = 0;
-            
-            texture_pos[0] += 0.03f;
-            texture_pos[2] += 0.03f;
-            texture_pos[4] -= 0.03f;
-            texture_pos[6] -= 0.03f;
-            
-            texture_pos[1] += 0.10f;
-            texture_pos[7] += 0.10f;
-
-            movement = false;
-        }
-    }
-    else
-        if (key == GLFW_KEY_A) {
-            if (action == GLFW_PRESS)
-                directions[1] = 1;
-            else if (action == GLFW_RELEASE)
-                directions[1] = 0;
-        }
-        else
-            if (key == GLFW_KEY_S) {
-                if (action == GLFW_PRESS)
-                    directions[2] = 1;
-                else if (action == GLFW_RELEASE)
-                    directions[2] = 0;
-            }
-            else
-                if (key == GLFW_KEY_D) {
-                    if (action == GLFW_PRESS)
-                        directions[3] = 1;
-                    else if (action == GLFW_RELEASE)
-                        directions[3] = 0;
-                }
-        //std::cout << char(7);
-}
-
-void pos_update() 
-{
-    if(directions[0]) move_coords(texture_pos, 0, 0.0001);
-    if(directions[1]) move_coords(texture_pos, 1, 0.0001);
-    if(directions[2]) move_coords(texture_pos, 2, 0.0001);
-    if(directions[3]) move_coords(texture_pos, 3, 0.0001);
-}
-
 
 int main()
 {
@@ -266,34 +215,26 @@ int main()
     GLuint indices1[] = { 0, 1, 2 };
     GLuint indices2[] = { 3, 4, 5 };
 
-    float colorA[] {
-        0.8f, 0.5f, 1.0f, 1.0f,
-        0.8f, 0.5f, 1.0f, 1.0f,
-        0.8f, 0.5f, 1.0f, 1.0f
-    };
-
-    float colorB[] {
-        1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 0.0f, 1.0f
-    };
-
-    float color_white[] {
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f
-    };
-
-    float color_red[]{
-        1.0f, 0.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 0.0f, 1.0f
-    };
-
     float color_green[]{
         0.0f, 1.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    float color_grey1[]{
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f
     };
 
     float color_brown[] { //3rd should be 0
@@ -357,7 +298,7 @@ int main()
 
     VertexArray terrain_sprite;
     Buffer* terrain_vbo1 = new Buffer(terrain_vertices, 8 * 3, 3);
-    Buffer* terrain_vbo2 = new Buffer(color_green, 3 * 4, 4);
+    Buffer* terrain_vbo2 = new Buffer(color_green, 8 * 4, 4);
     IndexBuffer terrain_ibo(terrain_indices_right, 36);
 
     terrain_sprite.addBuffer(terrain_vbo1, 0);
@@ -370,11 +311,13 @@ int main()
     terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
     terrain_shader.bind();
 
-    //Texture terrain_texture("Textures/background_duck.png");
-    //terrain_texture.bind();
+    // Road
+    std::vector<roadSegment> road;
+    road.reserve(roadSegments);
+
+    roadSegment road1(roadSegment1);
 
     // Custom mouse-following star
-
     float star_pos[] = {
         -1.00f, -1.00f,
         -1.00f,  1.00f,
@@ -423,7 +366,7 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         //glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        glClearColor(0.1f, 0.7f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
@@ -445,8 +388,10 @@ int main()
         camera.Matrix(terrain_shader, "camMatrix");
         drawCall_cube(terrain_sprite, terrain_ibo);
 
-        //std::cout << camera.Position.x << ' ' << camera.Position.y << ' ' << camera.Position.z << std::endl;
-        
+        // Road
+        road1.bind();
+        camera.Matrix(road1.road_shader, "camMatrix");
+        drawCall_cube(road1.getSprite(), road1.getIbo());
 
         // Star
         /*
@@ -456,9 +401,6 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
         */
-
-        glfwSetKeyCallback(window, key_callback_WASD);
-        pos_update();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
