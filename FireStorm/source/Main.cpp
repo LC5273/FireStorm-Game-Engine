@@ -24,6 +24,7 @@
 #include "../Math/maths.hpp"
 
 #include "../Textures/roadSegment.hpp"
+#include "../Textures/Car.hpp"
 #include "../Data/coords.hpp"
 #include "../Data/colours.hpp"
 
@@ -316,6 +317,22 @@ int main()
     road.reserve(roadSegments);
 
     roadSegment road1(roadSegment1);
+    roadSegment road2(roadSegment2);
+    roadSegment road3(roadSegment3);
+    roadSegment road4(roadSegment4);
+    roadSegment road5(roadSegment5);
+    roadSegment road6(roadSegment6);
+    roadSegment road7(roadSegment7);
+    roadSegment road8(roadSegment8);
+    roadSegment road9(roadSegment9);
+    roadSegment road10(roadSegment10);
+    roadSegment road11(roadSegment11);
+    roadSegment road12(roadSegment12);
+    roadSegment road13(roadSegment13);
+
+    Car car(carCoord);
+
+    //road.emplace_back(road1);
 
     // Custom mouse-following star
     float star_pos[] = {
@@ -350,7 +367,8 @@ int main()
     star_shader.bind();
 
     // Camera
-    Camera camera(640, 480, glm::vec3(0.0f, 0.0f, 2.0f));
+    //Camera camera(640, 480, glm::vec3(0.0f, 0.0f, 2.0f));
+    Camera camera(640, 480, glm::vec3(-39.0f, 2.0f, -44.7f));
 
     Timer timer;
     float current_time(0.0f);
@@ -393,6 +411,57 @@ int main()
         camera.Matrix(road1.road_shader, "camMatrix");
         drawCall_cube(road1.getSprite(), road1.getIbo());
 
+        road2.bind();
+        camera.Matrix(road2.road_shader, "camMatrix");
+        drawCall_cube(road2.getSprite(), road2.getIbo());
+
+        road3.bind();
+        camera.Matrix(road3.road_shader, "camMatrix");
+        drawCall_cube(road3.getSprite(), road3.getIbo());
+
+        road4.bind();
+        camera.Matrix(road4.road_shader, "camMatrix");
+        drawCall_cube(road4.getSprite(), road4.getIbo());
+
+        road5.bind();
+        camera.Matrix(road5.road_shader, "camMatrix");
+        drawCall_cube(road5.getSprite(), road5.getIbo());
+
+        road6.bind();
+        camera.Matrix(road6.road_shader, "camMatrix");
+        drawCall_cube(road6.getSprite(), road6.getIbo());
+
+        road7.bind();
+        camera.Matrix(road7.road_shader, "camMatrix");
+        drawCall_cube(road7.getSprite(), road7.getIbo());
+
+        road8.bind();
+        camera.Matrix(road8.road_shader, "camMatrix");
+        drawCall_cube(road8.getSprite(), road8.getIbo());
+
+        road9.bind();
+        camera.Matrix(road9.road_shader, "camMatrix");
+        drawCall_cube(road9.getSprite(), road9.getIbo());
+
+        road10.bind();
+        camera.Matrix(road10.road_shader, "camMatrix");
+        drawCall_cube(road10.getSprite(), road10.getIbo());
+
+        road11.bind();
+        camera.Matrix(road11.road_shader, "camMatrix");
+        drawCall_cube(road11.getSprite(), road11.getIbo());
+
+        road12.bind();
+        camera.Matrix(road12.road_shader, "camMatrix");
+        drawCall_cube(road12.getSprite(), road12.getIbo());
+
+        road13.bind();
+        camera.Matrix(road10.road_shader, "camMatrix");
+        drawCall_cube(road10.getSprite(), road10.getIbo());
+
+        car.bind();
+        camera.Matrix(car.car_shader, "camMatrix");
+        drawCall_cube(car.getSprite(), car.getIbo());
         // Star
         /*
         star_shader.bind();
