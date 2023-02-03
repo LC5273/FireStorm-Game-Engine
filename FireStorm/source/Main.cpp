@@ -110,9 +110,40 @@ float texture_poz[] = {
     1.00f, 1.00f,
     1.00f, 0.00f
 };
-bool movement = false;
 
 int width, height;
+bool directions[4] {0};
+
+void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_W) {
+        if (action == GLFW_PRESS)
+            directions[0] = 1;
+        else if (action == GLFW_RELEASE)
+            directions[0] = 0;
+    }
+    else
+        if (key == GLFW_KEY_A) {
+            if (action == GLFW_PRESS)
+                directions[1] = 1;
+            else if (action == GLFW_RELEASE)
+                directions[1] = 0;
+        }
+        else
+            if (key == GLFW_KEY_S) {
+                if (action == GLFW_PRESS)
+                    directions[2] = 1;
+                else if (action == GLFW_RELEASE)
+                    directions[2] = 0;
+            }
+            else
+                if (key == GLFW_KEY_D) {
+                    if (action == GLFW_PRESS)
+                        directions[3] = 1;
+                    else if (action == GLFW_RELEASE)
+                        directions[3] = 0;
+                }
+    //std::cout << char(7);
+}
 
 void move_coords(float* texture_pos, int direction, float value) {
     // 0 - up
@@ -123,30 +154,54 @@ void move_coords(float* texture_pos, int direction, float value) {
     switch (direction) 
     {
     case 0:
-        texture_pos[1] += value;
+        texture_pos[0] += value;
         texture_pos[3] += value;
-        texture_pos[5] += value;
-        texture_pos[7] += value;
+        texture_pos[6] += value;
+        texture_pos[9] += value;
+        texture_pos[12] += value;
+        texture_pos[15] += value;
+        texture_pos[18] += value;
+        texture_pos[21] += value;
         break;
     case 1:
-        texture_pos[0] -= value;
         texture_pos[2] -= value;
-        texture_pos[4] -= value;
-        texture_pos[6] -= value;
+        texture_pos[5] -= value;
+        texture_pos[8] -= value;
+        texture_pos[11] -= value;
+        texture_pos[14] -= value;
+        texture_pos[17] -= value;
+        texture_pos[20] -= value;
+        texture_pos[23] -= value;
         break;
     case 2:
-        texture_pos[1] -= value;
+        texture_pos[0] -= value;
         texture_pos[3] -= value;
-        texture_pos[5] -= value;
-        texture_pos[7] -= value;
+        texture_pos[6] -= value;
+        texture_pos[9] -= value;
+        texture_pos[12] -= value;
+        texture_pos[15] -= value;
+        texture_pos[18] -= value;
+        texture_pos[21] -= value;
         break;
     case 3:
-        texture_pos[0] += value;
         texture_pos[2] += value;
-        texture_pos[4] += value;
-        texture_pos[6] += value;
+        texture_pos[5] += value;
+        texture_pos[8] += value;
+        texture_pos[11] += value;
+        texture_pos[14] += value;
+        texture_pos[17] += value;
+        texture_pos[20] += value;
+        texture_pos[23] += value;
         break;
     }
+}
+
+void pos_update(float* texture_coord)
+{
+    if (directions[0]) move_coords(texture_coord, 0, 0.0005);
+    if (directions[1]) move_coords(texture_coord, 1, 0.0005);
+    if (directions[2]) move_coords(texture_coord, 2, 0.0005);
+    if (directions[3]) move_coords(texture_coord, 3, 0.0005);
 }
 
 
@@ -470,6 +525,10 @@ int main()
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
         */
+
+        glfwSetKeyCallback(window, key_callback_WASD);
+        pos_update(car.coord);
+        car.updateCoordVbo();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

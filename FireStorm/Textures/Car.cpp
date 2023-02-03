@@ -28,6 +28,8 @@ GLuint car_indices_right[] =
 };
 
 Car::Car(float coord[24]) {
+    for (int i(0); i < 24; ++i)
+        this->coord[i] = coord[i];
 
     car_coord_vbo1 = new Buffer(coord, 8 * 3, 3);
     car_coord_vbo2 = new Buffer(color_purple, 8 * 4, 4);
@@ -40,6 +42,10 @@ Car::Car(float coord[24]) {
     car_shader.createShader("Shaders/road_vert.shader", "Shaders/road_frag.shader");
     car_shader.bind();
 
+}
+
+void Car::updateCoordVbo() {
+    car_coord_vbo1->update(this->coord, 8 * 3, 3);
 }
 
 void Car::bind() const noexcept {
