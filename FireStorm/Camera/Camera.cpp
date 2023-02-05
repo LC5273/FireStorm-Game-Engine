@@ -75,7 +75,12 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		Position.z -= 0.0005;
+		//Position.z -= 0.0005;
+
+		float rotY = 0.001;
+
+		// Rotates the Orientation left and right
+		Orientation = glm::rotate(Orientation, glm::radians(rotY), Up);
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
@@ -83,7 +88,13 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		Position.z += 0.0005;
+		//Position.z += 0.0005;
+
+		float rotY = 0.001;
+
+		// Rotates the Orientation left and right
+		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
+
 	}
 
 	// Handles mouse inputs

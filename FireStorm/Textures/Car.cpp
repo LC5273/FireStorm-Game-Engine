@@ -1,6 +1,6 @@
 #include "Car.hpp"
 
-float color_purple[]{
+float color_purple[] {
     0.8f, 0.0f, 0.8f, 1.0f,
     0.8f, 0.0f, 0.8f, 1.0f,
     0.8f, 0.0f, 0.8f, 1.0f,
@@ -46,6 +46,11 @@ Car::Car(float coord[24]) {
 
 void Car::updateCoordVbo() {
     car_coord_vbo1->update(this->coord, 8 * 3, 3);
+}
+
+void Car::updateMatrix(glm::mat4 matrix) {
+    GLuint modelMatrixLoc = glGetUniformLocation(car_shader.getID(), "model"); // memory leak
+    glUniformMatrix4fv(modelMatrixLoc, 1, false, glm::value_ptr(matrix));
 }
 
 void Car::bind() const noexcept {
