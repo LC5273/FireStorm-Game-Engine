@@ -188,6 +188,7 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[21] += value;
         break;
     case 1:
+        /*
         texture_pos[2] -= value;
         texture_pos[5] -= value;
         texture_pos[8] -= value;
@@ -196,6 +197,7 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[17] -= value;
         texture_pos[20] -= value;
         texture_pos[23] -= value;
+        */
         break;
     case 2:
         texture_pos[0] -= value;
@@ -208,6 +210,7 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[21] -= value;
         break;
     case 3:
+        /*
         texture_pos[2] += value;
         texture_pos[5] += value;
         texture_pos[8] += value;
@@ -216,6 +219,7 @@ void move_coords(float* texture_pos, int direction, float value) {
         texture_pos[17] += value;
         texture_pos[20] += value;
         texture_pos[23] += value;
+        */
         break;
     }
 }
@@ -224,8 +228,7 @@ void pos_update(Car& car, float* texture_coord)
 {
     if (directions[0]) move_coords(texture_coord, 0, 0.0005);
     if (directions[1]) {
-        angle += 0.0001f;
-        rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+        angle += 0.000005f;
 
         float x = (texture_coord[0] + texture_coord[12]) / 2;
         float y = (texture_coord[1] + texture_coord[5]) / 2;
@@ -249,6 +252,16 @@ void pos_update(Car& car, float* texture_coord)
         
         modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
 
+        
+        for (int i(0); i < 24; i += 3) {
+            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+            coordSeg = modelMatrix * coordSeg;
+            car.coord[i] = coordSeg.x;
+            car.coord[i+1] = coordSeg.y;
+            car.coord[i+2] = coordSeg.z;
+        }
+        
+
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
         //modelMatrix = rotation * modelMatrix;
@@ -256,8 +269,7 @@ void pos_update(Car& car, float* texture_coord)
     }
     if (directions[2]) move_coords(texture_coord, 2, 0.0005);
     if (directions[3]) {
-        angle -= 0.0001f;
-        rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+        angle -= 0.000005f;
 
         float x = (texture_coord[0] + texture_coord[12]) / 2;
         float y = (texture_coord[1] + texture_coord[5]) / 2;
@@ -280,18 +292,31 @@ void pos_update(Car& car, float* texture_coord)
 
         modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
 
+        /*
         for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 4; ++j);
-                //std::cout << modelMatrix[i][j] << ' ';
+            for (int j = 0; j < 4; ++j)
+                std::cout << modelMatrix[i][j] << ' ';
         glm::vec4 finalcoord = glm::vec4(0.0f);
         finalcoord.x = texture_coord[0];
         finalcoord.y = texture_coord[1];
         finalcoord.z = texture_coord[2];
-
+        */
+        
+        for (int i(0); i < 24; i += 3) {
+            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+            coordSeg =  modelMatrix * coordSeg;
+            car.coord[i] = coordSeg.x;
+            car.coord[i + 1] = coordSeg.y;
+            car.coord[i + 2] = coordSeg.z;
+        }
+        
+        
+        /*
         finalcoord = finalcoord * modelMatrix;
         for (int i = 0; i < 4; ++i)
             std::cout << finalcoord[i] << ' ';
         std::cout << std::endl; // * with model anc update coords car
+        */
 
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
@@ -542,8 +567,7 @@ int main()
         // Updates and exports the camera matrix to the Vertex Shader
         camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
-        //car.updateMatrix(rotationMatrix);
-        car.updateMatrix(modelMatrix);
+        //car.updateMatrix(modelMatrix);
 
         // Background render
         /*
@@ -626,6 +650,8 @@ int main()
         glfwSetKeyCallback(window, key_callback_WASD);
         pos_update(car, car.coord);
         car.updateCoordVbo();
+
+        car.updateMatrix(modelMatrix);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
