@@ -32,7 +32,7 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 
 
 
-void Camera::Inputs(GLFWwindow* window)
+void Camera::Inputs(GLFWwindow* window, Car &car)
 {
 	/*
 	// Handles key inputs
@@ -69,9 +69,14 @@ void Camera::Inputs(GLFWwindow* window)
 		speed = 0.1f;
 	}
 	*/
+
+	Position.x = car.coord[0] - 0.3f;
+	Position.y = car.coord[1] + 1.0f;
+	Position.z = car.coord[2] + 0.3f;
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		Position.x += 0.0005;
+		//Position.x += 0.0005;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
@@ -84,7 +89,7 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		Position.x -= 0.0005;
+		//Position.x -= 0.0005;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{

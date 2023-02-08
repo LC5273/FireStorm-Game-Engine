@@ -1,5 +1,4 @@
-#ifndef CAMERA_CLASS_H
-#define CAMERA_CLASS_H
+#pragma once
 
 //#include <glad/glad.h>
 #include <GL/glew.h>
@@ -9,8 +8,8 @@
 #include <../../../Dependencies/glm/gtc/type_ptr.hpp>
 #include <../../../Dependencies/glm/gtx/rotate_vector.hpp>
 #include <../../../Dependencies/glm/gtx/vector_angle.hpp>
+#include "../Textures/Car.hpp"
 
-//#include "shaderClass.h"
 #include "../Shaders/Shader.hpp"
 
 class Camera
@@ -41,6 +40,5 @@ public:
 	// Exports the camera matrix to a shader
 	void Matrix(Shader& shader, const char* uniform);
 	// Handles camera inputs
-	void Inputs(GLFWwindow* window);
+	void Inputs(GLFWwindow* window, Car& car);
 };
-#endif

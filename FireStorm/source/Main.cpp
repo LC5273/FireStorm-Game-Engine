@@ -126,6 +126,7 @@ glm::vec3 centerOfObject = glm::vec3(-46.0f, 1.05f, -37.0f); // wrong
 
 int width, height;
 bool directions[4] {0};
+bool left(0), right(0);
 
 void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_W) {
@@ -138,8 +139,10 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
         if (key == GLFW_KEY_A) {
             if (action == GLFW_PRESS)
                 directions[1] = 1;
-            else if (action == GLFW_RELEASE)
+            else if (action == GLFW_RELEASE) {
                 directions[1] = 0;
+                left = 1;
+            }
         }
         else
             if (key == GLFW_KEY_S) {
@@ -152,8 +155,10 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
                 if (key == GLFW_KEY_D) {
                     if (action == GLFW_PRESS)
                         directions[3] = 1;
-                    else if (action == GLFW_RELEASE)
+                    else if (action == GLFW_RELEASE) {
                         directions[3] = 0;
+                        right = 1;
+                    }
                 }
     //std::cout << char(7);
 
@@ -228,7 +233,7 @@ void pos_update(Car& car, float* texture_coord)
 {
     if (directions[0]) move_coords(texture_coord, 0, 0.0005);
     if (directions[1]) {
-        angle += 0.000005f;
+        angle += 0.00005f;
 
         float x = (texture_coord[0] + texture_coord[12]) / 2;
         float y = (texture_coord[1] + texture_coord[5]) / 2;
@@ -252,7 +257,7 @@ void pos_update(Car& car, float* texture_coord)
         
         modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
 
-        
+        /*
         for (int i(0); i < 24; i += 3) {
             glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
             coordSeg = modelMatrix * coordSeg;
@@ -260,6 +265,7 @@ void pos_update(Car& car, float* texture_coord)
             car.coord[i+1] = coordSeg.y;
             car.coord[i+2] = coordSeg.z;
         }
+        */
         
 
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -269,7 +275,7 @@ void pos_update(Car& car, float* texture_coord)
     }
     if (directions[2]) move_coords(texture_coord, 2, 0.0005);
     if (directions[3]) {
-        angle -= 0.000005f;
+        angle -= 0.00005f;
 
         float x = (texture_coord[0] + texture_coord[12]) / 2;
         float y = (texture_coord[1] + texture_coord[5]) / 2;
@@ -301,7 +307,7 @@ void pos_update(Car& car, float* texture_coord)
         finalcoord.y = texture_coord[1];
         finalcoord.z = texture_coord[2];
         */
-        
+        /*
         for (int i(0); i < 24; i += 3) {
             glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
             coordSeg =  modelMatrix * coordSeg;
@@ -309,6 +315,7 @@ void pos_update(Car& car, float* texture_coord)
             car.coord[i + 1] = coordSeg.y;
             car.coord[i + 2] = coordSeg.z;
         }
+        */
         
         
         /*
@@ -322,6 +329,18 @@ void pos_update(Car& car, float* texture_coord)
         //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
         //modelMatrix = rotation * modelMatrix;
         //modelMatrix = modelMatrix * rotation;
+    }
+    if (left || right) {
+        for (int i(0); i < 24; i += 3) {
+            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+            coordSeg = modelMatrix * coordSeg;
+            car.coord[i] = coordSeg.x;
+            car.coord[i + 1] = coordSeg.y;
+            car.coord[i + 2] = coordSeg.z;
+        }
+
+        left = 0;
+        right = 0;
     }
 }
 
@@ -563,7 +582,7 @@ int main()
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
         // Handles camera inputs
-        camera.Inputs(window);
+        camera.Inputs(window, car);
         // Updates and exports the camera matrix to the Vertex Shader
         camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
@@ -648,10 +667,9 @@ int main()
         */
 
         glfwSetKeyCallback(window, key_callback_WASD);
+        car.updateMatrix(modelMatrix);
         pos_update(car, car.coord);
         car.updateCoordVbo();
-
-        car.updateMatrix(modelMatrix);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
