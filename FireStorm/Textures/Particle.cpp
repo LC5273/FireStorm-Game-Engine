@@ -255,13 +255,27 @@ Particle::Particle(float coord[720]) {
     speed = (rand() % 1000);
     speed /= 1000;
 
-    float x, y, z;
+    float x, y, z, k;
     x = (rand() % 100);
-    x /= 100000;
+    x /= 100;
     y = (rand() % 100);
-    y /= 100000;
+    y /= 100;
     z = (rand() % 100); 
-    z /= 100000;
+    z /= 100;
+
+    k = (rand() % 100);
+    if (k < 50)
+        x = 0.0f - x;
+
+    k = (rand() % 100);
+    if (k < 50)
+        y = 0.0f - y;
+
+    k = (rand() % 100);
+    if (k < 50)
+        z = 0.0f - z;
+
+
     direction = glm::vec3(x, y, z);
     centerOfObject = glm::vec3((ParticleCoord[104 * 3] + ParticleCoord[114 * 3]) / 2, (ParticleCoord[104 * 3 + 1] + ParticleCoord[114 * 3 + 1]) / 2, (ParticleCoord[104 * 3 + 2] + ParticleCoord[114 * 3 + 2]) / 2);
 

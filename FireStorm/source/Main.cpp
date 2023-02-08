@@ -121,6 +121,7 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
 void pos_update(Particle& particle, float* texture_coord)
 {
     particle.angle += 0.0005f;
+    particle.speed += 0.0005f;
 
     float x = (texture_coord[0] + texture_coord[12]) / 2;
     float y = (texture_coord[1] + texture_coord[5]) / 2;
@@ -136,7 +137,7 @@ void pos_update(Particle& particle, float* texture_coord)
 
     // Perform the rotation
     //glm::mat4 rotationMatrixX = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::mat4 rotationMatrixY = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 rotationMatrixY = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 1.0f, 0.0f));
     //glm::mat4 rotationMatrixZ = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 0.0f, 1.0f));
     //modelMatrix = modelMatrix * rotationMatrix;
 
@@ -145,10 +146,9 @@ void pos_update(Particle& particle, float* texture_coord)
     modelMatrix = modelMatrix * translationMatrix;
 
     // Translate the object in one direction
-    //glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x * particle.speed, particle.direction.y * particle.speed, particle.direction.z * particle.speed));
-    glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x, particle.direction.y, particle.direction.z));
+    glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x * particle.speed, particle.direction.y * particle.speed, particle.direction.z * particle.speed));
     //modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
-    modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    modelMatrix = finalTranslation * translationMatrixBack * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
     //modelMatrix = translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
     //modelMatrix = translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
 
