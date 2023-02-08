@@ -33,3 +33,11 @@ void drawCall_cube(const VertexArray& sprite, const IndexBuffer& ibo) {
 	ibo.unbind();
 	sprite.unbind();
 };
+
+void drawCall_particle(const VertexArray& sprite, const IndexBuffer& ibo) {
+	sprite.bind();
+	ibo.bind();
+	glDrawElements(GL_TRIANGLES, 1320, GL_UNSIGNED_INT, nullptr);
+	ibo.unbind();
+	sprite.unbind();
+};

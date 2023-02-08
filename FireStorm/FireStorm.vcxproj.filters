@@ -78,7 +78,7 @@
     <ClCompile Include="Textures\roadSegment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Textures\Car.cpp">
+    <ClCompile Include="Textures\Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,7 +161,7 @@
     <ClInclude Include="Data\colours.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Textures\Car.hpp">
+    <ClInclude Include="Textures\Particle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

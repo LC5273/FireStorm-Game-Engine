@@ -14,7 +14,7 @@
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
-    <ClCompile Include="Textures\Car.cpp" />
+    <ClCompile Include="Textures\Particle.cpp" />
     <ClCompile Include="Textures\roadSegment.cpp" />
     <ClCompile Include="Textures\Enemy.cpp" />
     <ClCompile Include="Textures\Spaceship.cpp" />
@@ -38,7 +38,7 @@
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
     <ClInclude Include="Camera\Camera.h" />
-    <ClInclude Include="Textures\Car.hpp" />
+    <ClInclude Include="Textures\Particle.hpp" />
     <ClInclude Include="Data\colours.hpp" />
     <ClInclude Include="Data\coords.hpp" />
     <ClInclude Include="Textures\roadSegment.hpp" />

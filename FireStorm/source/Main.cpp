@@ -24,8 +24,7 @@
 #include "../Camera/Camera.h"
 //#include "../Math/maths.hpp"
 
-#include "../Textures/roadSegment.hpp"
-#include "../Textures/Car.hpp"
+#include "../Textures/Particle.hpp"
 #include "../Data/coords.hpp"
 #include "../Data/colours.hpp"
 
@@ -50,38 +49,6 @@ GLfloat terrain_vertices[] = {
      50.0f, 0.0f, -50.0f, 50.0f, 1.0f, -50.0f
 };
 
-GLfloat road_vertices[] = {
-    // Terrain
-    -30.0f, 1.0f, -20.0f, -30.0f, 1.1f, -20.0f,
-    -30.0f, 1.0f,  20.0f, -30.0f, 1.1f,  20.0f,
-     30.0f, 1.0f,  20.0f,  30.0f, 1.1f,  20.0f,
-     30.0f, 1.0f, -20.0f,  30.0f, 1.1f, -20.0f
-};
-
-GLfloat terrain_vertices_lower[] = {
-    // Terrain
-    -0.50f, 0.0f, -0.50f, -0.50f, 0.10f, -0.50f,
-    -0.50f, 0.0f,  0.50f, -0.50f, 0.10f, 0.50f,
-     0.50f, 0.0f,  0.50f, 0.50f, 0.10f, 0.50f,
-     0.50f, 0.0f, -0.50f, 0.50f, 0.10f, -0.50f
-};
-
-GLuint terrain_indices[] =
-{
-    0, 1, 2,
-    0, 2, 3,
-    0, 4, 7,
-    0, 7, 3,
-    3, 7, 6,
-    3, 6, 2,
-    2, 6, 5,
-    2, 5, 1,
-    1, 5, 4,
-    1, 4, 0,
-    4, 5, 6,
-    4, 6, 7
-};
-
 GLuint terrain_indices_right[] =
 {
     0, 1, 2,
@@ -98,31 +65,8 @@ GLuint terrain_indices_right[] =
     2, 6, 4
 };
 
-float texture_pos[] = {
-    0.00f, 0.00f,
-    0.00f, 0.25f,
-    0.25f, 0.25f,
-    0.25f, 0.00f
-};
-
-float texture_poz[] = {
-    0.00f, 0.00f,
-    0.00f, 1.00f,
-    1.00f, 1.00f,
-    1.00f, 0.00f
-};
-
-// angle of rotation
-float angle = 0.0f;
-
-// rotation axis
-glm::vec3 axis(0.0f, 1.0f, 0.0f);
-
-// rotation matrix
-glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
-
 glm::mat4 modelMatrix = glm::mat4(1.0f);
-glm::vec3 centerOfObject = glm::vec3(-46.0f, 1.05f, -37.0f); // wrong
+glm::vec3 centerOfObject = glm::vec3((ParticleCoord[104 * 3] + ParticleCoord[114 * 3])/2, (ParticleCoord[104 * 3 + 1] + ParticleCoord[114 * 3 + 1])/2, (ParticleCoord[104 * 3 + 2] + ParticleCoord[114 * 3 + 2])/2);
 
 int width, height;
 bool directions[4] {0};
@@ -174,173 +118,106 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
     }
 }
 
-void move_coords(float* texture_pos, int direction, float value) {
-    // 0 - up
-    // 1 - left
-    // 2 - down
-    // 3 - right
-    
-    switch (direction) 
-    {
-    case 0:
-        texture_pos[0] += value;
-        texture_pos[3] += value;
-        texture_pos[6] += value;
-        texture_pos[9] += value;
-        texture_pos[12] += value;
-        texture_pos[15] += value;
-        texture_pos[18] += value;
-        texture_pos[21] += value;
-        break;
-    case 1:
-        /*
-        texture_pos[2] -= value;
-        texture_pos[5] -= value;
-        texture_pos[8] -= value;
-        texture_pos[11] -= value;
-        texture_pos[14] -= value;
-        texture_pos[17] -= value;
-        texture_pos[20] -= value;
-        texture_pos[23] -= value;
-        */
-        break;
-    case 2:
-        texture_pos[0] -= value;
-        texture_pos[3] -= value;
-        texture_pos[6] -= value;
-        texture_pos[9] -= value;
-        texture_pos[12] -= value;
-        texture_pos[15] -= value;
-        texture_pos[18] -= value;
-        texture_pos[21] -= value;
-        break;
-    case 3:
-        /*
-        texture_pos[2] += value;
-        texture_pos[5] += value;
-        texture_pos[8] += value;
-        texture_pos[11] += value;
-        texture_pos[14] += value;
-        texture_pos[17] += value;
-        texture_pos[20] += value;
-        texture_pos[23] += value;
-        */
-        break;
+void pos_update(Particle& particle, float* texture_coord)
+{
+    particle.angle += 0.0005f;
+
+    float x = (texture_coord[0] + texture_coord[12]) / 2;
+    float y = (texture_coord[1] + texture_coord[5]) / 2;
+    float z = (texture_coord[2] + texture_coord[8]) / 2;
+
+    //centerOfObject = glm::vec3(x, y, z);
+    //std::cout << x << ' ' << y << ' ' << z << std::endl;
+    //modelMatrix = glm::mat4(1.0f);
+        
+    // Translate the object to the origin
+    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -particle.centerOfObject);
+    modelMatrix = modelMatrix * translationMatrix;
+
+    // Perform the rotation
+    //glm::mat4 rotationMatrixX = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4 rotationMatrixY = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 rotationMatrixZ = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 0.0f, 1.0f));
+    //modelMatrix = modelMatrix * rotationMatrix;
+
+    // Translate the object back to its original position
+    glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), particle.centerOfObject);
+    modelMatrix = modelMatrix * translationMatrix;
+
+    // Translate the object in one direction
+    //glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x * particle.speed, particle.direction.y * particle.speed, particle.direction.z * particle.speed));
+    glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x, particle.direction.y, particle.direction.z));
+    //modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    //modelMatrix = translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    //modelMatrix = translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+
+    //glm::mat4 modelMatrixPartial = translationMatrixBack * rotationMatrix * translationMatrix;
+
+    glm::vec4 finalCenter = glm::vec4(particle.centerOfObject.x, particle.centerOfObject.y, particle.centerOfObject.z, 1.0f);
+    finalCenter = modelMatrix * finalCenter;
+    particle.centerOfObject.x = finalCenter.x;
+    particle.centerOfObject.y = finalCenter.y;
+    particle.centerOfObject.z = finalCenter.z;
+
+    /*
+    for (int i(0); i < 24; i += 3) {
+        glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+        coordSeg =  modelMatrix * coordSeg;
+        car.coord[i] = coordSeg.x;
+        car.coord[i + 1] = coordSeg.y;
+        car.coord[i + 2] = coordSeg.z;
+    }
+    */
+        
+        
+    /*
+    finalcoord = finalcoord * modelMatrix;
+    for (int i = 0; i < 4; ++i)
+        std::cout << finalcoord[i] << ' ';
+    std::cout << std::endl; // * with model anc update coords car
+    */
+
+    //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
+    //modelMatrix = rotation * modelMatrix;
+    //modelMatrix = modelMatrix * rotation;
+}
+
+void render_particles(std::vector<Particle> particles, Camera& camera) {
+    /*
+    std::vector<Particle>::iterator it;
+    for (it = particles.begin(); it != particles.end(); it++) {
+        it->bind();
+        camera.Matrix(it->Particle_shader, "camMatrix");
+        drawCall_particle(it->getSprite(), it->getIbo());
+
+        pos_update(*it, it->coord);
+
+        it->updateMatrix(modelMatrix);
+    }
+    */
+
+    for (int i(0); i < 1; ++i) {
+        particles[i].bind();
+        camera.Matrix(particles[i].Particle_shader, "camMatrix");
+        drawCall_particle(particles[i].getSprite(), particles[i].getIbo());
+
+        pos_update(particles[i], particles[i].coord);
+
+        particles[i].updateMatrix(modelMatrix);
     }
 }
 
-void pos_update(Car& car, float* texture_coord)
-{
-    if (directions[0]) move_coords(texture_coord, 0, 0.0005);
-    if (directions[1]) {
-        angle += 0.00005f;
+void render_particles(Particle particles[], int nr_of_part, Camera& camera) {
+    for (int i(0); i < nr_of_part; ++i) {
+        particles[i].bind();
+        camera.Matrix(particles[i].Particle_shader, "camMatrix");
+        drawCall_particle(particles[i].getSprite(), particles[i].getIbo());
 
-        float x = (texture_coord[0] + texture_coord[12]) / 2;
-        float y = (texture_coord[1] + texture_coord[5]) / 2;
-        float z = (texture_coord[2] + texture_coord[8]) / 2;
+        pos_update(particles[i], particles[i].coord);
 
-        centerOfObject = glm::vec3(x, y, z);
-        //std::cout << x << ' ' << y << ' ' << z << std::endl;
-        //modelMatrix = glm::mat4(1.0f);
-        
-        // Translate the object to the origin
-        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        // Perform the rotation
-        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMatrix = modelMatrix * rotationMatrix;
-
-        // Translate the object back to its original position
-        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-        
-        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
-
-        /*
-        for (int i(0); i < 24; i += 3) {
-            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
-            coordSeg = modelMatrix * coordSeg;
-            car.coord[i] = coordSeg.x;
-            car.coord[i+1] = coordSeg.y;
-            car.coord[i+2] = coordSeg.z;
-        }
-        */
-        
-
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
-        //modelMatrix = rotation * modelMatrix;
-        //modelMatrix = modelMatrix * rotation;
-    }
-    if (directions[2]) move_coords(texture_coord, 2, 0.0005);
-    if (directions[3]) {
-        angle -= 0.00005f;
-
-        float x = (texture_coord[0] + texture_coord[12]) / 2;
-        float y = (texture_coord[1] + texture_coord[5]) / 2;
-        float z = (texture_coord[2] + texture_coord[8]) / 2;
-
-        centerOfObject = glm::vec3(x, y, z);
-        //std::cout << x << ' ' << y << ' ' << z << std::endl;
-
-        // Translate the object to the origin
-        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        // Perform the rotation
-        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMatrix = modelMatrix * rotationMatrix;
-
-        // Translate the object back to its original position
-        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
-
-        /*
-        for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 4; ++j)
-                std::cout << modelMatrix[i][j] << ' ';
-        glm::vec4 finalcoord = glm::vec4(0.0f);
-        finalcoord.x = texture_coord[0];
-        finalcoord.y = texture_coord[1];
-        finalcoord.z = texture_coord[2];
-        */
-        /*
-        for (int i(0); i < 24; i += 3) {
-            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
-            coordSeg =  modelMatrix * coordSeg;
-            car.coord[i] = coordSeg.x;
-            car.coord[i + 1] = coordSeg.y;
-            car.coord[i + 2] = coordSeg.z;
-        }
-        */
-        
-        
-        /*
-        finalcoord = finalcoord * modelMatrix;
-        for (int i = 0; i < 4; ++i)
-            std::cout << finalcoord[i] << ' ';
-        std::cout << std::endl; // * with model anc update coords car
-        */
-
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
-        //modelMatrix = rotation * modelMatrix;
-        //modelMatrix = modelMatrix * rotation;
-    }
-    if (left || right) {
-        for (int i(0); i < 24; i += 3) {
-            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
-            coordSeg = modelMatrix * coordSeg;
-            car.coord[i] = coordSeg.x;
-            car.coord[i + 1] = coordSeg.y;
-            car.coord[i + 2] = coordSeg.z;
-        }
-
-        left = 0;
-        right = 0;
+        particles[i].updateMatrix(modelMatrix);
     }
 }
 
@@ -505,26 +382,6 @@ int main()
     terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
     terrain_shader.bind();
 
-    // Road
-    std::vector<roadSegment> road;
-    road.reserve(roadSegments);
-
-    roadSegment road1(roadSegment1);
-    roadSegment road2(roadSegment2);
-    roadSegment road3(roadSegment3);
-    roadSegment road4(roadSegment4);
-    roadSegment road5(roadSegment5);
-    roadSegment road6(roadSegment6);
-    roadSegment road7(roadSegment7);
-    roadSegment road8(roadSegment8);
-    roadSegment road9(roadSegment9);
-    roadSegment road10(roadSegment10);
-    roadSegment road11(roadSegment11);
-    roadSegment road12(roadSegment12);
-    roadSegment road13(roadSegment13);
-
-    Car car(carCoord);
-
     //road.emplace_back(road1);
 
     // Custom mouse-following star
@@ -561,13 +418,23 @@ int main()
 
     // Camera
     //Camera camera(640, 480, glm::vec3(0.0f, 0.0f, 2.0f));
-    Camera camera(640, 480, glm::vec3(-37.5f, 2.1f, -44.2f));
+    Camera camera(640, 480, glm::vec3(0.0f, 2.0f, 2.0f));
 
     Timer timer;
     float current_time(0.0f);
     unsigned int frames(0);
 
     timer.reset();
+
+    // Particle
+    Particle particle(ParticleCoord);
+    Particle part[100];
+    int nr_of_part(0);
+    //std::vector<Particle> particles;
+    //particles.push_back(particle);
+
+    part[0] = particle;
+    nr_of_part++;
 
     //Main screen
     main_screen(window);
@@ -582,7 +449,7 @@ int main()
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
         // Handles camera inputs
-        camera.Inputs(window, car);
+        camera.Inputs(window);
         // Updates and exports the camera matrix to the Vertex Shader
         camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
@@ -601,62 +468,21 @@ int main()
         camera.Matrix(terrain_shader, "camMatrix");
         drawCall_cube(terrain_sprite, terrain_ibo);
 
-        // Road
-        road1.bind();
-        camera.Matrix(road1.road_shader, "camMatrix");
-        drawCall_cube(road1.getSprite(), road1.getIbo());
+        /*
+        particle.bind();
+        camera.Matrix(particle.Particle_shader, "camMatrix");
+        drawCall_particle(particle.getSprite(), particle.getIbo());
 
-        road2.bind();
-        camera.Matrix(road2.road_shader, "camMatrix");
-        drawCall_cube(road2.getSprite(), road2.getIbo());
+        pos_update(particle, particle.coord);
 
-        road3.bind();
-        camera.Matrix(road3.road_shader, "camMatrix");
-        drawCall_cube(road3.getSprite(), road3.getIbo());
+        particle.updateMatrix(modelMatrix);
+        */
+        
+        //render_particles(particles, camera);
+        render_particles(part, nr_of_part, camera);
 
-        road4.bind();
-        camera.Matrix(road4.road_shader, "camMatrix");
-        drawCall_cube(road4.getSprite(), road4.getIbo());
+        //std::cout << part[0].speed << std::endl;
 
-        road5.bind();
-        camera.Matrix(road5.road_shader, "camMatrix");
-        drawCall_cube(road5.getSprite(), road5.getIbo());
-
-        road6.bind();
-        camera.Matrix(road6.road_shader, "camMatrix");
-        drawCall_cube(road6.getSprite(), road6.getIbo());
-
-        road7.bind();
-        camera.Matrix(road7.road_shader, "camMatrix");
-        drawCall_cube(road7.getSprite(), road7.getIbo());
-
-        road8.bind();
-        camera.Matrix(road8.road_shader, "camMatrix");
-        drawCall_cube(road8.getSprite(), road8.getIbo());
-
-        road9.bind();
-        camera.Matrix(road9.road_shader, "camMatrix");
-        drawCall_cube(road9.getSprite(), road9.getIbo());
-
-        road10.bind();
-        camera.Matrix(road10.road_shader, "camMatrix");
-        drawCall_cube(road10.getSprite(), road10.getIbo());
-
-        road11.bind();
-        camera.Matrix(road11.road_shader, "camMatrix");
-        drawCall_cube(road11.getSprite(), road11.getIbo());
-
-        road12.bind();
-        camera.Matrix(road12.road_shader, "camMatrix");
-        drawCall_cube(road12.getSprite(), road12.getIbo());
-
-        road13.bind();
-        camera.Matrix(road10.road_shader, "camMatrix");
-        drawCall_cube(road10.getSprite(), road10.getIbo());
-
-        car.bind();
-        camera.Matrix(car.car_shader, "camMatrix");
-        drawCall_cube(car.getSprite(), car.getIbo());
         // Star
         /*
         star_shader.bind();
@@ -666,10 +492,7 @@ int main()
         drawCall_triangle(star_sprite2, star_ibo);
         */
 
-        glfwSetKeyCallback(window, key_callback_WASD);
-        car.updateMatrix(modelMatrix);
-        pos_update(car, car.coord);
-        car.updateCoordVbo();
+        //glfwSetKeyCallback(window, key_callback_WASD);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -684,6 +507,9 @@ int main()
             current_time  += 1.0f;
             std::cout << frames << "FPS" << std::endl;
             frames = 0;
+
+            Particle particle(ParticleCoord);
+            part[nr_of_part++] = particle;
         }
     }
 

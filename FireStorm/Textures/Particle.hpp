@@ -1,38 +1,58 @@
 #pragma once
 
-#include "GL\glew.h"
-#include "GLFW\glfw3.h"
-#include <utility>
+#include <random>
 
-// Road Coords
+#include "../Buffers/Buffer.hpp"
+#include "../Buffers/IndexBuffer.hpp"
+#include "../Buffers/VertexArray.hpp"
+#include "../Shaders/Shader.hpp"
+#include "Texture.hpp"
 
-static GLfloat ParticleCoord[] = {
-    4.54f,3.57f,4.82f, 4.64f,3.76f,4.82f, 4.68f,3.97f,4.82f, 4.64f,4.19f,4.82f, 4.55f,4.38f,4.82f, 4.39f,4.53f,4.82f, 4.20f,4.62f,4.82f, 3.99f,4.66f,4.82f, 3.78f,4.62f,4.82f, 3.59f,4.53f,4.82f, 3.44f,4.38f,4.82f, 3.34f,4.19f,4.82f, 3.31f,3.97f,4.82f, 3.34f,3.76f,4.82f, 3.44f,3.58f,4.82f, 3.59f,3.43f,4.82f, 3.78f,3.33f,4.82f, 3.99f,3.30f,4.82f, 4.20f,3.33f,4.82f, 4.39f,3.43f,4.82f,
+#include <../../../Dependencies/glm/glm.hpp>
+#include <../../../Dependencies/glm/gtc/matrix_transform.hpp>
+#include <../../../Dependencies/glm/gtc/bitfield.hpp>
+#include <../../../Dependencies/glm/gtc/color_space.hpp>
+#include <../../../Dependencies/glm/gtc/constants.hpp>
+#include <../../../Dependencies/glm/gtc/type_ptr.hpp>
 
-    4.46f,3.63f,4.43f, 4.55f,3.79f,4.43f, 4.57f,3.97f,4.43f, 4.55f,4.15f,4.43f, 4.46f,4.32f,4.43f, 4.33f,4.44f,4.43f, 4.17f,4.53f,4.43f, 3.99f,4.56f,4.43f, 3.81f,4.53f,4.43f, 3.65f,4.44f,4.43f, 3.52f,4.32f,4.43f, 3.44f,4.15f,4.43f, 3.41f,3.97f,4.43f, 3.44f,3.79f,4.43f, 3.52f,3.63f,4.43f, 3.65f,3.50f,4.43f, 3.81f,3.42f,4.43f, 3.99f,3.39f,4.43f, 4.17f,3.42f,4.43f, 4.33f,3.50f,4.43f,
+#include "../Data/coords.hpp"
 
-    4.37f,3.69f,4.13f, 4.44f,3.83f,4.13f, 4.46f,3.97f,4.13f, 4.44f,4.12f,4.13f, 4.37f,4.25f,4.13f, 4.27f,4.35f,4.13f, 4.14f,4.42f,4.13f, 3.99f,4.44f,4.13f, 3.85f,4.42f,4.13f, 3.71f,4.35f,4.13f, 3.61f,4.25f,4.13f, 3.54f,4.12f,4.13f, 3.52f,3.97f,4.13f, 3.54f,3.83f,4.13f, 3.61f,3.70f,4.13f, 3.72f,3.59f,4.13f, 3.85f,3.53f,4.13f, 3.99f,3.50f,4.13f, 4.14f,3.53f,4.13f, 4.27f,3.59f,4.13f,
+class Particle
+{
+private:
+	VertexArray Particle_sprite;
+	Buffer* Particle_coord_vbo1;
+	Buffer* Particle_coord_vbo2;
+	IndexBuffer Particle_ibo;
+	//Shader Particle_shader;
 
-    4.29f,3.76f,3.89f, 4.34f,3.86f,3.89f, 4.36f,3.97f,3.89f, 4.34f,4.08f,3.89f, 4.29f,4.19f,3.89f, 4.21f,4.27f,3.89f, 4.10f,4.32f,3.89f, 3.99f,4.34f,3.89f, 3.88f,4.32f,3.89f, 3.78f,4.27f,3.89f, 3.69f,4.19f,3.89f, 3.64f,4.08f,3.89f, 3.62f,3.67f,3.89f, 3.64f,3.86f,3.89f, 3.70f,3.76f,3.89f, 3.78f,3.89f,3.89f, 3.88f,3.63f,3.89f, 3.99f,3.61f,3.89f, 4.10f,3.62f,3.89f, 4.21f,3.68f,3.89f,
+public:
+	Shader Particle_shader;
+	float coord[720];
+    float angle, speed;
+    glm::vec3 direction;
+    glm::vec3 centerOfObject;
 
-    4.25f,3.78f,3.73f, 4.30f,3.87f,3.73f, 4.31f,3.97f,3.73f, 4.30f,4.07f,3.73f, 4.25f,4.16f,3.73f, 4.18f,4.23f,3.73f, 4.09f,4.28f,3.73f, 3.99f,4.29f,3.73f, 3.89f,4.28f,3.73f, 3.80f,4.23f,3.73f, 3.73f,4.16f,3.73f, 3.69f,4.07f,3.73f, 3.67f,3.97f,3.73f, 3.69f,3.87f,3.73f, 3.73f,3.78f,3.73f, 3.80f,3.71f,3.73f, 3.89f,3.67f,3.73f, 3.99f,3.65f,3.73f, 4.09f,3.67f,3.73f, 4.18f,3.71f,3.73f,
+    Particle();
+	Particle(float coord[720]);
+	Particle(const Particle& particle);
 
-    4.24f,3.79f,3.61f, 4.28f,3.88f,3.61f, 4.30f,3.97f,3.61f, 4.28f,4.07f,3.61f, 4.24f,4.15f,3.61f, 4.17f,4.22f,3.61f, 4.09f,4.26f,3.61f, 3.99f,4.28f,3.61f, 3.90f,4.26f,3.61f, 3.81f,4.22f,3.61f, 3.74f,4.15f,3.61f, 3.70f,4.07f,3.61f, 3.69f,3.97f,3.61f, 3.70f,3.88f,3.61f, 3.74f,3.79f,3.61f, 3.81f,3.72f,3.61f, 3.90f,3.68f,3.61f, 3.99f,3.67f,3.61f, 4.09f,3.68f,3.61f, 4.17f,3.72f,3.61f,
+	inline VertexArray getSprite() const noexcept { return Particle_sprite; }
+	inline IndexBuffer getIbo() const noexcept { return Particle_ibo; }
+	inline Shader getShader() noexcept { return Particle_shader; }
 
-    4.24f,3.79f,3.49f, 4.28f,3.88f,3.49f, 4.30f,3.97f,3.49f, 4.28f,4.07f,3.49f, 4.24f,4.15f,3.49f, 4.17f,4.22f,3.49f, 4.09f,4.26f,3.49f, 3.99f,4.28f,3.49f, 3.90f,4.26f,3.49f, 3.81f,4.22f,3.49f, 3.74f,4.15f,3.49f, 3.70f,4.07f,3.49f, 3.69f,3.97f,3.49f, 3.70f,3.88f,3.49f, 3.74f,3.79f,3.49f, 3.81f,3.72f,3.49f, 3.90f,3.68f,3.49f, 3.99f,3.67f,3.49f, 4.09f,3.68f,3.49f, 4.17f,3.72f,3.49f,
+    Particle& operator=(const Particle&);
 
-    4.25f,3.78f,3.37f, 4.30f,3.87f,3.37f, 4.31f,3.97f,3.37f, 4.30f,4.07f,3.37f, 4.25f,4.16f,3.37f, 4.18f,4.23f,3.37f, 4.09f,4.28f,3.37f, 3.99f,4.29f,3.37f, 3.89f,4.28f,3.37f, 3.80f,4.23f,3.37f, 3.73f,4.16f,3.37f, 3.69f,4.07f,3.37f, 3.67f,3.97f,3.37f, 3.69f,3.87f,3.37f, 3.73f,3.78f,3.37f, 3.80f,3.71f,3.37f, 3.89f,3.67f,3.37f, 3.99f,3.65f,3.37f, 4.09f,3.67f,3.37f, 4.18f,3.71f,3.37f,
+	void updateCoordVbo();
+	void updateMatrix(glm::mat4 matrix);
 
-    4.29f,3.76f,3.21f, 4.34f,3.86f,3.21f, 4.36f,3.97f,3.21f, 4.34f,4.08f,3.21f, 4.29f,4.19f,3.21f, 4.21f,4.27f,3.21f, 4.10f,4.32f,3.21f, 3.99f,4.34f,3.21f, 3.88f,4.32f,3.21f, 3.78f,4.27f,3.21f, 3.69f,4.19f,3.21f, 3.64f,4.08f,3.21f, 3.62f,3.67f,3.21f, 3.64f,3.86f,3.21f, 3.70f,3.76f,3.21f, 3.78f,3.68f,3.21f, 3.88f,3.63f,3.21f, 3.99f,3.61f,3.21f, 4.10f,3.62f,3.21f, 4.21f,3.68f,3.21f,
+	void bind() const noexcept;
+	void unbind() const noexcept;
 
-    4.37f,3.69f,2.98f, 4.44f,3.83f,2.98f, 4.46f,3.97f,2.98f, 4.44f,4.12f,2.98f, 4.37f,4.25f,2.98f, 4.27f,4.35f,2.98f, 4.14f,4.42f,2.98f, 3.99f,4.44f,2.98f, 3.85f,4.42f,2.98f, 3.71f,4.35f,2.98f, 3.61f,4.25f,2.98f, 3.54f,4.12f,2.98f, 3.52f,3.97f,2.98f, 3.54f,3.83f,2.98f, 3.61f,3.70f,2.98f, 3.72f,3.59f,2.98f, 3.85f,3.53f,2.98f, 3.99f,3.50f,2.98f, 4.14f,3.53f,2.98f, 4.27f,3.59f,2.98f,
-
-    4.46f,3.63f,2.71f, 4.55f,3.79f,2.71f, 4.57f,3.97f,2.71f, 4.55f,4.15f,2.71f, 4.46f,4.32f,2.71f, 4.33f,4.44f,2.71f, 4.17f,4.53f,2.71f, 3.99f,4.56f,2.71f, 3.81f,4.53f,2.71f, 3.65f,4.44f,2.71f, 3.52f,4.32f,2.71f, 3.44f,4.15f,2.71f, 3.41f,3.97f,2.71f, 3.44f,3.79f,2.71f, 3.52f,3.63f,2.71f, 3.65f,3.50f,2.71f, 3.81f,3.42f,2.71f, 3.99f,3.39f,2.71f, 4.17f,3.42f,2.71f, 4.33f,3.50f,2.71f,
-
-    4.54f,3.57f,2.35f, 4.64f,3.76f,2.35f, 4.68f,3.97f,2.35f, 4.64f,4.19f,2.35f, 4.55f,4.38f,2.35f, 4.39f,4.53f,2.35f, 4.2f,4.62f,2.35f, 3.99f,4.66f,2.35f, 3.78f,4.62f,2.35f, 3.59f,4.53f,2.35f, 3.44f,4.38f,2.35f, 3.34f,4.19f,2.35f, 3.31f,3.97f,2.35f, 3.34f,3.76f,2.35f, 3.44f,3.58f,2.35f, 3.59f,3.43f, 2.35f, 3.78f,3.33f,2.35f, 3.99f,3.30f,2.35f, 4.20f,3.33f,2.35f, 4.39f,3.43f,2.35f
+	~Particle();
 };
-
-static GLuint ParticleIbo[]{
+/*
+GLuint ParticleIbo[] = {
     0,1,20,
     20,1,21,
     1,2,21,
@@ -484,3 +504,4 @@ static GLuint ParticleIbo[]{
     219,200,239,
     239,220,200
 };
+*/

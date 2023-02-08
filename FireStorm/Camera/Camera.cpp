@@ -32,9 +32,8 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 
 
 
-void Camera::Inputs(GLFWwindow* window, Car &car)
+void Camera::Inputs(GLFWwindow* window)
 {
-	/*
 	// Handles key inputs
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
@@ -62,45 +61,31 @@ void Camera::Inputs(GLFWwindow* window, Car &car)
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
-		speed = 0.4f;
+		speed = 0.004f;
 	}
 	else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
 	{
-		speed = 0.1f;
+		speed = 0.001f;
 	}
-	*/
-
-	Position.x = car.coord[0] - 0.3f;
-	Position.y = car.coord[1] + 1.0f;
-	Position.z = car.coord[2] + 0.3f;
-
+	
+	/*
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		//Position.x += 0.0005;
+		Position.x += 0.005;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		//Position.z -= 0.0005;
-
-		float rotY = 0.001;
-
-		// Rotates the Orientation left and right
-		Orientation = glm::rotate(Orientation, glm::radians(rotY), Up);
+		Position.z -= 0.005;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		//Position.x -= 0.0005;
+		Position.x -= 0.005;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		//Position.z += 0.0005;
-
-		float rotY = 0.001;
-
-		// Rotates the Orientation left and right
-		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
-
+		Position.z += 0.005;
 	}
+	*/
 
 	// Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
