@@ -45,6 +45,7 @@ public:
 
 	void updateCoordVbo();
 	void updateMatrix(glm::mat4 matrix);
+	void updateProjMatrix(glm::mat4 matrix);
 
 	void bind() const noexcept;
 	void unbind() const noexcept;

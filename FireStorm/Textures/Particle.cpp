@@ -250,10 +250,11 @@ Particle::Particle(float coord[720]) {
         this->coord[i] = coord[i];
 
     srand(time(NULL));
-    angle = (rand() % 1000);
-    angle /= 1000;
+    angle = (rand() % 10);
+    angle /= 1000000;
+    angle = 0;
     speed = (rand() % 1000);
-    speed /= 1000;
+    speed /= 100000;
 
     float x, y, z, k;
     x = (rand() % 100);
@@ -340,7 +341,12 @@ Particle& Particle::operator=(const Particle& particle) {
 }
 
 void Particle::updateMatrix(glm::mat4 matrix) {
-    GLuint modelMatrixLoc = glGetUniformLocation(Particle_shader.getID(), "model"); // memory leak
+    GLuint modelMatrixLoc = glGetUniformLocation(Particle_shader.getID(), "model");
+    glUniformMatrix4fv(modelMatrixLoc, 1, false, glm::value_ptr(matrix));
+}
+
+void Particle::updateProjMatrix(glm::mat4 matrix) {
+    GLuint modelMatrixLoc = glGetUniformLocation(Particle_shader.getID(), "projection");
     glUniformMatrix4fv(modelMatrixLoc, 1, false, glm::value_ptr(matrix));
 }
 

@@ -120,7 +120,7 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
 
 void pos_update(Particle& particle, float* texture_coord)
 {
-    particle.angle += 0.0005f;
+    particle.angle += 0.000005f;
     particle.speed += 0.0005f;
 
     float x = (texture_coord[0] + texture_coord[12]) / 2;
@@ -136,9 +136,9 @@ void pos_update(Particle& particle, float* texture_coord)
     modelMatrix = modelMatrix * translationMatrix;
 
     // Perform the rotation
-    //glm::mat4 rotationMatrixX = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(1.0f, 0.0f, 0.0f));
-    //glm::mat4 rotationMatrixY = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 1.0f, 0.0f));
-    //glm::mat4 rotationMatrixZ = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4 rotationMatrixX = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4 rotationMatrixY = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 rotationMatrixZ = glm::rotate(glm::mat4(1.0f), particle.angle, glm::vec3(0.0f, 0.0f, 1.0f));
     //modelMatrix = modelMatrix * rotationMatrix;
 
     // Translate the object back to its original position
@@ -147,10 +147,10 @@ void pos_update(Particle& particle, float* texture_coord)
 
     // Translate the object in one direction
     glm::mat4 finalTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(particle.direction.x * particle.speed, particle.direction.y * particle.speed, particle.direction.z * particle.speed));
-    //modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
-    modelMatrix = finalTranslation * translationMatrixBack * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    //modelMatrix = finalTranslation * translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
+    modelMatrix = finalTranslation; 
     //modelMatrix = translationMatrixBack * rotationMatrixZ * rotationMatrixY * rotationMatrixX * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
-    //modelMatrix = translationMatrixBack * rotationMatrixY * translationMatrix; // O DISPARUT ANTERIOARA CA MAGARU-N CEATA
 
     //glm::mat4 modelMatrixPartial = translationMatrixBack * rotationMatrix * translationMatrix;
 
@@ -209,18 +209,49 @@ void render_particles(std::vector<Particle> particles, Camera& camera) {
     }
 }
 
+bool play_pause = false;
+bool reset = false;
+
 void render_particles(Particle particles[], int nr_of_part, Camera& camera) {
     for (int i(0); i < nr_of_part; ++i) {
         particles[i].bind();
         camera.Matrix(particles[i].Particle_shader, "camMatrix");
         drawCall_particle(particles[i].getSprite(), particles[i].getIbo());
 
-        pos_update(particles[i], particles[i].coord);
+        if(!play_pause)
+            pos_update(particles[i], particles[i].coord);
 
         particles[i].updateMatrix(modelMatrix);
     }
 }
 
+void play_button(GLFWwindow* window, int key, int scancode, int action) {
+    if (key == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE)
+        if ((640 / 2 - 320 / 5 < xMousePos && 640 / 2 + 320 / 5 > xMousePos) && (480 / 2 - 240 * 2 / 5 > yMousePos && 480 / 2 - 240 * 3 / 5 < yMousePos))
+            reset = true;
+}
+/*
+void renderMinimap(float minimapWidth, float minimapHeight, Particle part[], int nr_of_part, Camera& camera) {
+    // Save the current viewport and set the viewport for the minimap
+    int originalViewport[4];
+    glGetIntegerv(GL_VIEWPORT, originalViewport);
+    glViewport(0, 0, minimapWidth, minimapHeight);
+
+    // Set the projection matrix to a 2D orthographic projection
+    glm::mat4 projection = glm::ortho(0.0f, (float)minimapWidth, 0.0f, (float)minimapHeight, 0.0f, 1.0f);
+    glm::mat4 modelview = glm::mat4(1.0f);
+
+    // Render the minimap
+    render_particles(part, nr_of_part, camera);
+    for (int i(0); i < nr_of_part; ++i) {
+        part[i].updateProjMatrix(projection);
+    }
+    //renderObjects(projection, modelview);
+
+    // Restore the original viewport
+    glViewport(originalViewport[0], originalViewport[1], originalViewport[2], originalViewport[3]);
+}
+*/
 
 int main()
 {
@@ -436,10 +467,46 @@ int main()
     part[0] = particle;
     nr_of_part++;
 
-    //Main screen
+    // Main screen
     main_screen(window);
 
     GLfloat camera_mat4[16];
+
+    // Play/pause button
+    float play_button_pos[] = {
+        -0.20f, 0.40f,
+        -0.20f, 0.60f,
+         0.20f, 0.60f,
+         0.20f, 0.40f
+    };
+    float play_button_coord[] = {
+        0.00f, 0.00f,
+        0.00f, 1.00f,
+        1.00f, 1.00f,
+        1.00f, 0.00f
+    };
+    GLuint play_button_indices[] = { 0, 1, 2,  0, 2, 3 };
+
+    VertexArray play_button_sprite;
+    Buffer* play_button_vbo1 = new Buffer(play_button_pos, 8 * 2, 2);
+    Buffer* play_button_vbo2 = new Buffer(play_button_coord, 8 * 2, 2);
+    IndexBuffer play_button_ibo(play_button_indices, 6);
+
+    play_button_sprite.addBuffer(play_button_vbo1, 0);
+    play_button_sprite.addBuffer(play_button_vbo2, 2);
+
+    play_button_sprite.bind();
+    play_button_ibo.bind();
+
+    Shader play_button_shader;
+    play_button_shader.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
+    play_button_shader.bind();
+
+    Texture play_button_texture("Textures/main_menu/play_raw_cut.png");
+    Texture play_button_glow_texture("Textures/main_menu/play_glow_cut.png");
+    play_button_texture.bind();
+
+    play_button_shader.uniform1i("texture1", 0);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -462,37 +529,32 @@ int main()
         drawCall_quad(background_sprite, background_ibo);
         background_texture.unbind();
         */
-
-        // Terrain Render
-        terrain_shader.bind();
-        camera.Matrix(terrain_shader, "camMatrix");
-        drawCall_cube(terrain_sprite, terrain_ibo);
-
-        /*
-        particle.bind();
-        camera.Matrix(particle.Particle_shader, "camMatrix");
-        drawCall_particle(particle.getSprite(), particle.getIbo());
-
-        pos_update(particle, particle.coord);
-
-        particle.updateMatrix(modelMatrix);
-        */
         
         //render_particles(particles, camera);
         render_particles(part, nr_of_part, camera);
+        //renderMinimap(100.0f, 100.0f, part, nr_of_part, camera);
 
         //std::cout << part[0].speed << std::endl;
 
-        // Star
-        /*
-        star_shader.bind();
-        star_shader.uniform2f_mouse_pos(window, "light_pos");
-        //drawCall_quad(star_sprite1, star_ibo);
-        drawCall_triangle(star_sprite1, star_ibo);
-        drawCall_triangle(star_sprite2, star_ibo);
-        */
+        if ((640 / 2 - 320 / 5 < xMousePos && 640 / 2 + 320 / 5 > xMousePos) && (480 / 2 - 240 * 2 / 5 > yMousePos && 480 / 2 - 240 * 3 / 5 < yMousePos))
+            play_button_glow_texture.bind();
+        else
+            play_button_texture.bind();
+        play_button_shader.bind();
+        drawCall_quad(play_button_sprite, play_button_ibo);
 
-        //glfwSetKeyCallback(window, key_callback_WASD);
+        glfwSetMouseButtonCallback(window, play_button);
+        glfwGetCursorPos(window, &xMousePos, &yMousePos);
+        if (reset) {
+            nr_of_part = 0;
+            reset = false;
+        }
+        /*
+        while (play_button) {
+            glfwSetMouseButtonCallback(window, play_button);
+            glfwGetCursorPos(window, &xMousePos, &yMousePos);
+        }
+        */
 
         glfwSwapBuffers(window);
         glfwPollEvents();
