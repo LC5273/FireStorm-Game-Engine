@@ -24,6 +24,7 @@
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Textures\Tree.cpp" />
     <ClCompile Include="Utilities\Timer.cpp" />
     <ClCompile Include="Textures\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
+    <ClInclude Include="Textures\Tree.hpp" />
     <ClInclude Include="Utilities\GPU_enablement.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Textures\Texture.hpp" />

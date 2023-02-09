@@ -75,7 +75,7 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		//Position.z -= 0.0005;
+		Position.z -= 0.0005;
 
 		float rotY = 0.001;
 
@@ -88,7 +88,7 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		//Position.z += 0.0005;
+		Position.z += 0.0005;
 
 		float rotY = 0.001;
 
