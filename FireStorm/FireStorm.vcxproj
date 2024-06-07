@@ -82,6 +82,8 @@
     <None Include="Shaders\star_frag_color.shader" />
     <None Include="Shaders\star_vert_color.shader" />
     <None Include="Shaders\terrain_frag.shader" />
+    <None Include="Shaders\terrain_texture_frag.shader" />
+    <None Include="Shaders\terrain_texture_vert.shader" />
     <None Include="Shaders\terrain_vert.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
@@ -97,6 +99,7 @@
     <Image Include="Textures\enemy_attacker.png" />
     <Image Include="Textures\enemy_lurker.png" />
     <Image Include="Textures\enemy_lurker1.png" />
+    <Image Include="Textures\grass.png" />
     <Image Include="Textures\main_menu\1000x1000_gui.jpg" />
     <Image Include="Textures\main_menu\buy_glow.png" />
     <Image Include="Textures\main_menu\buy_raw.png" />
@@ -125,13 +128,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

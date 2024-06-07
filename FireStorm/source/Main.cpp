@@ -45,58 +45,30 @@
 
 GLfloat terrain_vertices[] = {
     // Terrain
-    -50.0f, 0.0f, -50.0f, -50.0f, 1.0f, -50.0f,
-    -50.0f, 0.0f,  50.0f, -50.0f, 1.0f, 50.0f,
-     50.0f, 0.0f,  50.0f, 50.0f, 1.0f, 50.0f,
-     50.0f, 0.0f, -50.0f, 50.0f, 1.0f, -50.0f
+    -50.0f, 0.0f, -50.0f,
+    -50.0f, 0.0f,  50.0f,
+     50.0f, 0.0f,  50.0f,
+     50.0f, 0.0f, -50.0f
 };
 
-GLfloat road_vertices[] = {
+GLfloat terrain_vertices_2D[] = {
     // Terrain
-    -30.0f, 1.0f, -20.0f, -30.0f, 1.1f, -20.0f,
-    -30.0f, 1.0f,  20.0f, -30.0f, 1.1f,  20.0f,
-     30.0f, 1.0f,  20.0f,  30.0f, 1.1f,  20.0f,
-     30.0f, 1.0f, -20.0f,  30.0f, 1.1f, -20.0f
-};
-
-GLfloat terrain_vertices_lower[] = {
-    // Terrain
-    -0.50f, 0.0f, -0.50f, -0.50f, 0.10f, -0.50f,
-    -0.50f, 0.0f,  0.50f, -0.50f, 0.10f, 0.50f,
-     0.50f, 0.0f,  0.50f, 0.50f, 0.10f, 0.50f,
-     0.50f, 0.0f, -0.50f, 0.50f, 0.10f, -0.50f
+    -50.0f, -50.0f,
+    -50.0f,  50.0f,
+     50.0f,  50.0f,
+     50.0f, -50.0f
 };
 
 GLuint terrain_indices[] =
 {
     0, 1, 2,
     0, 2, 3,
-    0, 4, 7,
-    0, 7, 3,
-    3, 7, 6,
-    3, 6, 2,
-    2, 6, 5,
-    2, 5, 1,
-    1, 5, 4,
-    1, 4, 0,
-    4, 5, 6,
-    4, 6, 7
 };
 
 GLuint terrain_indices_right[] =
 {
     0, 1, 2,
-    1, 2, 3,
-    2, 3, 4,
-    3, 4, 5,
-    4, 5, 6,
-    5, 6, 7,
-    6, 7, 0,
-    7, 0, 1,
-    1, 3, 7,
-    3, 7, 5,
-    0, 2, 6,
-    2, 6, 4
+    0, 2, 3
 };
 
 float texture_pos[] = {
@@ -108,9 +80,9 @@ float texture_pos[] = {
 
 float texture_poz[] = {
     0.00f, 0.00f,
-    0.00f, 1.00f,
-    1.00f, 1.00f,
-    1.00f, 0.00f
+    0.00f, 0.20f,
+    0.20f, 0.20f,
+    0.20f, 0.00f
 };
 
 // angle of rotation
@@ -416,10 +388,6 @@ int main()
         0.0f, 1.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f
     };
 
     float color_grey1[]{
@@ -487,41 +455,33 @@ int main()
         1.00f, 0.00f
     };
 
-    //GLuint terrain_indices[] = { 0, 1, 2,  1, 2, 3 };
-    GLuint terrain_indices[] = { 0, 2, 4,  2, 4, 6};
+    GLuint terrain_indices[] = { 0, 1, 2,  0, 2, 3 };
 
     VertexArray terrain_sprite;
-    Buffer* terrain_vbo1 = new Buffer(terrain_vertices, 8 * 3, 3);
-    Buffer* terrain_vbo2 = new Buffer(color_green, 8 * 4, 4);
-    IndexBuffer terrain_ibo(terrain_indices_right, 36);
+    Buffer* terrain_vbo1 = new Buffer(terrain_vertices, 4 * 3, 3);
+    //Buffer* terrain_vbo1 = new Buffer(terrain_vertices_2D, 4 * 2, 2);
+    //Buffer* terrain_vbo2 = new Buffer(color_green, 4 * 4, 4);
+    Buffer* terrain_vbo2 = new Buffer(texture_poz, 4 * 2, 2);
+    IndexBuffer terrain_ibo(terrain_indices, 6);
 
     terrain_sprite.addBuffer(terrain_vbo1, 0);
-    terrain_sprite.addBuffer(terrain_vbo2, 1);
+    //terrain_sprite.addBuffer(terrain_vbo2, 1); // color
+    terrain_sprite.addBuffer(terrain_vbo2, 2); // texture coords
 
     terrain_sprite.bind();
     terrain_ibo.bind();
 
     Shader terrain_shader;
-    terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
+    //terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
+    terrain_shader.createShader("Shaders/terrain_texture_vert.shader", "Shaders/terrain_texture_frag.shader");
     terrain_shader.bind();
 
-    // Road
-    std::vector<roadSegment> road;
-    road.reserve(roadSegments);
+    Texture terrain_texture("Textures/grass.png");
+    //Texture terrain_texture("Textures/background_duck.png");
+    terrain_texture.bind();
+    terrain_shader.bind();
 
-    roadSegment road1(roadSegment1);
-    roadSegment road2(roadSegment2);
-    roadSegment road3(roadSegment3);
-    roadSegment road4(roadSegment4);
-    roadSegment road5(roadSegment5);
-    roadSegment road6(roadSegment6);
-    roadSegment road7(roadSegment7);
-    roadSegment road8(roadSegment8);
-    roadSegment road9(roadSegment9);
-    roadSegment road10(roadSegment10);
-    roadSegment road11(roadSegment11);
-    roadSegment road12(roadSegment12);
-    roadSegment road13(roadSegment13);
+    terrain_shader.uniform1i("terrain_texture", 0);
 
     Car car(carCoord);
 
@@ -550,8 +510,6 @@ int main()
     };
 
     Tree tree(tree_log_coord, tree_leaves_coord);
-
-    //road.emplace_back(road1);
 
     // Custom mouse-following star
     float star_pos[] = {
@@ -623,62 +581,12 @@ int main()
         */
 
         // Terrain Render
+        terrain_sprite.bind();
+        terrain_ibo.bind();
+        terrain_texture.bind();
         terrain_shader.bind();
         camera.Matrix(terrain_shader, "camMatrix");
-        drawCall_cube(terrain_sprite, terrain_ibo);
-
-        // Road
-        road1.bind();
-        camera.Matrix(road1.road_shader, "camMatrix");
-        drawCall_cube(road1.getSprite(), road1.getIbo());
-
-        road2.bind();
-        camera.Matrix(road2.road_shader, "camMatrix");
-        drawCall_cube(road2.getSprite(), road2.getIbo());
-
-        road3.bind();
-        camera.Matrix(road3.road_shader, "camMatrix");
-        drawCall_cube(road3.getSprite(), road3.getIbo());
-
-        road4.bind();
-        camera.Matrix(road4.road_shader, "camMatrix");
-        drawCall_cube(road4.getSprite(), road4.getIbo());
-
-        road5.bind();
-        camera.Matrix(road5.road_shader, "camMatrix");
-        drawCall_cube(road5.getSprite(), road5.getIbo());
-
-        road6.bind();
-        camera.Matrix(road6.road_shader, "camMatrix");
-        drawCall_cube(road6.getSprite(), road6.getIbo());
-
-        road7.bind();
-        camera.Matrix(road7.road_shader, "camMatrix");
-        drawCall_cube(road7.getSprite(), road7.getIbo());
-
-        road8.bind();
-        camera.Matrix(road8.road_shader, "camMatrix");
-        drawCall_cube(road8.getSprite(), road8.getIbo());
-
-        road9.bind();
-        camera.Matrix(road9.road_shader, "camMatrix");
-        drawCall_cube(road9.getSprite(), road9.getIbo());
-
-        road10.bind();
-        camera.Matrix(road10.road_shader, "camMatrix");
-        drawCall_cube(road10.getSprite(), road10.getIbo());
-
-        road11.bind();
-        camera.Matrix(road11.road_shader, "camMatrix");
-        drawCall_cube(road11.getSprite(), road11.getIbo());
-
-        road12.bind();
-        camera.Matrix(road12.road_shader, "camMatrix");
-        drawCall_cube(road12.getSprite(), road12.getIbo());
-
-        road13.bind();
-        camera.Matrix(road10.road_shader, "camMatrix");
-        drawCall_cube(road10.getSprite(), road10.getIbo());
+        drawCall_quad(terrain_sprite, terrain_ibo);
 
         car.bind();
         camera.Matrix(car.car_shader, "camMatrix");
