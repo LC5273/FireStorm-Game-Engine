@@ -51,6 +51,14 @@ GLfloat terrain_vertices[] = {
      50.0f, 0.0f, -50.0f
 };
 
+GLfloat left_wall_vertices[] = {
+    -50.0f, 0.0f, -50.0f,
+    -50.0f, 5.0f, -50.0f,
+    -45.0f, 5.0f, -50.0f,
+    -45.0f, 0.0f, -50.0f,
+};
+
+/*
 GLfloat terrain_vertices_2D[] = {
     // Terrain
     -50.0f, -50.0f,
@@ -58,6 +66,7 @@ GLfloat terrain_vertices_2D[] = {
      50.0f,  50.0f,
      50.0f, -50.0f
 };
+*/
 
 GLuint terrain_indices[] =
 {
@@ -298,24 +307,6 @@ void pos_update(Car& car, float* texture_coord)
     }
 }
 
-void render_trees(Tree trees[], int nr_of_trees, Camera &camera) {
-    for (int i(0); i < nr_of_trees; ++i) {
-        trees[i].bindLog();
-        camera.Matrix(trees[i].tree_log_shader, "camMatrix");
-        drawCall_cube(trees[i].getLogSprite(), trees[i].getLogIbo());
-
-        trees[i].bindLeaves();
-        camera.Matrix(trees[i].tree_leaves_shader, "camMatrix");
-        drawCall_cube(trees[i].getLeavesSprite(), trees[i].getLeavesIbo());
-        
-        //pos_update(trees[i], trees[i].coord);
-        //pos_update(trees[i], trees[i].coord);
-
-        trees[i].updateLogMatrix(modelMatrix);
-        trees[i].updateLeavesMatrix(modelMatrix);
-    }
-}
-
 
 int main()
 {
@@ -483,10 +474,33 @@ int main()
 
     terrain_shader.uniform1i("terrain_texture", 0);
 
-    Car car(carCoord);
+    // Walls
+    GLuint left_wall_indices[] = { 0, 1, 2,  0, 2, 3 };
 
-    Tree trees[100];
-    int nr_of_trees(0);
+    VertexArray left_wall_sprite;
+    Buffer* left_wall_vbo1 = new Buffer(left_wall_vertices, 4 * 3, 3);
+    Buffer* left_wall_vbo2 = new Buffer(texture_poz, 4 * 2, 2);
+    IndexBuffer left_wall_ibo(left_wall_indices, 6);
+
+    left_wall_sprite.addBuffer(left_wall_vbo1, 0);
+    left_wall_sprite.addBuffer(left_wall_vbo2, 2); // texture coords
+
+    left_wall_sprite.bind();
+    left_wall_ibo.bind();
+
+    Shader left_wall_shader;
+    left_wall_shader.createShader("Shaders/terrain_texture_vert.shader", "Shaders/left_wall_texture_frag.shader");
+    left_wall_shader.bind();
+
+    Texture left_wall_texture("Textures/brick_wall.png");
+    left_wall_texture.bind();
+    left_wall_shader.bind();
+    left_wall_shader.uniform1i("left_wall_texture", 0);
+
+
+
+    // Car
+    Car car(carCoord);
 
     /*
     -40.0f, 1.0f, -42.0f, -40.0f, 1.1f, -42.0f,
@@ -494,22 +508,6 @@ int main()
     -30.0f, 1.0f, -45.0f, -30.0f, 1.1f, -45.0f,
     -30.0f, 1.0f, -42.0f, -30.0f, 1.1f, -42.0f
     */
-
-    GLfloat tree_log_coord[24] = {
-        -32.0f, 1.0f, -40.0f, -32.0f, 3.0f, -40.0f,
-        -32.0f, 1.0f, -41.0f, -32.0f, 3.0f, -41.0f,
-        -31.0f, 1.0f, -41.0f, -31.0f, 3.0f, -41.0f,
-        -31.0f, 1.0f, -40.0f, -31.0f, 3.0f, -40.0f
-    };
-
-    GLfloat tree_leaves_coord[24] = {
-        -33.0f, 3.0f, -39.0f, -33.0f, 5.0f, -39.0f,
-        -33.0f, 3.0f, -42.0f, -33.0f, 5.0f, -42.0f,
-        -30.0f, 3.0f, -42.0f, -30.0f, 5.0f, -42.0f,
-        -30.0f, 3.0f, -39.0f, -30.0f, 5.0f, -39.0f
-    };
-
-    Tree tree(tree_log_coord, tree_leaves_coord);
 
     // Custom mouse-following star
     float star_pos[] = {
@@ -588,23 +586,19 @@ int main()
         camera.Matrix(terrain_shader, "camMatrix");
         drawCall_quad(terrain_sprite, terrain_ibo);
 
+        // Left Wall
+        left_wall_sprite.bind();
+        left_wall_ibo.bind();
+        left_wall_texture.bind();
+        left_wall_shader.bind();
+        camera.Matrix(left_wall_shader, "camMatrix");
+        drawCall_quad(left_wall_sprite, left_wall_ibo);
+
+        /*
         car.bind();
         camera.Matrix(car.car_shader, "camMatrix");
         drawCall_cube(car.getSprite(), car.getIbo());
-
-        // Trees
-        render_trees(trees, nr_of_trees, camera);
-
-        tree.bindLeaves();
-        camera.Matrix(tree.tree_leaves_shader, "camMatrix");
-        drawCall_cube(tree.getLeavesSprite(), tree.getLeavesIbo());
-
-        tree.bindLog();
-        camera.Matrix(tree.tree_log_shader, "camMatrix");
-        drawCall_cube(tree.getLogSprite(), tree.getLogIbo());
-
-        tree.updateLogMatrix(modelMatrix);
-        tree.updateLeavesMatrix(modelMatrix);
+        */
 
         // Star
         /*

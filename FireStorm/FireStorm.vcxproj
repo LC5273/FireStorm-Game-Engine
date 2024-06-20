@@ -77,6 +77,8 @@
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\laser_vert.shader" />
+    <None Include="Shaders\left_wall_texture_frag.shader" />
+    <None Include="Shaders\left_wall_texture_vert.shader" />
     <None Include="Shaders\road_frag.shader" />
     <None Include="Shaders\road_vert.shader" />
     <None Include="Shaders\star_frag_color.shader" />
@@ -94,6 +96,8 @@
   <ItemGroup>
     <Image Include="Textures\background.png" />
     <Image Include="Textures\background_duck.png" />
+    <Image Include="Textures\brick_wall.jpg" />
+    <Image Include="Textures\brick_wall.png" />
     <Image Include="Textures\duck_head_trans.png" />
     <Image Include="Textures\enemy-spaceship-sprite-hd-full.png" />
     <Image Include="Textures\enemy_attacker.png" />
