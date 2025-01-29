@@ -81,7 +81,13 @@
     <ClCompile Include="Textures\Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Textures\Tree.cpp">
+    <ClCompile Include="Buffers\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\ModelLoader3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,7 +173,13 @@
     <ClInclude Include="Textures\Car.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Textures\Tree.hpp">
+    <ClInclude Include="Buffers\Mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Renderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\ModelLoader3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -194,6 +206,10 @@
     <None Include="Shaders\terrain_vert.shader" />
     <None Include="Shaders\road_vert.shader" />
     <None Include="Shaders\road_frag.shader" />
+    <None Include="Shaders\left_wall_texture_frag.shader" />
+    <None Include="Shaders\left_wall_texture_vert.shader" />
+    <None Include="Shaders\terrain_texture_frag.shader" />
+    <None Include="Shaders\terrain_texture_vert.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">
@@ -266,6 +282,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Textures\duck_head_trans.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\brick_wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\brick_wall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\grass.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -17,6 +17,7 @@
 #include "../Buffers/IndexBuffer.hpp"
 #include "../Buffers/VertexArray.hpp"
 #include "../Textures/Texture.hpp"
+#include "../Buffers/Mesh.hpp"
 #include "../Textures/Laser.hpp"
 #include "../Textures/Enemy.hpp"
 #include "../Utilities/Timer.hpp"
@@ -26,13 +27,17 @@
 
 #include "../Textures/roadSegment.hpp"
 #include "../Textures/Car.hpp"
-#include "../Textures/Tree.hpp"
 #include "../Data/coords.hpp"
 #include "../Data/colours.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"
 #include "../Utilities/GPU_enablement.hpp"
 
+// Vendors
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "vendor/tinyobjloader/tiny_obj_loader.h"
+
+// Scenes
 #include "../Scenes/main_screen.hpp"
 
 
@@ -104,12 +109,14 @@ glm::vec3 axis(0.0f, 1.0f, 0.0f);
 glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
 
 glm::mat4 modelMatrix = glm::mat4(1.0f);
-glm::vec3 centerOfObject = glm::vec3(-46.0f, 1.05f, -37.0f); // wrong
 
 int width, height;
 bool directions[4] {0};
 
 void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
     if (key == GLFW_KEY_W) {
         if (action == GLFW_PRESS)
             directions[0] = 1;
@@ -202,112 +209,6 @@ void move_coords(float* texture_pos, int direction, float value) {
     }
 }
 
-void pos_update(Car& car, float* texture_coord)
-{
-    if (directions[0]) move_coords(texture_coord, 0, 0.0005);
-    if (directions[1]) {
-        move_coords(texture_coord, 1, 0.0005);
-
-        angle += 0.000005f;
-
-        float x = (texture_coord[0] + texture_coord[12]) / 2;
-        float y = (texture_coord[1] + texture_coord[5]) / 2;
-        float z = (texture_coord[2] + texture_coord[8]) / 2;
-
-        centerOfObject = glm::vec3(x, y, z);
-        //std::cout << x << ' ' << y << ' ' << z << std::endl;
-        //modelMatrix = glm::mat4(1.0f);
-        
-        // Translate the object to the origin
-        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        // Perform the rotation
-        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMatrix = modelMatrix * rotationMatrix;
-
-        // Translate the object back to its original position
-        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-        
-        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
-
-        
-        for (int i(0); i < 24; i += 3) {
-            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
-            coordSeg = modelMatrix * coordSeg;
-            car.coord[i] = coordSeg.x;
-            car.coord[i+1] = coordSeg.y;
-            car.coord[i+2] = coordSeg.z;
-        }
-        
-
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
-        //modelMatrix = rotation * modelMatrix;
-        //modelMatrix = modelMatrix * rotation;
-    }
-    if (directions[2]) move_coords(texture_coord, 2, 0.0005);
-    if (directions[3]) {
-        move_coords(texture_coord, 3, 0.0005);
-
-        angle -= 0.000005f;
-
-        float x = (texture_coord[0] + texture_coord[12]) / 2;
-        float y = (texture_coord[1] + texture_coord[5]) / 2;
-        float z = (texture_coord[2] + texture_coord[8]) / 2;
-
-        centerOfObject = glm::vec3(x, y, z);
-        //std::cout << x << ' ' << y << ' ' << z << std::endl;
-
-        // Translate the object to the origin
-        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        // Perform the rotation
-        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMatrix = modelMatrix * rotationMatrix;
-
-        // Translate the object back to its original position
-        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
-        modelMatrix = modelMatrix * translationMatrix;
-
-        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
-
-        /*
-        for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 4; ++j)
-                std::cout << modelMatrix[i][j] << ' ';
-        glm::vec4 finalcoord = glm::vec4(0.0f);
-        finalcoord.x = texture_coord[0];
-        finalcoord.y = texture_coord[1];
-        finalcoord.z = texture_coord[2];
-        */
-        
-        for (int i(0); i < 24; i += 3) {
-            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
-            coordSeg =  modelMatrix * coordSeg;
-            car.coord[i] = coordSeg.x;
-            car.coord[i + 1] = coordSeg.y;
-            car.coord[i + 2] = coordSeg.z;
-        }
-        
-        
-        /*
-        finalcoord = finalcoord * modelMatrix;
-        for (int i = 0; i < 4; ++i)
-            std::cout << finalcoord[i] << ' ';
-        std::cout << std::endl; // * with model anc update coords car
-        */
-
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
-        //modelMatrix = rotation * modelMatrix;
-        //modelMatrix = modelMatrix * rotation;
-    }
-}
-
-
 int main()
 {
     /* Initializing GLFW */
@@ -318,7 +219,7 @@ int main()
 
     /* Create a window */
     GLFWwindow* window;
-    window = glfwCreateWindow(640, 480, "Application", NULL, NULL); 
+    window = glfwCreateWindow(640, 480, "3.0 BiTurbo inline6", NULL, NULL); 
 
     if (!window)
     {
@@ -373,30 +274,6 @@ int main()
     GLuint texture_indices[] = { 0, 1, 2,  0, 2, 3 };
     GLuint indices1[] = { 0, 1, 2 };
     GLuint indices2[] = { 3, 4, 5 };
-
-    float color_green[]{
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-    };
-
-    float color_grey1[]{
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f,
-        0.0f, 0.1f, 0.2f, 1.0f
-    };
-
-    float color_brown[] { //3rd should be 0
-        0.6f, 0.3f, 0.1f, 1.0f,
-        0.6f, 0.3f, 0.1f, 1.0f,
-        0.6f, 0.3f, 0.1f, 1.0f
-    };
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -496,11 +373,6 @@ int main()
     left_wall_texture.bind();
     left_wall_shader.bind();
     left_wall_shader.uniform1i("left_wall_texture", 0);
-
-
-
-    // Car
-    Car car(carCoord);
 
     /*
     -40.0f, 1.0f, -42.0f, -40.0f, 1.1f, -42.0f,
@@ -610,10 +482,6 @@ int main()
         */
 
         glfwSetKeyCallback(window, key_callback_WASD);
-        pos_update(car, car.coord);
-        car.updateCoordVbo();
-
-        car.updateMatrix(modelMatrix);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

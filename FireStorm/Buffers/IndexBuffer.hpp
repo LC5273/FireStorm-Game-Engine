@@ -2,6 +2,7 @@
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
+#include <vector>
 
 class IndexBuffer
 {
@@ -11,6 +12,7 @@ private:
 public:
 	IndexBuffer();
 	IndexBuffer(GLuint* data, GLsizei nr_of_elements);
+	IndexBuffer(std::vector<GLuint> data);
 
 	void createIndexBuffer(GLuint* data, GLsizei nr_of_elements);
 

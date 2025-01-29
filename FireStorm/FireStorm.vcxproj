@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Buffers\Mesh.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Textures\Car.cpp" />
     <ClCompile Include="Textures\roadSegment.cpp" />
@@ -24,7 +25,8 @@
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
-    <ClCompile Include="Textures\Tree.cpp" />
+    <ClCompile Include="Utilities\ModelLoader3D.cpp" />
+    <ClCompile Include="Utilities\Renderer.cpp" />
     <ClCompile Include="Utilities\Timer.cpp" />
     <ClCompile Include="Textures\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
@@ -38,6 +40,7 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Buffers\Mesh.hpp" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Textures\Car.hpp" />
     <ClInclude Include="Data\colours.hpp" />
@@ -53,8 +56,9 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
-    <ClInclude Include="Textures\Tree.hpp" />
     <ClInclude Include="Utilities\GPU_enablement.hpp" />
+    <ClInclude Include="Utilities\ModelLoader3D.h" />
+    <ClInclude Include="Utilities\Renderer.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Textures\Texture.hpp" />
     <ClInclude Include="Math\vec4.h" />
@@ -170,13 +174,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FireStorm;$(SolutionDir)Dependencies;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLEW\lib\Release\x64;$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)FireStorm;$(SolutionDir)Dependencies;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLEW\lib\Release\x64;$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;kernel32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

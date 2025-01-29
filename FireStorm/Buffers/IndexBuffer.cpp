@@ -9,8 +9,15 @@ IndexBuffer::IndexBuffer(GLuint* data, GLsizei nr_of_elements): nr_of_elements(n
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+IndexBuffer::IndexBuffer(std::vector<GLuint> data): nr_of_elements(data.size()) {
+	glGenBuffers(1, &id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, nr_of_elements * sizeof(GLuint), data.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void IndexBuffer::createIndexBuffer(GLuint* data, GLsizei nr_of_elements) {
-	GLuint id;
+	//GLuint id;
 	glGenBuffers(1, &id);
 	this->id = id;
 	this->nr_of_elements = nr_of_elements;
