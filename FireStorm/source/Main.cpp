@@ -1,5 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+//#include <../../../Dependencies/glad/glad.h>
+//#include <../../../Dependencies/glm/glm.hpp>
+//#include <../../../Dependencies/glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -18,7 +21,14 @@
 #include "../Textures/Enemy.hpp"
 #include "../Utilities/Timer.hpp"
 #include "../Shaders/Shader.hpp"
-#include "../Math/maths.hpp"
+#include "../Camera/Camera.h"
+//#include "../Math/maths.hpp"
+
+#include "../Textures/roadSegment.hpp"
+#include "../Textures/Car.hpp"
+#include "../Textures/Tree.hpp"
+#include "../Data/coords.hpp"
+#include "../Data/colours.hpp"
 
 #include "../Utilities/Renderer_functions.hpp"
 #include "../Utilities/GPU_enablement.hpp"
@@ -33,6 +43,43 @@
 
 #define what_is(x) std::cerr << #x << " is " << x << std::endl;
 
+GLfloat terrain_vertices[] = {
+    // Terrain
+    -50.0f, 0.0f, -50.0f,
+    -50.0f, 0.0f,  50.0f,
+     50.0f, 0.0f,  50.0f,
+     50.0f, 0.0f, -50.0f
+};
+
+GLfloat left_wall_vertices[] = {
+    -50.0f, 0.0f, -50.0f,
+    -50.0f, 5.0f, -50.0f,
+    -45.0f, 5.0f, -50.0f,
+    -45.0f, 0.0f, -50.0f,
+};
+
+/*
+GLfloat terrain_vertices_2D[] = {
+    // Terrain
+    -50.0f, -50.0f,
+    -50.0f,  50.0f,
+     50.0f,  50.0f,
+     50.0f, -50.0f
+};
+*/
+
+GLuint terrain_indices[] =
+{
+    0, 1, 2,
+    0, 2, 3,
+};
+
+GLuint terrain_indices_right[] =
+{
+    0, 1, 2,
+    0, 2, 3
+};
+
 float texture_pos[] = {
     0.00f, 0.00f,
     0.00f, 0.25f,
@@ -42,82 +89,32 @@ float texture_pos[] = {
 
 float texture_poz[] = {
     0.00f, 0.00f,
-    0.00f, 1.00f,
-    1.00f, 1.00f,
-    1.00f, 0.00f
+    0.00f, 0.20f,
+    0.20f, 0.20f,
+    0.20f, 0.00f
 };
-bool movement = false;
 
-std::vector<Laser> projectiles;
-std::vector<Enemy> enemy;
+// angle of rotation
+float angle = 0.0f;
+
+// rotation axis
+glm::vec3 axis(0.0f, 1.0f, 0.0f);
+
+// rotation matrix
+glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+
+glm::mat4 modelMatrix = glm::mat4(1.0f);
+glm::vec3 centerOfObject = glm::vec3(-46.0f, 1.05f, -37.0f); // wrong
 
 int width, height;
-
-void move_coords(float* texture_pos, int direction, float value) {
-    // 0 - up
-    // 1 - left
-    // 2 - down
-    // 3 - right
-    
-    switch (direction) 
-    {
-    case 0:
-        texture_pos[1] += value;
-        texture_pos[3] += value;
-        texture_pos[5] += value;
-        texture_pos[7] += value;
-        break;
-    case 1:
-        texture_pos[0] -= value;
-        texture_pos[2] -= value;
-        texture_pos[4] -= value;
-        texture_pos[6] -= value;
-        break;
-    case 2:
-        texture_pos[1] -= value;
-        texture_pos[3] -= value;
-        texture_pos[5] -= value;
-        texture_pos[7] -= value;
-        break;
-    case 3:
-        texture_pos[0] += value;
-        texture_pos[2] += value;
-        texture_pos[4] += value;
-        texture_pos[6] += value;
-        break;
-    }
-}
-
-bool directions[4] = {0};
+bool directions[4] {0};
 
 void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_W) {
-        if (action == GLFW_PRESS) {
+        if (action == GLFW_PRESS)
             directions[0] = 1;
-            
-            texture_pos[0] -= 0.03f;
-            texture_pos[2] -= 0.03f;
-            texture_pos[4] += 0.03f;
-            texture_pos[6] += 0.03f;
-            
-            texture_pos[1] -= 0.10f;
-            texture_pos[7] -= 0.10f;
-
-            movement = true;
-        }
-        else if (action == GLFW_RELEASE) {
+        else if (action == GLFW_RELEASE)
             directions[0] = 0;
-            
-            texture_pos[0] += 0.03f;
-            texture_pos[2] += 0.03f;
-            texture_pos[4] -= 0.03f;
-            texture_pos[6] -= 0.03f;
-            
-            texture_pos[1] += 0.10f;
-            texture_pos[7] += 0.10f;
-
-            movement = false;
-        }
     }
     else
         if (key == GLFW_KEY_A) {
@@ -140,51 +137,174 @@ void key_callback_WASD(GLFWwindow* window, int key, int scancode, int action, in
                     else if (action == GLFW_RELEASE)
                         directions[3] = 0;
                 }
+    //std::cout << char(7);
 
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-        Laser laser(texture_pos, 0.02f, 0.15f);
-        projectiles.push_back(laser);
+    if (key == GLFW_KEY_A && action == GLFW_PRESS)
+    {
+        //angle += 0.5f;
+        //rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
     }
-        //std::cout << char(7);
-}
-
-void render_projectiles(std::vector<Laser>& projectiles, std::vector<Enemy>& enemy) {
-    for (int i = 0; i < projectiles.size(); ++i) {
-        projectiles[i].travel();
-        projectiles[i].bind();
-        drawCall_quad(projectiles[i].getSprite(), projectiles[i].get_ibo());
-
-        for(int j = 0; j < enemy.size(); ++j) {
-            if (projectiles[i].collision(enemy[j].position)) {
-                projectiles.erase(projectiles.begin() + i);
-                enemy.erase(enemy.begin() + j);
-            }
-            /*
-            else if (!projectiles[i].valid()) {
-                projectiles.erase(projectiles.begin() + i);
-                std::cout << "laser deleted";
-            }
-            */
-        }
-        if (i < projectiles.size() && !projectiles[i].valid()) {
-            projectiles.erase(projectiles.begin() + i);
-        }
+    if (key == GLFW_KEY_D && action == GLFW_PRESS)
+    {
+        //angle -= 0.5f;
+        //rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
     }
 }
 
-void render_enemies(const std::vector<Enemy>& enemy) {
-    for (int i(0); i < enemy.size(); ++i) {
-        enemy[i].bind();
-        drawCall_quad(enemy[i].enemy_sprite, enemy[i].enemy_ibo);
+void move_coords(float* texture_pos, int direction, float value) {
+    // 0 - up
+    // 1 - left
+    // 2 - down
+    // 3 - right
+    
+    switch (direction) 
+    {
+    case 0:
+        texture_pos[0] += value;
+        texture_pos[3] += value;
+        texture_pos[6] += value;
+        texture_pos[9] += value;
+        texture_pos[12] += value;
+        texture_pos[15] += value;
+        texture_pos[18] += value;
+        texture_pos[21] += value;
+        break;
+    case 1:
+        texture_pos[2] -= value;
+        texture_pos[5] -= value;
+        texture_pos[8] -= value;
+        texture_pos[11] -= value;
+        texture_pos[14] -= value;
+        texture_pos[17] -= value;
+        texture_pos[20] -= value;
+        texture_pos[23] -= value;
+        break;
+    case 2:
+        texture_pos[0] -= value;
+        texture_pos[3] -= value;
+        texture_pos[6] -= value;
+        texture_pos[9] -= value;
+        texture_pos[12] -= value;
+        texture_pos[15] -= value;
+        texture_pos[18] -= value;
+        texture_pos[21] -= value;
+        break;
+    case 3:
+        texture_pos[2] += value;
+        texture_pos[5] += value;
+        texture_pos[8] += value;
+        texture_pos[11] += value;
+        texture_pos[14] += value;
+        texture_pos[17] += value;
+        texture_pos[20] += value;
+        texture_pos[23] += value;
+        break;
     }
 }
 
-void pos_update() 
+void pos_update(Car& car, float* texture_coord)
 {
-    if(directions[0]) move_coords(texture_pos, 0, 0.0001);
-    if(directions[1]) move_coords(texture_pos, 1, 0.0001);
-    if(directions[2]) move_coords(texture_pos, 2, 0.0001);
-    if(directions[3]) move_coords(texture_pos, 3, 0.0001);
+    if (directions[0]) move_coords(texture_coord, 0, 0.0005);
+    if (directions[1]) {
+        move_coords(texture_coord, 1, 0.0005);
+
+        angle += 0.000005f;
+
+        float x = (texture_coord[0] + texture_coord[12]) / 2;
+        float y = (texture_coord[1] + texture_coord[5]) / 2;
+        float z = (texture_coord[2] + texture_coord[8]) / 2;
+
+        centerOfObject = glm::vec3(x, y, z);
+        //std::cout << x << ' ' << y << ' ' << z << std::endl;
+        //modelMatrix = glm::mat4(1.0f);
+        
+        // Translate the object to the origin
+        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
+        modelMatrix = modelMatrix * translationMatrix;
+
+        // Perform the rotation
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMatrix = modelMatrix * rotationMatrix;
+
+        // Translate the object back to its original position
+        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
+        modelMatrix = modelMatrix * translationMatrix;
+        
+        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
+
+        
+        for (int i(0); i < 24; i += 3) {
+            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+            coordSeg = modelMatrix * coordSeg;
+            car.coord[i] = coordSeg.x;
+            car.coord[i+1] = coordSeg.y;
+            car.coord[i+2] = coordSeg.z;
+        }
+        
+
+        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
+        //modelMatrix = rotation * modelMatrix;
+        //modelMatrix = modelMatrix * rotation;
+    }
+    if (directions[2]) move_coords(texture_coord, 2, 0.0005);
+    if (directions[3]) {
+        move_coords(texture_coord, 3, 0.0005);
+
+        angle -= 0.000005f;
+
+        float x = (texture_coord[0] + texture_coord[12]) / 2;
+        float y = (texture_coord[1] + texture_coord[5]) / 2;
+        float z = (texture_coord[2] + texture_coord[8]) / 2;
+
+        centerOfObject = glm::vec3(x, y, z);
+        //std::cout << x << ' ' << y << ' ' << z << std::endl;
+
+        // Translate the object to the origin
+        glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -centerOfObject);
+        modelMatrix = modelMatrix * translationMatrix;
+
+        // Perform the rotation
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMatrix = modelMatrix * rotationMatrix;
+
+        // Translate the object back to its original position
+        glm::mat4 translationMatrixBack = glm::translate(glm::mat4(1.0f), centerOfObject);
+        modelMatrix = modelMatrix * translationMatrix;
+
+        modelMatrix = translationMatrixBack * rotationMatrix * translationMatrix;
+
+        /*
+        for (int i = 0; i < 4; ++i)
+            for (int j = 0; j < 4; ++j)
+                std::cout << modelMatrix[i][j] << ' ';
+        glm::vec4 finalcoord = glm::vec4(0.0f);
+        finalcoord.x = texture_coord[0];
+        finalcoord.y = texture_coord[1];
+        finalcoord.z = texture_coord[2];
+        */
+        
+        for (int i(0); i < 24; i += 3) {
+            glm::vec4 coordSeg = glm::vec4(car.coord[i], car.coord[i + 1], car.coord[i + 2], 1.0f);
+            coordSeg =  modelMatrix * coordSeg;
+            car.coord[i] = coordSeg.x;
+            car.coord[i + 1] = coordSeg.y;
+            car.coord[i + 2] = coordSeg.z;
+        }
+        
+        
+        /*
+        finalcoord = finalcoord * modelMatrix;
+        for (int i = 0; i < 4; ++i)
+            std::cout << finalcoord[i] << ' ';
+        std::cout << std::endl; // * with model anc update coords car
+        */
+
+        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+        //glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-5.0f), glm::vec3(x, y, z));
+        //modelMatrix = rotation * modelMatrix;
+        //modelMatrix = modelMatrix * rotation;
+    }
 }
 
 
@@ -254,22 +374,28 @@ int main()
     GLuint indices1[] = { 0, 1, 2 };
     GLuint indices2[] = { 3, 4, 5 };
 
-    float colorA[] {
-        0.8f, 0.5f, 1.0f, 1.0f,
-        0.8f, 0.5f, 1.0f, 1.0f,
-        0.8f, 0.5f, 1.0f, 1.0f
+    float color_green[]{
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
     };
 
-    float colorB[] {
-        1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 0.0f, 1.0f
+    float color_grey1[]{
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f,
+        0.0f, 0.1f, 0.2f, 1.0f
     };
 
-    float color_white[] {
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f
+    float color_brown[] { //3rd should be 0
+        0.6f, 0.3f, 0.1f, 1.0f,
+        0.6f, 0.3f, 0.1f, 1.0f,
+        0.6f, 0.3f, 0.1f, 1.0f
     };
 
     glEnable(GL_BLEND);
@@ -288,7 +414,7 @@ int main()
         1.00f, 1.00f,
         1.00f, 0.00f
     };
-
+    // Background
     GLuint background_indices[] = { 0, 1, 2,  0, 2, 3 };
 
     VertexArray background_sprite;
@@ -307,35 +433,83 @@ int main()
     background_shader.createShader("Shaders/vert_background.shader", "Shaders/frag_background.shader");
     background_shader.bind();
 
-    Texture background_texture("Textures/background.png");
+    Texture background_texture("Textures/background_duck.png");
     background_texture.bind();
 
     background_shader.uniform1i("texture1", 0);
-    
-    //Spaceship
-    VertexArray spaceship_sprite;
-    Buffer* spaceship_coord_vbo1 = new Buffer(texture_pos, 8 * 2, 2);
-    Buffer* spaceship_coord_vbo2 = new Buffer(texture_poz, 8 * 2, 2);
-    IndexBuffer spaceship_ibo(texture_indices, 6);
 
-    spaceship_sprite.addBuffer(spaceship_coord_vbo1, 0);
-    spaceship_sprite.addBuffer(spaceship_coord_vbo2, 2);
+    // Terrain
+    float terrain_coord[] = { // although we might not need it
+        0.00f, 0.00f,
+        0.00f, 1.00f,
+        1.00f, 1.00f,
+        1.00f, 0.00f
+    };
 
-    spaceship_sprite.bind();
-    spaceship_ibo.bind();
+    GLuint terrain_indices[] = { 0, 1, 2,  0, 2, 3 };
+
+    VertexArray terrain_sprite;
+    Buffer* terrain_vbo1 = new Buffer(terrain_vertices, 4 * 3, 3);
+    //Buffer* terrain_vbo1 = new Buffer(terrain_vertices_2D, 4 * 2, 2);
+    //Buffer* terrain_vbo2 = new Buffer(color_green, 4 * 4, 4);
+    Buffer* terrain_vbo2 = new Buffer(texture_poz, 4 * 2, 2);
+    IndexBuffer terrain_ibo(terrain_indices, 6);
+
+    terrain_sprite.addBuffer(terrain_vbo1, 0);
+    //terrain_sprite.addBuffer(terrain_vbo2, 1); // color
+    terrain_sprite.addBuffer(terrain_vbo2, 2); // texture coords
+
+    terrain_sprite.bind();
+    terrain_ibo.bind();
+
+    Shader terrain_shader;
+    //terrain_shader.createShader("Shaders/terrain_vert.shader", "Shaders/terrain_frag.shader");
+    terrain_shader.createShader("Shaders/terrain_texture_vert.shader", "Shaders/terrain_texture_frag.shader");
+    terrain_shader.bind();
+
+    Texture terrain_texture("Textures/grass.png");
+    //Texture terrain_texture("Textures/background_duck.png");
+    terrain_texture.bind();
+    terrain_shader.bind();
+
+    terrain_shader.uniform1i("terrain_texture", 0);
+
+    // Walls
+    GLuint left_wall_indices[] = { 0, 1, 2,  0, 2, 3 };
+
+    VertexArray left_wall_sprite;
+    Buffer* left_wall_vbo1 = new Buffer(left_wall_vertices, 4 * 3, 3);
+    Buffer* left_wall_vbo2 = new Buffer(texture_poz, 4 * 2, 2);
+    IndexBuffer left_wall_ibo(left_wall_indices, 6);
+
+    left_wall_sprite.addBuffer(left_wall_vbo1, 0);
+    left_wall_sprite.addBuffer(left_wall_vbo2, 2); // texture coords
+
+    left_wall_sprite.bind();
+    left_wall_ibo.bind();
+
+    Shader left_wall_shader;
+    left_wall_shader.createShader("Shaders/terrain_texture_vert.shader", "Shaders/left_wall_texture_frag.shader");
+    left_wall_shader.bind();
+
+    Texture left_wall_texture("Textures/brick_wall.png");
+    left_wall_texture.bind();
+    left_wall_shader.bind();
+    left_wall_shader.uniform1i("left_wall_texture", 0);
 
 
-    Shader spaceship_shader;
-    spaceship_shader.createShader("Shaders/vert_texture.shader", "Shaders/frag_texture.shader");
-    spaceship_shader.bind();
 
-    Texture spaceship_static_texture("Textures/spaceship.png");
-    Texture spaceship_dynamic_texture("Textures/spaceship_dynamic.png");
+    // Car
+    Car car(carCoord);
 
-    spaceship_shader.uniform1i("texture1", 0);
+    /*
+    -40.0f, 1.0f, -42.0f, -40.0f, 1.1f, -42.0f,
+    -40.0f, 1.0f, -45.0f, -40.0f, 1.1f, -45.0f,
+    -30.0f, 1.0f, -45.0f, -30.0f, 1.1f, -45.0f,
+    -30.0f, 1.0f, -42.0f, -30.0f, 1.1f, -42.0f
+    */
 
-    //Custom mouse-following star
-
+    // Custom mouse-following star
     float star_pos[] = {
         -1.00f, -1.00f,
         -1.00f,  1.00f,
@@ -367,28 +541,9 @@ int main()
     star_shader.createShader("Shaders/star_vert_color.shader", "Shaders/star_frag_color.shader");
     star_shader.bind();
 
-    //double x, y;
-    //int width, height;
-
-    float p[8] = {
-        0.50f, 0.50f,
-        0.50f, 0.85f,
-        0.75f, 0.85f,
-        0.75f, 0.50f
-    };
-
-    float p2[8] = {
-        0.20f, 0.50f,
-        0.20f, 0.85f,
-        0.45f, 0.85f,
-        0.45f, 0.50f
-    };
-
-    Enemy e(p), e2(p2);
-    e.bind();
-    enemy.push_back(e);
-    e2.bind();
-    enemy.push_back(e2);
+    // Camera
+    //Camera camera(640, 480, glm::vec3(0.0f, 0.0f, 2.0f));
+    Camera camera(640, 480, glm::vec3(-37.5f, 2.1f, -44.2f));
 
     Timer timer;
     float current_time(0.0f);
@@ -399,37 +554,66 @@ int main()
     //Main screen
     main_screen(window);
 
+    GLfloat camera_mat4[16];
+
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.1f, 0.7f, 0.9f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
-        spaceship_coord_vbo1->update(texture_pos, 8 * 2, 2);
+        // Handles camera inputs
+        camera.Inputs(window);
+        // Updates and exports the camera matrix to the Vertex Shader
+        camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
+        //car.updateMatrix(modelMatrix);
+
+        // Background render
+        /*
         background_texture.bind();
         background_shader.bind();
         drawCall_quad(background_sprite, background_ibo);
+        background_texture.unbind();
+        */
 
-        if (!movement)
-            spaceship_static_texture.bind();
-        else
-            spaceship_dynamic_texture.bind();
+        // Terrain Render
+        terrain_sprite.bind();
+        terrain_ibo.bind();
+        terrain_texture.bind();
+        terrain_shader.bind();
+        camera.Matrix(terrain_shader, "camMatrix");
+        drawCall_quad(terrain_sprite, terrain_ibo);
 
-        spaceship_shader.bind();
-        drawCall_quad(spaceship_sprite, spaceship_ibo);
-        
-        
+        // Left Wall
+        left_wall_sprite.bind();
+        left_wall_ibo.bind();
+        left_wall_texture.bind();
+        left_wall_shader.bind();
+        camera.Matrix(left_wall_shader, "camMatrix");
+        drawCall_quad(left_wall_sprite, left_wall_ibo);
+
+        /*
+        car.bind();
+        camera.Matrix(car.car_shader, "camMatrix");
+        drawCall_cube(car.getSprite(), car.getIbo());
+        */
+
+        // Star
+        /*
         star_shader.bind();
         star_shader.uniform2f_mouse_pos(window, "light_pos");
         //drawCall_quad(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite1, star_ibo);
         drawCall_triangle(star_sprite2, star_ibo);
-
-        render_enemies(enemy);
-        render_projectiles(projectiles, enemy);
+        */
 
         glfwSetKeyCallback(window, key_callback_WASD);
-        pos_update();
+        pos_update(car, car.coord);
+        car.updateCoordVbo();
+
+        car.updateMatrix(modelMatrix);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -448,7 +632,6 @@ int main()
     }
 
     background_shader.unbind();
-    spaceship_shader.unbind();
     star_shader.unbind();
 
     glfwTerminate();

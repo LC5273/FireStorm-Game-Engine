@@ -72,6 +72,18 @@
     <ClCompile Include="Textures\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures\roadSegment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures\Car.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures\Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\mat4.h">
@@ -140,6 +152,24 @@
     <ClInclude Include="Scenes\main_screen.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures\roadSegment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\coords.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\colours.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures\Car.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures\Tree.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\vert.shader" />
@@ -158,6 +188,12 @@
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\enemy_texture_frag.shader" />
+    <None Include="Shaders\default.vert" />
+    <None Include="Shaders\default.frag" />
+    <None Include="Shaders\terrain_frag.shader" />
+    <None Include="Shaders\terrain_vert.shader" />
+    <None Include="Shaders\road_vert.shader" />
+    <None Include="Shaders\road_frag.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\spaceship.png">
@@ -224,6 +260,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Textures\spaceship1_cut.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\background_duck.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\duck_head_trans.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -16,14 +16,14 @@ VertexArray& VertexArray::operator=(const VertexArray& vao) {
 }
 */
 
-void VertexArray::addBuffer(Buffer* _buffer, GLuint index) {
+void VertexArray::addBuffer(Buffer* buffer, GLuint index) {
 	this->bind();
-	_buffer->bind();
+	buffer->bind();
 
 	glEnableVertexAttribArray(index);
-	glVertexAttribPointer(index, _buffer->get_nr_of_elements(), GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(index, buffer->get_nr_of_elements(), GL_FLOAT, GL_FALSE, 0, 0);
 
-	_buffer->unbind();
+	buffer->unbind();
 	this->unbind();
 }
 

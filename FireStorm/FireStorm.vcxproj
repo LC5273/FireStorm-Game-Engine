@@ -13,6 +13,9 @@
   <ItemGroup>
     <ClCompile Include="Buffers\Buffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Textures\Car.cpp" />
+    <ClCompile Include="Textures\roadSegment.cpp" />
     <ClCompile Include="Textures\Enemy.cpp" />
     <ClCompile Include="Textures\Spaceship.cpp" />
     <ClCompile Include="Textures\Laser.cpp" />
@@ -21,6 +24,7 @@
     <ClCompile Include="Math\mat3.cpp" />
     <ClCompile Include="Math\mat4.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Textures\Tree.cpp" />
     <ClCompile Include="Utilities\Timer.cpp" />
     <ClCompile Include="Textures\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
@@ -34,6 +38,11 @@
   <ItemGroup>
     <ClInclude Include="Buffers\Buffer.hpp" />
     <ClInclude Include="Buffers\IndexBuffer.hpp" />
+    <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Textures\Car.hpp" />
+    <ClInclude Include="Data\colours.hpp" />
+    <ClInclude Include="Data\coords.hpp" />
+    <ClInclude Include="Textures\roadSegment.hpp" />
     <ClInclude Include="Scenes\main_screen.hpp" />
     <ClInclude Include="Textures\Enemy.hpp" />
     <ClInclude Include="Textures\Spaceship.hpp" />
@@ -44,6 +53,7 @@
     <ClInclude Include="Math\mat4.h" />
     <ClInclude Include="Math\maths.hpp" />
     <ClInclude Include="Shaders\Shader.hpp" />
+    <ClInclude Include="Textures\Tree.hpp" />
     <ClInclude Include="Utilities\GPU_enablement.hpp" />
     <ClInclude Include="Utilities\Renderer_functions.hpp" />
     <ClInclude Include="Textures\Texture.hpp" />
@@ -56,6 +66,8 @@
     <ClInclude Include="Utilities\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\default.frag" />
+    <None Include="Shaders\default.vert" />
     <None Include="Shaders\enemy_texture_frag.shader" />
     <None Include="Shaders\enemy_texture_vert.shader" />
     <None Include="Shaders\frag.shader" />
@@ -65,8 +77,16 @@
     <None Include="Shaders\frag_texture.shader" />
     <None Include="Shaders\laser_frag.shader" />
     <None Include="Shaders\laser_vert.shader" />
+    <None Include="Shaders\left_wall_texture_frag.shader" />
+    <None Include="Shaders\left_wall_texture_vert.shader" />
+    <None Include="Shaders\road_frag.shader" />
+    <None Include="Shaders\road_vert.shader" />
     <None Include="Shaders\star_frag_color.shader" />
     <None Include="Shaders\star_vert_color.shader" />
+    <None Include="Shaders\terrain_frag.shader" />
+    <None Include="Shaders\terrain_texture_frag.shader" />
+    <None Include="Shaders\terrain_texture_vert.shader" />
+    <None Include="Shaders\terrain_vert.shader" />
     <None Include="Shaders\vert.shader" />
     <None Include="Shaders\vert1.shader" />
     <None Include="Shaders\vert_background.shader" />
@@ -75,10 +95,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\background.png" />
+    <Image Include="Textures\background_duck.png" />
+    <Image Include="Textures\brick_wall.jpg" />
+    <Image Include="Textures\brick_wall.png" />
+    <Image Include="Textures\duck_head_trans.png" />
     <Image Include="Textures\enemy-spaceship-sprite-hd-full.png" />
     <Image Include="Textures\enemy_attacker.png" />
     <Image Include="Textures\enemy_lurker.png" />
     <Image Include="Textures\enemy_lurker1.png" />
+    <Image Include="Textures\grass.png" />
     <Image Include="Textures\main_menu\1000x1000_gui.jpg" />
     <Image Include="Textures\main_menu\buy_glow.png" />
     <Image Include="Textures\main_menu\buy_raw.png" />
@@ -107,13 +132,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -163,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\glad</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
